@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,11 +36,12 @@ public class RadarChartFragment extends Fragment {
     private RadarChart radarChart;
     private DatabaseReference databaseReference;
     private String userIdToken;
+    private View rootView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_radar_chart, container, false);
+        rootView = inflater.inflate(R.layout.fragment_radar_chart, container, false);
         radarChart = rootView.findViewById(R.id.radarChart);
 
         // 레이아웃 파라미터를 설정하여 크기 조정
@@ -62,7 +65,6 @@ public class RadarChartFragment extends Fragment {
         return rootView;
     }
 
-    // 데이터베이스 호출을 처리하기 위한 AsyncTask
     private class FetchDataAsyncTask extends AsyncTask<Void, Void, Map<String, Integer>> {
         @Override
         protected Map<String, Integer> doInBackground(Void... voids) {
@@ -79,16 +81,29 @@ public class RadarChartFragment extends Fragment {
                             String problemTypes = snapshot.child("problemType").getValue(String.class);
                             if (problemTypes != null) {
                                 String[] types = problemTypes.split(", ");
+                                boolean hasGraph = false; // 그래프가 있는지 여부를 저장하는 변수
                                 for (String type : types) {
-                                    if (algorithmCount.containsKey(type)) {
-                                        algorithmCount.put(type, algorithmCount.get(type) + 1);
+                                    // 그래프 탐색 또는 그래프 이론이 있으면 hasGraph를 true로 설정
+                                    if (type.equals("그래프 탐색") || type.equals("그래프 이론")) {
+                                        hasGraph = true;
                                     }
+                                    // 그 외의 경우는 해당 알고리즘의 카운트 증가
+                                    else {
+                                        if (algorithmCount.containsKey(type)) {
+                                            algorithmCount.put(type, algorithmCount.get(type) + 1);
+                                        }
+                                    }
+                                }
+                                // 그래프가 있을 경우 그래프 카운트 증가
+                                if (hasGraph && algorithmCount.containsKey("그래프")) {
+                                    algorithmCount.put("그래프", algorithmCount.get("그래프") + 1);
                                 }
                             }
                         }
 
                         // 그래프 그리기
                         drawRadarChart(algorithmCount);
+                        updateTable(algorithmCount);
                     }
                 }
 
@@ -115,7 +130,7 @@ public class RadarChartFragment extends Fragment {
         algorithmCount.put("DFS", 0);
         algorithmCount.put("BFS", 0);
         algorithmCount.put("구현", 0);
-        algorithmCount.put("그래프 이론", 0);
+        algorithmCount.put("그래프", 0);
         // algorithmCount.put("그리디", 0);
         algorithmCount.put("수학", 0);
         algorithmCount.put("백트래킹", 0);
@@ -123,12 +138,14 @@ public class RadarChartFragment extends Fragment {
     }
 
     // 레이더 차트 그리기
+    // 레이더 차트 그리기
     private void drawRadarChart(Map<String, Integer> algorithmCount) {
         // 데이터 생성
         ArrayList<String> labels = new ArrayList<>();
         List<RadarEntry> radarEntries = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : algorithmCount.entrySet()) {
-            radarEntries.add(new RadarEntry(entry.getValue()));
+            // 정수로 변환하여 RadarEntry에 추가
+            radarEntries.add(new RadarEntry(entry.getValue().floatValue())); // 정수로 변환하여 추가
             labels.add(entry.getKey());
         }
 
@@ -146,5 +163,31 @@ public class RadarChartFragment extends Fragment {
 
         // 그래프 갱신
         radarChart.invalidate();
+    }
+
+    private static final Map<String, Integer> TEXT_VIEW_IDS = new HashMap<>();
+
+    static {
+        TEXT_VIEW_IDS.put("브루트포스", R.id.bruteforce);
+        TEXT_VIEW_IDS.put("BFS", R.id.bfs);
+        TEXT_VIEW_IDS.put("DFS", R.id.dfs);
+        TEXT_VIEW_IDS.put("그래프", R.id.graph);
+        TEXT_VIEW_IDS.put("백트래킹", R.id.backtracking);
+        TEXT_VIEW_IDS.put("수학", R.id.math);
+        TEXT_VIEW_IDS.put("DP", R.id.dp);
+        TEXT_VIEW_IDS.put("구현", R.id.realization);
+    }
+
+    private void updateTable(Map<String, Integer> algorithmCount) {
+        for (Map.Entry<String, Integer> entry : algorithmCount.entrySet()) {
+            String level = entry.getKey();
+            int count = entry.getValue();
+
+            Integer textViewId = TEXT_VIEW_IDS.get(level);
+            if (textViewId != null) {
+                TextView textView = rootView.findViewById(textViewId); // rootView에서 TextView 찾음
+                textView.setText(String.valueOf(count));
+            }
+        }
     }
 }

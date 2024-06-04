@@ -44,14 +44,14 @@
                     android:id="@+id/byproblemNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="문제 번호 검색"
+                    android:text="문제 번호로 검색"
                     android:buttonTint="@color/gray"
                     android:textColor="@android:color/black"/>
                 <RadioButton
                     android:id="@+id/byproblemTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="문제 제목 검색"
+                    android:text="문제 제목으로 검색"
                     android:buttonTint="@color/gray"
                     android:textColor="@android:color/black"/>
             </RadioGroup>

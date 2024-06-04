@@ -36,11 +36,6 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="60sp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="검색 수단" />
             <RadioGroup
                 android:id="@+id/searchBy"
                 android:layout_width="match_parent"
@@ -266,12 +261,6 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                android:paddingTop="6dp"
-                android:layout_width="60sp"
-                android:layout_height="wrap_content"
-                android:text="검색 방법"
-                android:textColor="@android:color/black"/>
             <RadioGroup
                 android:id="@+id/allorone"
                 android:layout_width="match_parent"
