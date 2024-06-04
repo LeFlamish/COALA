@@ -1,5 +1,6 @@
 package com.example.smobileeapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -23,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,6 +33,7 @@ public class QuestionBulletinFragment extends Fragment implements View.OnClickLi
     private FirebaseUser currentUser;
     private DatabaseReference mDatabase;
     private String userIdToken;
+    private Context context;
 
     public static QuestionBulletinFragment newInstance(String userIdToken) {
         QuestionBulletinFragment fragment = new QuestionBulletinFragment();
@@ -40,6 +41,12 @@ public class QuestionBulletinFragment extends Fragment implements View.OnClickLi
         args.putString("userIdToken", userIdToken);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
     }
 
     @Override
@@ -51,11 +58,16 @@ public class QuestionBulletinFragment extends Fragment implements View.OnClickLi
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        userIdToken = currentUser.getUid();
+        if (currentUser != null) {
+            userIdToken = currentUser.getUid();
+        } else {
+            // currentUser가 null일 경우 처리
+            Log.e("QuestionBulletinFragment", "currentUser is null");
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_question_bulletin, container, false);
         LinearLayout layout = view.findViewById(R.id.questions);
 
@@ -100,7 +112,7 @@ public class QuestionBulletinFragment extends Fragment implements View.OnClickLi
 
                 // 정렬된 질문을 화면에 표시하는 코드
                 for (Question question : questionList) {
-                    LinearLayout layout_item = new LinearLayout(getContext());
+                    LinearLayout layout_item = new LinearLayout(context);
                     layout_item.setOrientation(LinearLayout.VERTICAL);
                     layout_item.setPadding(20, 10, 20, 10);
                     layout_item.setId(question.getProblemNum());
@@ -108,21 +120,21 @@ public class QuestionBulletinFragment extends Fragment implements View.OnClickLi
                     // questionId를 뷰에 첨부
                     layout_item.setTag(R.id.tag_question_id, question.getQuestionId());
 
-                    TextView tv_problemNum = new TextView(getContext());
+                    TextView tv_problemNum = new TextView(context);
                     tv_problemNum.setText(String.valueOf(question.getProblemNum()));
                     tv_problemNum.setTextSize(30);
                     // 문제의 난이도에 따라 색상 변경
                     tv_problemNum.setBackgroundColor(getColorForDifficulty(question.getProblemTier()));
                     layout_item.addView(tv_problemNum);
 
-                    TextView tv_problemTitle = new TextView(getContext());
+                    TextView tv_problemTitle = new TextView(context);
                     tv_problemTitle.setText("문제 제목 : " + question.getProblemTitle());
-                    tv_problemTitle.setTextColor(ContextCompat.getColor(getContext(), android.R.color.black)); // 수정 필요
+                    tv_problemTitle.setTextColor(ContextCompat.getColor(context, android.R.color.black)); // 수정 필요
                     layout_item.addView(tv_problemTitle);
 
-                    TextView tv_questionTitle = new TextView(getContext());
+                    TextView tv_questionTitle = new TextView(context);
                     tv_questionTitle.setText("질문 제목 : " + question.getQuestionTitle());
-                    tv_questionTitle.setTextColor(ContextCompat.getColor(getContext(), android.R.color.black)); // 수정 필요
+                    tv_questionTitle.setTextColor(ContextCompat.getColor(context, android.R.color.black)); // 수정 필요
                     layout_item.addView(tv_questionTitle);
 
                     layout_item.setOnClickListener(QuestionBulletinFragment.this);
@@ -150,33 +162,31 @@ public class QuestionBulletinFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         LinearLayout layout_item = (LinearLayout) view;
-        Integer problemNumInteger = (Integer) layout_item.getId();
-        int problemNum = problemNumInteger != null ? problemNumInteger.intValue() : -1; // 기본값은 -1로 설정하거나 다른 적절한 값으로 설정
+        int problemNum = layout_item.getId();
         String questionId = (String) layout_item.getTag(R.id.tag_question_id); // Get the questionId
 
-        Intent it = new Intent(getContext(), QuestionDetailActivity.class); // getActivity()가 아닌 getContext() 사용
+        Intent it = new Intent(context, QuestionDetailActivity.class); // getActivity()가 아닌 context 사용
         it.putExtra("userIdToken", userIdToken);
         it.putExtra("problemNum", problemNum); // 문제 번호를 인텐트에 추가
         it.putExtra("questionId", questionId); // Add questionId to the intent
         startActivity(it);
     }
 
-
     private int getColorForDifficulty(String difficulty) {
         if (difficulty != null) {
             if (difficulty.contains("골드")) {
-                return ContextCompat.getColor(getContext(), R.color.gold);
+                return ContextCompat.getColor(context, R.color.gold);
             } else if (difficulty.contains("실버")) {
-                return ContextCompat.getColor(getContext(), R.color.silver);
+                return ContextCompat.getColor(context, R.color.silver);
             } else if (difficulty.contains("브론즈")) {
-                return ContextCompat.getColor(getContext(), R.color.bronze);
+                return ContextCompat.getColor(context, R.color.bronze);
             } else if (difficulty.contains("플래티넘")) {
-                return ContextCompat.getColor(getContext(), R.color.platinum);
+                return ContextCompat.getColor(context, R.color.platinum);
             } else {
-                return ContextCompat.getColor(getContext(), R.color.default_color);
+                return ContextCompat.getColor(context, R.color.default_color);
             }
         } else {
-            return ContextCompat.getColor(getContext(), R.color.default_color); // 또는 적절한 기본값으로 처리
+            return ContextCompat.getColor(context, R.color.default_color); // 또는 적절한 기본값으로 처리
         }
     }
 }

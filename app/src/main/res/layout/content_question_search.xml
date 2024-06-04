@@ -35,11 +35,6 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="60sp"
-                android:layout_height="wrap_content"
-                android:text="검색 수단"
-                android:textColor="@android:color/black"/>
             <RadioGroup
                 android:id="@+id/searchBy"
                 android:layout_width="match_parent"
@@ -49,14 +44,14 @@
                     android:id="@+id/byproblemNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="문제 번호로 검색"
+                    android:text="문제 번호 검색"
                     android:buttonTint="@color/gray"
                     android:textColor="@android:color/black"/>
                 <RadioButton
                     android:id="@+id/byproblemTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="문제 제목으로 검색"
+                    android:text="문제 제목 검색"
                     android:buttonTint="@color/gray"
                     android:textColor="@android:color/black"/>
             </RadioGroup>
@@ -131,7 +126,7 @@
                         android:id="@+id/bruteforce"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="브루트포스 알고리즘"
+                        android:text="브루트포스"
                         android:buttonTint="@color/gray"
                         android:textColor="@android:color/black" />
                     <CheckBox
@@ -267,12 +262,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp">
-            <TextView
-                android:layout_width="60sp"
-                android:layout_height="wrap_content"
-                android:paddingTop="6dp"
-                android:text="검색 방법"
-                android:textColor="@android:color/black" />
             <RadioGroup
                 android:id="@+id/allorone"
                 android:layout_width="match_parent"
@@ -289,7 +278,7 @@
                     android:id="@+id/atleastone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="하나만이라도 포함"
+                    android:text="하나 이상 포함"
                     android:buttonTint="@color/gray"
                     android:textColor="@android:color/black" />
             </RadioGroup>
@@ -300,6 +289,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="해당 문제 유형만 모아 보기"
+            android:backgroundTint="@color/colorPrimary" />
+
+        <Button
+            android:id="@+id/searchmyquestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="내가 한 질문 모아 보기"
             android:backgroundTint="@color/colorPrimary" />
     </LinearLayout>
 </ScrollView>

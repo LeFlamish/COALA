@@ -113,7 +113,7 @@
                         android:id="@+id/bruteforce"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="브루트포스 알고리즘"
+                        android:text="브루트포스"
                         android:buttonTint="@color/gray"
                         android:textColor="@android:color/black" />
                     <CheckBox

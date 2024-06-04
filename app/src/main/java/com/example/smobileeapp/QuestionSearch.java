@@ -71,6 +71,18 @@ public class QuestionSearch extends AppCompatActivity {
                 searchquestionsByType();
             }
         });
+
+        Button searchMyQuestion = findViewById(R.id.searchmyquestion);
+        searchMyQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(QuestionSearch.this, QuestionsBySearch.class);
+                intent.putExtra("how", "searchmyquestion");
+                intent.putExtra("userIdToken", userIdToken);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     // 문제 검색 메서드
@@ -92,12 +104,14 @@ public class QuestionSearch extends AppCompatActivity {
                 it.putExtra("problemNum", Integer.parseInt(searchText));
                 it.putExtra("how", "ByNum");
                 startActivity(it);
+                finish();
             } else if (searchByOption.equals("문제 제목으로 검색")) {
                 Intent it = new Intent(this, QuestionsBySearch.class);  // 수정된 부분
                 it.putExtra("userIdToken", userIdToken);
                 it.putExtra("problemTitle", searchText);
                 it.putExtra("how", "ByTitle");
                 startActivity(it);
+                finish();
             } else {
                 Toast.makeText(this, "올바른 검색 방법을 선택하세요.", Toast.LENGTH_SHORT).show();
             }
@@ -113,7 +127,7 @@ public class QuestionSearch extends AppCompatActivity {
         intent.putExtra("problemDifficulty", difficulty);
         intent.putExtra("how", "ByDifficulty");
         startActivity(intent);
-        // finish();
+        finish();
     }
 
     private void searchquestionsByType() {
@@ -173,7 +187,7 @@ public class QuestionSearch extends AppCompatActivity {
         StringBuilder problemTypeBuilder = new StringBuilder();
 
         if (bruteforce) {
-            problemTypeBuilder.append("브루트포스 알고리즘, ");
+            problemTypeBuilder.append("브루트포스, ");
         }
         if (bfs) {
             problemTypeBuilder.append("BFS, ");
@@ -229,6 +243,16 @@ public class QuestionSearch extends AppCompatActivity {
             problemType = problemType.substring(0, problemType.length() - 2);
         }
 
+        if (problemType.length() == 0) {
+            Toast.makeText(QuestionSearch.this, "알고리즘 유형을 1개 이상 선택하세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (selectedRadioButtonId == -1) {
+            Toast.makeText(this, "포함 유형을 선택하세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent it = new Intent(this, QuestionsBySearch.class);
         it.putExtra("problemType", problemType); // 문제 유형을 인텐트에 추가
         if (selectedRadioButtonId == R.id.musthaveall) {
@@ -238,6 +262,7 @@ public class QuestionSearch extends AppCompatActivity {
         }
         it.putExtra("userIdToken", userIdToken);
         startActivity(it);
+        finish();
     }
 
     @Override

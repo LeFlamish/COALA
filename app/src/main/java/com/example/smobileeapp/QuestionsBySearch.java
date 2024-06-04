@@ -50,16 +50,27 @@ public class QuestionsBySearch extends AppCompatActivity implements View.OnClick
 
         if (how.equals("ByNum")) {
             problemNum = getIntent().getIntExtra("problemNum", -1);
+            getSupportActionBar().setTitle(problemNum + "번 질문 보기");
             loadQuestionsByNumber(problemNum, layout);
         } else if (how.equals("ByTitle")) {
             problemTitle = getIntent().getStringExtra("problemTitle");
+            getSupportActionBar().setTitle(problemTitle + " 제목 질문 보기");
             loadQuestionsByTitle(problemTitle, layout);
         } else if (how.equals("ByDifficulty")) {
             difficulty = getIntent().getStringExtra("problemDifficulty");
+            getSupportActionBar().setTitle("\"" + difficulty + "\" 난이도 질문 보기");
             loadQuestionsByDifficulty(difficulty, layout);
         } else if (how.equals("musthaveall") || how.equals("atleastone") ) {
             problemType = getIntent().getStringExtra("problemType");
+            StringBuilder modifiedType = new StringBuilder(problemType);
+            if (modifiedType.length() > 12) {
+                modifiedType.replace(12, modifiedType.length(), "…");
+            }
+            getSupportActionBar().setTitle("\"" + modifiedType + "\"" + " 유형 질문 보기");
             loadQuestionsByType(problemType, layout);
+        } else if (how.equals("searchmyquestion")) {
+            getSupportActionBar().setTitle("나의 질문 보기");
+            loadMyQuestions(userIdToken, layout);
         }
     }
 
@@ -231,6 +242,57 @@ public class QuestionsBySearch extends AppCompatActivity implements View.OnClick
                     for (DataSnapshot questionSnapshot : questionsSnapshot.getChildren()) {
                         Question question = questionSnapshot.getValue(Question.class);
                         if (question != null && isValidProblem(question)) {
+                            Integer problemNum = questionSnapshot.child("problemNum").getValue(Integer.class);
+                            Long timePosted = questionSnapshot.child("timePosted").getValue(Long.class);
+
+                            // null 체크 후 로그 추가
+                            if (problemNum == null || timePosted == null) {
+                                Log.e("QuestionBulletin", "problemNum or timePosted is null for questionId: " + question.getQuestionId());
+                                continue; // 다음 질문으로 넘어감
+                            }
+
+                            questionList.add(question);
+                        }
+                    }
+                }
+
+                // timePosted 값을 기준으로 내림차순 정렬
+                Collections.sort(questionList, new Comparator<Question>() {
+                    @Override
+                    public int compare(Question q1, Question q2) {
+                        return Long.compare(q2.getTimePosted(), q1.getTimePosted());
+                    }
+                });
+
+                // 정렬된 질문을 화면에 표시하는 코드
+                for (Question question : questionList) {
+                    addQuestionToLayout(question, layout);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // 데이터 가져오기가 취소될 때 호출됨
+                Toast.makeText(QuestionsBySearch.this, "질문을 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadMyQuestions(String userIdToken, LinearLayout layout) {
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("QuestionBulletin");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("QuestionBulletin", "DataSnapshot: " + dataSnapshot.toString());
+
+                layout.removeAllViews(); // 기존 뷰 삭제
+
+                List<Question> questionList = new ArrayList<>();
+
+                for (DataSnapshot questionsSnapshot : dataSnapshot.getChildren()) {
+                    for (DataSnapshot questionSnapshot : questionsSnapshot.getChildren()) {
+                        Question question = questionSnapshot.getValue(Question.class);
+                        if (question != null && question.getUserIdToken().equals(userIdToken)) {
                             Integer problemNum = questionSnapshot.child("problemNum").getValue(Integer.class);
                             Long timePosted = questionSnapshot.child("timePosted").getValue(Long.class);
 

@@ -41,6 +41,17 @@ public class RadarChartFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_radar_chart, container, false);
         radarChart = rootView.findViewById(R.id.radarChart);
 
+        // 레이아웃 파라미터를 설정하여 크기 조정
+        radarChart.post(new Runnable() {
+            @Override
+            public void run() {
+                ViewGroup.LayoutParams layoutParams = radarChart.getLayoutParams();
+                layoutParams.width = 1200;  // 원하는 너비 (픽셀 단위)
+                layoutParams.height = 1200;  // 원하는 높이 (픽셀 단위)
+                radarChart.setLayoutParams(layoutParams);
+            }
+        });
+
         // userIdToken을 가져오는 코드
         Intent intent = getActivity().getIntent();
         userIdToken = intent.getStringExtra("userIdToken");
@@ -100,12 +111,12 @@ public class RadarChartFragment extends Fragment {
 
     // 알고리즘 카운트 맵 초기화
     private void initializeAlgorithmCount(Map<String, Integer> algorithmCount) {
-        algorithmCount.put("브루트포스 알고리즘", 0);
+        algorithmCount.put("브루트포스", 0);
         algorithmCount.put("DFS", 0);
         algorithmCount.put("BFS", 0);
         algorithmCount.put("구현", 0);
         algorithmCount.put("그래프 이론", 0);
-        algorithmCount.put("그리디", 0);
+        // algorithmCount.put("그리디", 0);
         algorithmCount.put("수학", 0);
         algorithmCount.put("백트래킹", 0);
         algorithmCount.put("DP", 0);

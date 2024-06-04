@@ -181,7 +181,7 @@ public class ProblemSearch extends AppCompatActivity {
         StringBuilder problemTypeBuilder = new StringBuilder();
 
         if (bruteforce) {
-            problemTypeBuilder.append("브루트포스 알고리즘, ");
+            problemTypeBuilder.append("브루트포스, ");
         }
         if (bfs) {
             problemTypeBuilder.append("BFS, ");

@@ -1,5 +1,6 @@
 package com.example.smobileeapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,13 @@ public class PieChartFragment extends Fragment {
     private PieChart pieChart;
     private DatabaseReference databaseReference;
     private String userIdToken;
+    private Context context;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
 
     private static final String[] DIFFICULTY_LEVELS = {
             "PⅠ", "PⅡ", "PⅢ", "PⅣ", "PⅤ",
@@ -69,10 +77,20 @@ public class PieChartFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pie_chart, container, false);
 
-        pieChart = view.findViewById(R.id.pieChart);
+        pieChart = view.findViewById(R.id.pieChart); // Ensure this ID matches your layout
         Intent intent = getActivity().getIntent();
         userIdToken = intent.getStringExtra("userIdToken");
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Problems").child(userIdToken);
+
+        pieChart.post(new Runnable() {
+            @Override
+            public void run() {
+                ViewGroup.LayoutParams layoutParams = pieChart.getLayoutParams();
+                layoutParams.width = 1000;  // 원하는 너비 (픽셀 단위)
+                layoutParams.height = 1000;  // 원하는 높이 (픽셀 단위)
+                pieChart.setLayoutParams(layoutParams);
+            }
+        });
 
         fetchDataFromFirebase();
 
@@ -135,28 +153,37 @@ public class PieChartFragment extends Fragment {
     }
 
     private int getColorForDifficulty(String difficulty) {
-        switch (difficulty) {
-            case "PⅠ": return ContextCompat.getColor(getActivity(), R.color.platinum1);
-            case "GⅠ": return ContextCompat.getColor(getActivity(), R.color.gold1);
-            case "SⅠ": return ContextCompat.getColor(getActivity(), R.color.silver1);
-            case "BⅠ": return ContextCompat.getColor(getActivity(), R.color.bronze1);
-            case "PⅡ": return ContextCompat.getColor(getActivity(), R.color.platinum2);
-            case "GⅡ": return ContextCompat.getColor(getActivity(), R.color.gold2);
-            case "SⅡ": return ContextCompat.getColor(getActivity(), R.color.silver2);
-            case "BⅡ": return ContextCompat.getColor(getActivity(), R.color.bronze2);
-            case "PⅢ": return ContextCompat.getColor(getActivity(), R.color.platinum3);
-            case "GⅢ": return ContextCompat.getColor(getActivity(), R.color.gold3);
-            case "SⅢ": return ContextCompat.getColor(getActivity(), R.color.silver3);
-            case "BⅢ": return ContextCompat.getColor(getActivity(), R.color.bronze3);
-            case "PⅣ": return ContextCompat.getColor(getActivity(), R.color.platinum4);
-            case "GⅣ": return ContextCompat.getColor(getActivity(), R.color.gold4);
-            case "SⅣ": return ContextCompat.getColor(getActivity(), R.color.silver4);
-            case "BⅣ": return ContextCompat.getColor(getActivity(), R.color.bronze4);
-            case "PⅤ": return ContextCompat.getColor(getActivity(), R.color.platinum5);
-            case "GⅤ": return ContextCompat.getColor(getActivity(), R.color.gold5);
-            case "SⅤ": return ContextCompat.getColor(getActivity(), R.color.silver5);
-            case "BⅤ": return ContextCompat.getColor(getActivity(), R.color.bronze5);
-            default: return ContextCompat.getColor(getActivity(), R.color.default_color);
+        Context context = getContext(); // Get the context associated with the fragment
+        if (context != null) {
+            switch (difficulty) {
+                case "PⅠ": return ContextCompat.getColor(context, R.color.platinum1);
+                case "GⅠ": return ContextCompat.getColor(context, R.color.gold1);
+                case "SⅠ": return ContextCompat.getColor(context, R.color.silver1);
+                case "BⅠ": return ContextCompat.getColor(context, R.color.bronze1);
+                case "PⅡ": return ContextCompat.getColor(context, R.color.platinum2);
+                case "GⅡ": return ContextCompat.getColor(context, R.color.gold2);
+                case "SⅡ": return ContextCompat.getColor(context, R.color.silver2);
+                case "BⅡ": return ContextCompat.getColor(context, R.color.bronze2);
+                case "PⅢ": return ContextCompat.getColor(context, R.color.platinum3);
+                case "GⅢ": return ContextCompat.getColor(context, R.color.gold3);
+                case "SⅢ": return ContextCompat.getColor(context, R.color.silver3);
+                case "BⅢ": return ContextCompat.getColor(context, R.color.bronze3);
+                case "PⅣ": return ContextCompat.getColor(context, R.color.platinum4);
+                case "GⅣ": return ContextCompat.getColor(context, R.color.gold4);
+                case "SⅣ": return ContextCompat.getColor(context, R.color.silver4);
+                case "BⅣ": return ContextCompat.getColor(context, R.color.bronze4);
+                case "PⅤ": return ContextCompat.getColor(context, R.color.platinum5);
+                case "GⅤ": return ContextCompat.getColor(context, R.color.gold5);
+                case "SⅤ": return ContextCompat.getColor(context, R.color.silver5);
+                case "BⅤ": return ContextCompat.getColor(context, R.color.bronze5);
+                default: return ContextCompat.getColor(context, R.color.default_color);
+            }
+        } else {
+            // Log a message or handle the null context case appropriately
+            Log.e(TAG, "Context is null");
+            // Return a default color or handle the null context case appropriately
+            return R.color.default_color; // For example, return black color as default
         }
     }
+
 }
