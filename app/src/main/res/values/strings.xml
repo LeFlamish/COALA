@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">SMEHelper</string>
+    <string name="edit_ID">ID : </string>
+    <string name="edit_PWD">PWD : </string>
+    <string name="hint_ID">아이디(이메일)</string>
+    <string name="hint_PWD">비밀번호(6자리 이상)</string>
+    <string name="forget_PWD">비밀번호 찾기</string>
+    <string name="app_name1">내가 푼 문제</string>
+    <string name="app_name2">추천 문제</string>
+    <string name="app_name3">내 정보</string>
+    <string name="app_name4">질문 게시판</string>
+
+    <string name="action_settings">로그인</string>
+    <string name="action_settings0">홈</string>
+    <string name="action_settings1">내가 푼 문제</string>
+    <string name="action_settings2">추천 문제</string>
+    <string name="action_settings3">내 정보</string>
+    <string name="action_settings4">질문 게시판</string>
+    <string name="action_settings5">내가 푼 문제 등록</string>
+    <string name="action_settings6">내가 푼 문제 삭제</string>
+    <string name="action_settings7">내가 푼 문제 정보</string>
+    <string name="action_settings8">내가 푼 문제 수정</string>
+    <string name="action_settings9">회원가입</string>
+    <string name="action_settings10">내가 푼 문제 검색</string>
+    <string name="action_settings11">질문 등록</string>
+    <string name="action_settings12">질문 검색</string>
+    <string name="action_settings13">질문 수정</string>
+    <string name="action_settings14">질문 삭제</string>
+    <string name="action_settings15">답변 수정</string>
+    <string name="action_settings16">답변 삭제</string>
+
+    <string-array name="custom_months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+    <string-array name="custom_weekdays">
+        <item>월요일</item>
+        <item>화요일</item>
+        <item>수요일</item>
+        <item>목요일</item>
+        <item>금요일</item>
+        <item>토요일</item>
+        <item>일요일</item>
+    </string-array>
+
+    <string-array name="difficulty_array">
+        <item>플래티넘Ⅰ</item>
+        <item>플래티넘Ⅱ</item>
+        <item>플래티넘Ⅲ</item>
+        <item>플래티넘Ⅳ</item>
+        <item>플래티넘Ⅴ</item>
+        <item>골드Ⅰ</item>
+        <item>골드Ⅱ</item>
+        <item>골드Ⅲ</item>
+        <item>골드Ⅳ</item>
+        <item>골드Ⅴ</item>
+        <item>실버Ⅰ</item>
+        <item>실버Ⅱ</item>
+        <item>실버Ⅲ</item>
+        <item>실버Ⅳ</item>
+        <item>실버Ⅴ</item>
+        <item>브론즈Ⅰ</item>
+        <item>브론즈Ⅱ</item>
+        <item>브론즈Ⅲ</item>
+        <item>브론즈Ⅳ</item>
+        <item>브론즈Ⅴ</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

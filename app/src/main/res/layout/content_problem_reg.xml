@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="100dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp" >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <TextView
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:text="문제번호"
+                android:textColor="@android:color/black" />
+            <EditText
+                android:id="@+id/problemNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="문제 번호를 입력하세요."
+                android:backgroundTint="@color/gray"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <TextView
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:text="제목"
+                android:textColor="@android:color/black" />
+            <EditText
+                android:id="@+id/problemTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="제목을 입력하세요."
+                android:backgroundTint="@color/gray"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="제목 자동 입력"
+                android:onClick="autoTitle"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:text="난이도"
+                android:textColor="@android:color/black" />
+            <Spinner
+                android:id="@+id/difficultySpinner"
+                android:layout_width="150dp"
+                android:layout_height="60dp"
+                android:textColor="@android:color/black"
+                android:entries="@array/difficulty_array"
+                android:popupBackground="@color/white"
+                android:backgroundTint="@color/gray"
+                android:theme="@style/SpinnerTheme"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:text="문제 유형"
+                android:textColor="@android:color/black" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <!-- 첫 번째 열 체크박스 -->
+                    <CheckBox
+                        android:id="@+id/bruteforce"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="브루트포스 알고리즘"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/BFS"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="BFS"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/DFS"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DFS"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/DP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DP"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/backtracking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="백트래킹"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/queue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="큐"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/stack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="스택"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/math"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="수학"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/realization"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="구현"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <!-- 추가적인 체크박스들... -->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <!-- 두 번째 열 체크박스 -->
+                    <CheckBox
+                        android:id="@+id/greedy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="그리디 알고리즘"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/sort"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="정렬"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/string"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="문자열"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/graphtheory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="그래프 이론"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/graphsearch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="그래프 탐색"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/tree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="트리"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/simulation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="시뮬레이션"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+                    <CheckBox
+                        android:id="@+id/datastructure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="자료 구조"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
+
+                    <!-- 추가적인 체크박스들... -->
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp">
+            <TextView
+                android:paddingTop="6dp"
+                android:layout_width="100sp"
+                android:layout_height="wrap_content"
+                android:text="스스로 해결?"
+                android:textColor="@android:color/black" />
+            <RadioGroup
+                android:id="@+id/onmyown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/gray"
+                android:orientation="horizontal" >
+                <RadioButton
+                    android:id="@+id/yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="네"
+                    android:buttonTint="@color/gray"
+                    android:textColor="@android:color/black" />
+                <RadioButton
+                    android:id="@+id/no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="아니오"
+                    android:buttonTint="@color/gray"
+                    android:textColor="@android:color/black" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:text="메모장"
+                android:textColor="@android:color/black" />
+            <EditText
+                android:id="@+id/problemMemo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/gray"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="문제 등록"
+                android:onClick="register"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

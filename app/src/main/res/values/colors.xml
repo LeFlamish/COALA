@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="platinum">#7FDDA8</color>
+    <color name="platinum1">#87FAC1</color>
+    <color name="platinum2">#6DDFA8</color>
+    <color name="platinum3">#7FDDA8</color>
+    <color name="platinum4">#60D19B</color>
+    <color name="platinum5">#5AC48F</color>
+    <color name="gold">#D69D38</color>
+    <color name="gold1">#F3B34A</color>
+    <color name="gold2">#EDA940</color>
+    <color name="gold3">#E09E37</color>
+    <color name="gold4">#D49332</color>
+    <color name="gold5">#C7882F</color>
+    <color name="silver">#4E5E77</color>
+    <color name="silver1">#546983</color>
+    <color name="silver2">#4F647E</color>
+    <color name="silver3">#495E78</color>
+    <color name="silver4">#435972</color>
+    <color name="silver5">#3E536C</color>
+    <color name="bronze">#9A5B20</color>
+    <color name="bronze1">#BB7B45</color>
+    <color name="bronze2">#AA6225</color>
+    <color name="bronze3">#A25B1F</color>
+    <color name="bronze4">#9A541D</color>
+    <color name="bronze5">#924E1A</color>
+    <color name="default_color">#FF000000</color>
+    <color name="colorPrimary">#2A2898</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="gray">#AAAAAA</color>
+</resources>

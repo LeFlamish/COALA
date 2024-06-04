@@ -1,0 +1,125 @@
+{
+  "project_info": {
+    "project_number": "115153734005",
+    "firebase_url": "https://smehelper-deb88-default-rtdb.firebaseio.com",
+    "project_id": "smehelper-deb88",
+    "storage_bucket": "smehelper-deb88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115153734005:android:58d034f7fd5a7a74af2b3c",
+        "android_client_info": {
+          "package_name": "com.example.smehelper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxICP-D8g4rR9sv2bE6kKilmPYF9bgbBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115153734005:android:6c500d567d3b1c3caf2b3c",
+        "android_client_info": {
+          "package_name": "com.example.smeswapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxICP-D8g4rR9sv2bE6kKilmPYF9bgbBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115153734005:android:ca36153dcd256977af2b3c",
+        "android_client_info": {
+          "package_name": "com.example.smeswhelper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxICP-D8g4rR9sv2bE6kKilmPYF9bgbBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115153734005:android:28b03506ecc00026af2b3c",
+        "android_client_info": {
+          "package_name": "com.example.smobilee"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxICP-D8g4rR9sv2bE6kKilmPYF9bgbBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115153734005:android:eefcaa0f48c6a64daf2b3c",
+        "android_client_info": {
+          "package_name": "com.example.smobileeapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxICP-D8g4rR9sv2bE6kKilmPYF9bgbBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115153734005:android:fce276641373adadaf2b3c",
+        "android_client_info": {
+          "package_name": "com.example.smobileehelper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxICP-D8g4rR9sv2bE6kKilmPYF9bgbBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
