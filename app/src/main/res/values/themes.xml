@@ -14,6 +14,10 @@
         <item name="android:dropDownListViewStyle">@style/SpinnerDivideStyle</item>
     </style>
 
+    <style name="CustomEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColorHint">@color/gray</item>
+    </style>
+
     <style name="Widget.CalendarView.Custom" parent="android:Widget.CalendarView">
         <item name="android:focusedMonthDateColor">@android:color/holo_blue_light</item>
         <item name="android:weekNumberColor">@android:color/holo_red_light</item>
@@ -34,7 +38,7 @@
 
     <!-- 여기서 요일, 달력 안 숫자들의 폰트 설정을 수행할 수 있다 -->
     <style name="CalenderViewCustom" parent="Theme.AppCompat">
-        <item name="colorAccent">@android:color/holo_orange_light</item>
+        <item name="colorAccent">@android:color/white</item>
         <item name="colorPrimary">@android:color/holo_blue_light</item>
         <item name="android:textStyle">bold</item>
     </style>

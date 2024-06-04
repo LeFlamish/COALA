@@ -26,7 +26,8 @@
                 android:layout_height="wrap_content"
                 android:hint="문제 번호를 입력하세요."
                 android:backgroundTint="@color/gray"
-                android:textColor="@android:color/black"  />
+                android:textColor="@android:color/black"
+                android:theme="@style/CustomEditText"/>
         </LinearLayout>
 
         <LinearLayout
@@ -44,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:hint="제목을 입력하세요."
                 android:backgroundTint="@color/gray"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:theme="@style/CustomEditText"/>
         </LinearLayout>
 
         <LinearLayout
@@ -256,7 +258,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/gray"
-                android:textColor="@android:color/black" />
+                android:hint="질문 제목을 입력하세요."
+                android:textColor="@android:color/black"
+                android:theme="@style/CustomEditText"/>
         </LinearLayout>
 
         <LinearLayout
@@ -273,7 +277,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/gray"
-                android:textColor="@android:color/black" />
+                android:hint="질문 내용을 입력하세요."
+                android:textColor="@android:color/black"
+                android:theme="@style/CustomEditText"/>
         </LinearLayout>
 
         <LinearLayout

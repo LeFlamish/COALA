@@ -256,7 +256,13 @@ public class ProblemReg extends AppCompatActivity {
             return;
         }
 
-        int problemNum = Integer.parseInt(strProblemNum);
+        int problemNum;
+        try {
+            problemNum = Integer.parseInt(strProblemNum);
+        } catch (NumberFormatException e) {
+            showToast("숫자로 유효한 문제 번호를 입력해주세요.");
+            return;
+        }
 
         // AsyncTask를 사용하여 백그라운드에서 네트워크 요청 실행
         new ScrapeTask().execute(problemNum);
