@@ -26,14 +26,19 @@ public class AnswerAdapter extends ArrayAdapter<Answer> {
         }
 
         TextView answerTextView = convertView.findViewById(R.id.answerTextView);
+        TextView commentCountTextView = convertView.findViewById(R.id.commentCountTextView); // 새로 추가된 TextView
+
         Answer answer = getItem(position);
 
         if (answer != null) {
             answerTextView.setText(answer.getAnswerText());
-
             answerTextView.setTextColor(getContext().getResources().getColor(R.color.black));
+
+            // 댓글 개수 설정
+            commentCountTextView.setText("댓글 개수: " + answer.getReplyCount());
         }
 
         return convertView;
     }
 }
+

@@ -5,6 +5,8 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="Apptheme" parent="Theme.AppCompat.Light.DarkActionBar" />
+
     <style name="SpinnerDivideStyle" parent="android:style/Widget.ListView.DropDown">
         <item name="android:divider">@color/white</item> <!-- divider 색 -->
         <item name="android:dividerHeight">10dp</item> <!-- divider 높이 -->
@@ -59,6 +61,20 @@
     <style name="CalendarWidgetHeader">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <!-- PopupMenu 스타일 정의 -->
+    <style name="PopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@drawable/toolbar_item_background</item>
+    </style>
+
+    <style name="PopupMenu.Overflow" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:popupBackground">@drawable/toolbar_item_background</item>
+    </style>
+
+    <!-- Popup theme for the Toolbar -->
+    <style name="ToolbarPopupTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
     <style name="Theme.SMobileEApp" parent="Base.Theme.SMobileEApp" />

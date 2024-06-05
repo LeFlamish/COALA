@@ -52,6 +52,10 @@ public class LogoutActivity extends AppCompatActivity {
         finish(); // 현재 화면 종료
     }
 
+    public void back(View view) {
+        finish(); // 현재 화면 종료
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

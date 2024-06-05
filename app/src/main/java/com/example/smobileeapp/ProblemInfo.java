@@ -42,6 +42,10 @@ public class ProblemInfo extends AppCompatActivity {
         setContentView(R.layout.activity_problem_info);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("내가 푼 문제 정보");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         Intent intent = getIntent();
         userIdToken = intent.getStringExtra("userIdToken");
@@ -136,8 +140,10 @@ public class ProblemInfo extends AppCompatActivity {
             startActivity(it);
             finish();
             return true;
+        } if (item.getItemId() == android.R.id.home) {
+            finish(); // 뒤로가기 버튼 클릭 시 액티비티 종료
+            return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

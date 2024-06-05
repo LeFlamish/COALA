@@ -67,12 +67,13 @@
         android:hint="답변을 입력해주세요."
         android:padding="16dp"
         android:backgroundTint="@color/gray"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:theme="@style/CustomEditText"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="답변 제출"
+        android:text="답변 작성"
         android:onClick="submitAnswer"
         android:padding="16dp"
         android:backgroundTint="@color/colorPrimary"/>

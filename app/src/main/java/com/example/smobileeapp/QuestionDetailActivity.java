@@ -1,8 +1,11 @@
 package com.example.smobileeapp;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +24,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -153,8 +158,14 @@ public class QuestionDetailActivity extends AppCompatActivity {
         }
 
         Answer answer = new Answer(answerId, answerText, userIdToken, problemNum);
-        mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId).child("answers").child(answerId).setValue(answer);
-        answerEditText.setText("");
+        mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId).child("answers").child(answerId).setValue(answer)
+                .addOnSuccessListener(aVoid -> {
+                    // 답변이 제출되면 해당 질문의 answerCount를 증가시킵니다.
+                    incrementAnswerCount();
+                    Toast.makeText(this, "답변이 제출되었습니다.", Toast.LENGTH_SHORT).show();
+                    answerEditText.setText("");
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "답변을 제출하는 데 실패했습니다.", Toast.LENGTH_SHORT).show());
     }
 
     private void displayQuestion() {
@@ -268,4 +279,33 @@ public class QuestionDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void incrementAnswerCount() {
+        DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId);
+        questionRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                Question question = mutableData.getValue(Question.class);
+                if (question == null) {
+                    return Transaction.success(mutableData);
+                }
+
+                // 기존 answerCount를 증가시킵니다.
+                question.setAnswerCount(question.getAnswerCount() + 1);
+
+                // 업데이트된 Question 객체를 저장합니다.
+                mutableData.setValue(question);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    Log.e(TAG, "incrementAnswerCount:onComplete: ", databaseError.toException());
+                } else {
+                    Log.d(TAG, "incrementAnswerCount:onComplete: Answer count incremented successfully");
+                }
+            }
+        });
+    }
 }
