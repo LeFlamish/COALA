@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SMEHelper</string>
+    <string name="app_name">Co:ALA</string>
     <string name="edit_ID">ID : </string>
     <string name="edit_PWD">PWD : </string>
     <string name="hint_ID">아이디(이메일)</string>
