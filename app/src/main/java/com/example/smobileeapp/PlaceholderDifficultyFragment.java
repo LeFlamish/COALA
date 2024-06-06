@@ -1,18 +1,25 @@
 package com.example.smobileeapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.smobileeapp.Problem;
+import com.example.smobileeapp.ProblemInfo;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,37 +34,52 @@ import java.util.List;
 
 public class PlaceholderDifficultyFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private String userIdToken;
+    private static final String ARG_SELECTED_DIFFICULTY = "problemDifficulty";
+    private static final String TAG = "PlaceholderDifficulty";
+
+    private FirebaseAuth mAuth;
     private String selectedDifficulty;
+    private ProblemListAdapter adapter;
+    private List<Problem> problemList = new LinkedList<>();
 
     public PlaceholderDifficultyFragment() {
     }
 
-    public static PlaceholderDifficultyFragment newInstance(int sectionNumber, String selectedDifficulty, String userIdToken) {
+    public static PlaceholderDifficultyFragment newInstance(int sectionNumber, String selectedDifficulty) {
         PlaceholderDifficultyFragment fragment = new PlaceholderDifficultyFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        args.putString("selectedDifficulty", selectedDifficulty);
-        args.putString("userIdToken", userIdToken);
+        args.putString(ARG_SELECTED_DIFFICULTY, selectedDifficulty);
         fragment.setArguments(args);
         return fragment;
     }
 
+    // 수정된 부분 시작
+    // 수정된 부분 시작
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+        if (getArguments() != null) {
+            selectedDifficulty = getArguments().getString(ARG_SELECTED_DIFFICULTY);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_placeholder_difficulty, container, false);
-        LinearLayout layout = rootView.findViewById(R.id.problems);
+        ListView listView = rootView.findViewById(R.id.problem_list_view);
+
+        adapter = new ProblemListAdapter(getActivity(), problemList);
+        listView.setAdapter(adapter);
 
         int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
-        ProblemListByDifficulty activity = (ProblemListByDifficulty) getActivity();
 
-        if (activity != null) {
-            selectedDifficulty = activity.getDifficulty();
-            userIdToken = activity.getUserIdToken();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Problems").child(userIdToken);
+        if (currentUser != null) {
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Problems").child(currentUser.getUid());
             Query query = null;
             switch (sectionNumber) {
                 case 0: // 등록 시간 순
@@ -72,86 +94,34 @@ public class PlaceholderDifficultyFragment extends Fragment {
                 query.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.d("FirebaseQuery", "onDataChange called");
-                        layout.removeAllViews();
+                        Log.d(TAG, "onDataChange called");
+                        problemList.clear();
 
-                        List<Problem> problemList = new LinkedList<>();
                         for (DataSnapshot problemSnapshot : dataSnapshot.getChildren()) {
-                            Log.d("FirebaseQuery", "Processing problem snapshot");
+                            Log.d(TAG, "Processing problem snapshot");
                             Problem problem = problemSnapshot.getValue(Problem.class);
                             if (problem != null && problem.getDifficulty().equals(selectedDifficulty)) {
                                 problemList.add(problem);
                             }
                         }
 
-                        Log.d("FirebaseQuery", "Problem List Size: " + problemList.size());
+                        Log.d(TAG, "Problem List Size: " + problemList.size());
 
                         switch (sectionNumber) {
                             case 0: // 등록 시간 순
-                                Collections.sort(problemList, new Comparator<Problem>() {
-                                    @Override
-                                    public int compare(Problem p1, Problem p2) {
-                                        return Long.compare(p2.getTimeposted(), p1.getTimeposted());
-                                    }
-                                });
+                                Collections.sort(problemList, Comparator.comparingLong(Problem::getTimeposted).reversed());
                                 break;
                             case 1: // 문제 번호 순
-                                Collections.sort(problemList, new Comparator<Problem>() {
-                                    @Override
-                                    public int compare(Problem p1, Problem p2) {
-                                        return Integer.compare(p1.getProblemNum(), p2.getProblemNum());
-                                    }
-                                });
+                                Collections.sort(problemList, Comparator.comparingInt(Problem::getProblemNum));
                                 break;
                         }
 
-                        for (Problem problem : problemList) {
-                            LinearLayout layout_item = new LinearLayout(getActivity());
-                            layout_item.setOrientation(LinearLayout.VERTICAL);
-                            layout_item.setPadding(20, 10, 20, 10);
-                            layout_item.setId(problem.getProblemNum());
-                            layout_item.setTag(problem.getProblemNum());
-
-                            TextView tv_problemNum = new TextView(getActivity());
-                            tv_problemNum.setText(String.valueOf(problem.getProblemNum()));
-                            tv_problemNum.setTextSize(30);
-                            tv_problemNum.setBackgroundColor(getColorForDifficulty(problem.getDifficulty()));
-                            layout_item.addView(tv_problemNum);
-
-                            TextView tv_problemTitle = new TextView(getActivity());
-                            tv_problemTitle.setText("문제 제목 : " + problem.getProblemTitle());
-                            tv_problemTitle.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.black)); // 수정 필요
-                            layout_item.addView(tv_problemTitle);
-
-                            TextView tv_problemDifficulty = new TextView(getActivity());
-                            tv_problemDifficulty.setText("난이도 : " + problem.getDifficulty());
-                            tv_problemDifficulty.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.black)); // 수정 필요
-                            layout_item.addView(tv_problemDifficulty);
-
-                            TextView tv_problemType = new TextView(getActivity());
-                            tv_problemType.setText("문제 유형 : " + problem.getProblemType());
-                            tv_problemType.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.black)); // 수정 필요
-                            layout_item.addView(tv_problemType);
-
-                            layout_item.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    int problemNum = (int) layout_item.getTag();
-                                    Intent it = new Intent(getActivity(), ProblemInfo.class);
-                                    it.putExtra("userIdToken", userIdToken);
-                                    it.putExtra("problemNum", problemNum);
-                                    startActivity(it);
-                                }
-                            });
-
-                            layout.addView(layout_item);
-                        }
+                        adapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        // 취소될 때 처리할 코드를 추가하세요.
-                        Toast.makeText(getActivity(), "취소됨", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "취소됨: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -171,6 +141,47 @@ public class PlaceholderDifficultyFragment extends Fragment {
             return ContextCompat.getColor(getActivity(), R.color.platinum);
         } else {
             return ContextCompat.getColor(getActivity(), R.color.default_color);
+        }
+    }
+
+    private class ProblemListAdapter extends ArrayAdapter<Problem> {
+        private final List<Problem> problems;
+
+        ProblemListAdapter(Context context, List<Problem> problems) {
+            super(context, 0, problems);
+            this.problems = problems;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_problem, parent, false);
+            }
+
+            Problem problem = getItem(position);
+
+            TextView tv_problemNum = convertView.findViewById(R.id.tv_problem_num);
+            TextView tv_problemTitle = convertView.findViewById(R.id.tv_problem_title);
+            TextView tv_problemDifficulty = convertView.findViewById(R.id.tv_problem_difficulty);
+            TextView tv_problemType = convertView.findViewById(R.id.tv_problem_type);
+
+            if (problem != null) {
+                tv_problemNum.setText(String.valueOf(problem.getProblemNum()));
+                tv_problemNum.setBackgroundColor(getColorForDifficulty(problem.getDifficulty()));
+                tv_problemTitle.setText(problem.getProblemTitle());
+                tv_problemDifficulty.setText(problem.getDifficulty());
+                tv_problemType.setText(problem.getProblemType());
+            }
+
+            convertView.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), ProblemInfo.class);
+                intent.putExtra("userIdToken", mAuth.getCurrentUser().getUid());
+                intent.putExtra("problemNum", problem.getProblemNum());
+                startActivity(intent);
+            });
+
+            return convertView;
         }
     }
 }

@@ -22,9 +22,9 @@
             // 해당 위치에 따라 다른 프래그먼트를 반환
             switch (position) {
                 case 0:
-                    return PlaceholderDifficultyFragment.newInstance(0, selectedDifficulty, userIdToken); // 첫 번째 탭
+                    return PlaceholderDifficultyFragment.newInstance(0, selectedDifficulty); // 첫 번째 탭
                 case 1:
-                    return PlaceholderDifficultyFragment.newInstance(1, selectedDifficulty, userIdToken); // 두 번째 탭
+                    return PlaceholderDifficultyFragment.newInstance(1, selectedDifficulty); // 두 번째 탭
                 default:
                     return null;
             }

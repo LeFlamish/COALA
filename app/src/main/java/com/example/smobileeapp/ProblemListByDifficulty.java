@@ -35,7 +35,7 @@ public class ProblemListByDifficulty extends AppCompatActivity {
         difficulty = intent.getStringExtra("problemDifficulty");
         getSupportActionBar().setTitle(difficulty + " 문제 모아보기");
 
-        mSectionsPagerAdapter = new SectionsPagerAdapterDifficulty(getSupportFragmentManager(), "selectedDifficulty", userIdToken);
+        mSectionsPagerAdapter = new SectionsPagerAdapterDifficulty(getSupportFragmentManager(), difficulty, userIdToken);
         mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 

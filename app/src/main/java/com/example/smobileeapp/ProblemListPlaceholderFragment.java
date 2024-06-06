@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -30,6 +32,7 @@ public class ProblemListPlaceholderFragment extends Fragment {
     private static final String ARG_USER_ID_TOKEN = "user_id_token";
     private static final String TAG = "ProblemListPlaceholder";
     private String userIdToken;
+    private ProblemListAdapter adapter;
 
     public ProblemListPlaceholderFragment() {
         // Required empty public constructor
@@ -56,10 +59,14 @@ public class ProblemListPlaceholderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_problem_list_placeholder, container, false);
-        LinearLayout layout = rootView.findViewById(R.id.problems);
+        ListView listView = rootView.findViewById(R.id.problem_list_view);
 
         int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         userIdToken = getArguments().getString(ARG_USER_ID_TOKEN);
+
+        List<Problem> problemList = new LinkedList<>();
+        adapter = new ProblemListAdapter(getActivity(), problemList);
+        listView.setAdapter(adapter);
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Problems");
 
@@ -84,9 +91,8 @@ public class ProblemListPlaceholderFragment extends Fragment {
                     return;
                 }
 
-                layout.removeAllViews();
+                problemList.clear();
 
-                List<Problem> problemList = new LinkedList<>();
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     if (userSnapshot.getKey().equals(userIdToken)) {
                         for (DataSnapshot problemSnapshot : userSnapshot.getChildren()) {
@@ -100,12 +106,7 @@ public class ProblemListPlaceholderFragment extends Fragment {
 
                 switch (sectionNumber) {
                     case 1: // 문제 번호 순
-                        Collections.sort(problemList, new Comparator<Problem>() {
-                            @Override
-                            public int compare(Problem p1, Problem p2) {
-                                return Integer.compare(p1.getProblemNum(), p2.getProblemNum());
-                            }
-                        });
+                        Collections.sort(problemList, Comparator.comparingInt(Problem::getProblemNum));
                         break;
                     case 2: // 문제 난이도 순
                         Collections.sort(problemList, new Comparator<Problem>() {
@@ -174,45 +175,7 @@ public class ProblemListPlaceholderFragment extends Fragment {
                         Collections.sort(problemList, (p1, p2) -> Long.compare(p2.getTimeposted(), p1.getTimeposted()));
                 }
 
-                Context context = requireContext(); // 컨텍스트 가져오기
-                for (Problem problem : problemList) {
-                    LinearLayout layout_item = new LinearLayout(context);
-                    layout_item.setOrientation(LinearLayout.VERTICAL);
-                    layout_item.setPadding(20, 10, 20, 10);
-                    layout_item.setId(problem.getProblemNum());
-                    layout_item.setTag(problem.getProblemNum());
-
-                    TextView tv_problemNum = new TextView(context);
-                    tv_problemNum.setText(String.valueOf(problem.getProblemNum()));
-                    tv_problemNum.setTextSize(30);
-                    tv_problemNum.setBackgroundColor(getColorForDifficulty(problem.getDifficulty()));
-                    layout_item.addView(tv_problemNum);
-
-                    TextView tv_problemTitle = new TextView(context);
-                    tv_problemTitle.setText("문제 제목 : " + problem.getProblemTitle());
-                    tv_problemTitle.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.black));
-                    layout_item.addView(tv_problemTitle);
-
-                    TextView tv_problemDifficulty = new TextView(context);
-                    tv_problemDifficulty.setText("난이도 : " + problem.getDifficulty());
-                    tv_problemDifficulty.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.black));
-                    layout_item.addView(tv_problemDifficulty);
-
-                    TextView tv_problemType = new TextView(context);
-                    tv_problemType.setText("문제 유형 : " + problem.getProblemType());
-                    tv_problemType.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.black));
-                    layout_item.addView(tv_problemType);
-
-                    layout_item.setOnClickListener(v -> {
-                        int problemNum = (int) layout_item.getTag();
-                        Intent it = new Intent(getActivity(), ProblemInfo.class);
-                        it.putExtra("userIdToken", userIdToken);
-                        it.putExtra("problemNum", problemNum);
-                        startActivity(it);
-                    });
-
-                    layout.addView(layout_item);
-                }
+                adapter.notifyDataSetChanged();
 
                 if (problemList.isEmpty()) {
                     Log.d(TAG, "No problems found for user: " + userIdToken);
@@ -239,6 +202,47 @@ public class ProblemListPlaceholderFragment extends Fragment {
             return ContextCompat.getColor(getActivity(), R.color.platinum);
         } else {
             return ContextCompat.getColor(getActivity(), R.color.default_color);
+        }
+    }
+
+    private class ProblemListAdapter extends ArrayAdapter<Problem> {
+        private final List<Problem> problems;
+
+        ProblemListAdapter(Context context, List<Problem> problems) {
+            super(context, 0, problems);
+            this.problems = problems;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_problem, parent, false);
+            }
+
+            Problem problem = getItem(position);
+
+            TextView tv_problemNum = convertView.findViewById(R.id.tv_problem_num);
+            TextView tv_problemTitle = convertView.findViewById(R.id.tv_problem_title);
+            TextView tv_problemDifficulty = convertView.findViewById(R.id.tv_problem_difficulty);
+            TextView tv_problemType = convertView.findViewById(R.id.tv_problem_type);
+
+            if (problem != null) {
+                tv_problemNum.setText(String.valueOf(problem.getProblemNum()));
+                tv_problemNum.setBackgroundColor(getColorForDifficulty(problem.getDifficulty()));
+                tv_problemTitle.setText(problem.getProblemTitle());
+                tv_problemDifficulty.setText(problem.getDifficulty());
+                tv_problemType.setText(problem.getProblemType());
+            }
+
+            convertView.setOnClickListener(v -> {
+                Intent it = new Intent(getActivity(), ProblemInfo.class);
+                it.putExtra("userIdToken", userIdToken);
+                it.putExtra("problemNum", problem.getProblemNum());
+                startActivity(it);
+            });
+
+            return convertView;
         }
     }
 }

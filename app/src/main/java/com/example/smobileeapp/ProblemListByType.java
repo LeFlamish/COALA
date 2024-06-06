@@ -34,7 +34,11 @@ public class ProblemListByType extends AppCompatActivity {
         problemType = intent.getStringExtra("problemType");
         how = intent.getIntExtra("how", -1);
 
-        getSupportActionBar().setTitle(problemType + " 문제 유형 모아보기");
+        StringBuilder modifiedType = new StringBuilder(problemType);
+        if (modifiedType.length() > 12) {
+            modifiedType.replace(12, modifiedType.length(), "…");
+        }
+        getSupportActionBar().setTitle("\"" + modifiedType + "\"" + " 유형 질문 보기");
 
         mSectionsPagerAdapter = new SectionsPagerAdapterType(getSupportFragmentManager(), problemType, how, userIdToken);
         mViewPager = findViewById(R.id.container);

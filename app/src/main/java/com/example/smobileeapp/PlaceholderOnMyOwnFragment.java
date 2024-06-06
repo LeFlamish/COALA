@@ -1,13 +1,16 @@
 package com.example.smobileeapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -18,15 +21,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 
 public class PlaceholderOnMyOwnFragment extends Fragment {
+
     private static final String ARG_SECTION_NUMBER = "section_number";
     private String userIdToken;
     private String onMyOwn;
+    private PlaceholderOnMyOwnFragment.ProblemListAdapter adapter;
+    private List<Problem> problemList = new ArrayList<>();
 
     public PlaceholderOnMyOwnFragment() {
     }
@@ -45,7 +51,7 @@ public class PlaceholderOnMyOwnFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_placeholder_on_my_own, container, false);
-        LinearLayout layout = rootView.findViewById(R.id.problems);
+        ListView listView = rootView.findViewById(R.id.problem_list_view);
 
         int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         ProblemListByOnMyOwn activity = (ProblemListByOnMyOwn) getActivity();
@@ -68,9 +74,7 @@ public class PlaceholderOnMyOwnFragment extends Fragment {
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    layout.removeAllViews();
-
-                    List<Problem> problemList = new LinkedList<>();
+                    problemList.clear();
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                         if (userSnapshot.getKey().equals(userIdToken)) {
                             for (DataSnapshot problemSnapshot : userSnapshot.getChildren()) {
@@ -163,47 +167,8 @@ public class PlaceholderOnMyOwnFragment extends Fragment {
                             });
                     }
 
-                    for (Problem problem : problemList) {
-                        LinearLayout layout_item = new LinearLayout(getActivity());
-                        layout_item.setOrientation(LinearLayout.VERTICAL);
-                        layout_item.setPadding(20, 10, 20, 10);
-                        layout_item.setId(problem.getProblemNum());
-                        layout_item.setTag(problem.getProblemNum());
-
-                        TextView tv_problemNum = new TextView(getActivity());
-                        tv_problemNum.setText(String.valueOf(problem.getProblemNum()));
-                        tv_problemNum.setTextSize(30);
-                        tv_problemNum.setBackgroundColor(getColorForDifficulty(problem.getDifficulty()));
-                        layout_item.addView(tv_problemNum);
-
-                        TextView tv_problemTitle = new TextView(getActivity());
-                        tv_problemTitle.setText("문제 제목 : " + problem.getProblemTitle());
-                        tv_problemTitle.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.black)); // 수정 필요
-                        layout_item.addView(tv_problemTitle);
-
-                        TextView tv_problemDifficulty = new TextView(getActivity());
-                        tv_problemDifficulty.setText("난이도 : " + problem.getDifficulty());
-                        tv_problemDifficulty.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.black)); // 수정 필요
-                        layout_item.addView(tv_problemDifficulty);
-
-                        TextView tv_problemType = new TextView(getActivity());
-                        tv_problemType.setText("문제 유형 : " + problem.getProblemType());
-                        tv_problemType.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.black)); // 수정 필요
-                        layout_item.addView(tv_problemType);
-
-                        layout_item.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                int problemNum = (int) layout_item.getTag();
-                                Intent it = new Intent(getActivity(), ProblemInfo.class);
-                                it.putExtra("userIdToken", userIdToken);
-                                it.putExtra("problemNum", problemNum);
-                                startActivity(it);
-                            }
-                        });
-
-                        layout.addView(layout_item);
-                    }
+                    ProblemListAdapter adapter = new ProblemListAdapter(getActivity(), problemList);
+                    listView.setAdapter(adapter);
                 }
 
                 @Override
@@ -213,6 +178,47 @@ public class PlaceholderOnMyOwnFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    private class ProblemListAdapter extends ArrayAdapter<Problem> {
+        private final List<Problem> problems;
+
+        ProblemListAdapter(Context context, List<Problem> problems) {
+            super(context, 0, problems);
+            this.problems = problems;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_problem, parent, false);
+            }
+
+            Problem problem = getItem(position);
+
+            TextView tv_problemNum = convertView.findViewById(R.id.tv_problem_num);
+            TextView tv_problemTitle = convertView.findViewById(R.id.tv_problem_title);
+            TextView tv_problemDifficulty = convertView.findViewById(R.id.tv_problem_difficulty);
+            TextView tv_problemType = convertView.findViewById(R.id.tv_problem_type);
+
+            if (problem != null) {
+                tv_problemNum.setText(String.valueOf(problem.getProblemNum()));
+                tv_problemNum.setBackgroundColor(getColorForDifficulty(problem.getDifficulty()));
+                tv_problemTitle.setText(problem.getProblemTitle());
+                tv_problemDifficulty.setText(problem.getDifficulty());
+                tv_problemType.setText(problem.getProblemType());
+            }
+
+            convertView.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), ProblemInfo.class);
+                intent.putExtra("userIdToken", userIdToken);
+                intent.putExtra("problemNum", problem.getProblemNum());
+                startActivity(intent);
+            });
+
+            return convertView;
+        }
     }
 
     private int getColorForDifficulty(String difficulty) {
