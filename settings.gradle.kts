@@ -1,3 +1,4 @@
+// settings.gradle.kts
 pluginManagement {
     repositories {
         google {
@@ -16,11 +17,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-
-        maven { url = uri("https://jitpack.io") } // add this line
+        maven { url = uri("https://jitpack.io") } // 이 줄이 JitPack 레포지토리를 추가하는 부분입니다.
     }
 }
 
 rootProject.name = "My Application"
 include(":app")
- 

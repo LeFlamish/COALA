@@ -60,8 +60,6 @@ public class ProblemReg extends AppCompatActivity {
         difficultySpinner.setAdapter(adapter);
     }
 
-
-
     public void register(View v) {
         EditText etProblemNum = findViewById(R.id.problemNum);
         String strProblemNum = etProblemNum.getText().toString();
@@ -238,9 +236,10 @@ public class ProblemReg extends AppCompatActivity {
             Problem problem = new Problem(problemNum, problemTitle, difficulty, problemType, problemMemo, userIdToken, timeposted, onmyown);
             mDatabase.child("Problems").child(userIdToken).child(String.valueOf(problemNum)).setValue(problem);
             showToast("문제가 성공적으로 등록되었습니다.");
-            // Intent it = new Intent(this, ProblemList.class);
-            // it.putExtra("userIdToken", userIdToken);
-            // startActivity(it);
+            //Intent it = new Intent(this, ProblemInfo.class);
+            //it.putExtra("userIdToken", userIdToken);
+            //it.putExtra("problemNum", problemNum);
+            //startActivity(it);
             finish();
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
