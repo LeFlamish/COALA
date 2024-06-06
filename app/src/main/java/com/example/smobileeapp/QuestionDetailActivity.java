@@ -44,6 +44,10 @@ public class QuestionDetailActivity extends AppCompatActivity {
     private List<Answer> answerList;
     private TextView questionTitleTextView;
     private TextView questionTextView;
+    private TextView problemTitleTextView;
+    private TextView problemNumTextView;
+    private TextView problemDifficultyTextView;
+    private TextView problemTypeTextView;
 
     private ChildEventListener answersListener;
     private ValueEventListener questionListener;
@@ -79,8 +83,13 @@ public class QuestionDetailActivity extends AppCompatActivity {
         answerAdapter = new AnswerAdapter(this, answerList);
         answersListView.setAdapter(answerAdapter);
 
+        problemNumTextView = findViewById(R.id.problemNum);
+        problemTitleTextView = findViewById(R.id.problemTitle);
+        problemDifficultyTextView = findViewById(R.id.problemDifficulty);
+        problemTypeTextView = findViewById(R.id.problemType);
         questionTitleTextView = findViewById(R.id.questionTitle);
         questionTextView = findViewById(R.id.questionText);
+
 
         displayQuestion();
         loadAnswers();
@@ -179,6 +188,14 @@ public class QuestionDetailActivity extends AppCompatActivity {
                     if (question != null) {
                         String questionTitle = question.getQuestionTitle();
                         String questionText = question.getQuestionText();
+                        int problemNum = question.getProblemNum();
+                        String problemTitle = question.getProblemTitle();
+                        String problemDifficulty = question.getProblemTier();
+                        String problemType = question.getProblemType();
+                        problemNumTextView.setText(String.valueOf(problemNum));
+                        problemTitleTextView.setText(problemTitle);
+                        problemDifficultyTextView.setText(problemDifficulty);
+                        problemTypeTextView.setText(problemType);
                         questionTitleTextView.setText(questionTitle);
                         questionTextView.setText(questionText);
                     }

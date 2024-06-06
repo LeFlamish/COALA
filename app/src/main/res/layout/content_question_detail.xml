@@ -15,7 +15,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="50dp">
+            android:paddingTop="70dp">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -24,13 +24,14 @@
                 <TextView
                     android:layout_width="90sp"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="질문 제목"
+                    android:paddingLeft="16dp"
+                    android:text="문제 번호"
                     android:textColor="@color/black"/>
                 <TextView
-                    android:id="@+id/questionTitle"
+                    android:id="@+id/problemNum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingRight="16dp"
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -41,13 +42,95 @@
                 <TextView
                     android:layout_width="90sp"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:paddingLeft="16dp"
+                    android:text="문제 제목"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/problemTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="90sp"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:text="난이도"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/problemDifficulty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="90sp"
+                    android:layout_height="wrap_content"
+                    android:text="문제 유형"
+                    android:paddingLeft="16dp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/problemType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp">
+                <TextView
+                    android:layout_width="90sp"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:text="질문 제목"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/questionTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp">
+                <TextView
+                    android:layout_width="90sp"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
                     android:text="질문 내용"
                     android:textColor="@color/black" />
                 <TextView
                     android:id="@+id/questionText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
                     android:textColor="@color/black" />
             </LinearLayout>
         </LinearLayout>
