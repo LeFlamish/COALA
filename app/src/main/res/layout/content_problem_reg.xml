@@ -63,6 +63,13 @@
                 android:onClick="autoTitle"
                 android:backgroundTint="@color/colorPrimary"
                 android:textColor="@android:color/white" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="번호 자동 입력"
+                android:onClick="autoNumber"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@android:color/white"/>
         </LinearLayout>
 
         <LinearLayout

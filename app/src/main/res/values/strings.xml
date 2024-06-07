@@ -30,6 +30,9 @@
     <string name="action_settings16">답변 삭제</string>
     <string name="action_settings17">댓글 수정</string>
     <string name="action_settings18">댓글 삭제</string>
+    <string name="fab_description">Add new item</string>
+    <string name="fab_view">Menu</string>
+    <string name="scrollview_description">스크롤 뷰</string>
 
     <string-array name="custom_months">
         <item>January</item>
