@@ -2,6 +2,7 @@ package com.example.smobileeapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -229,11 +230,17 @@ public class ProblemListPlaceholderFragment extends Fragment {
 
             if (problem != null) {
                 tv_problemNum.setText(String.valueOf(problem.getProblemNum()));
-                tv_problemNum.setBackgroundColor(getColorForDifficulty(problem.getDifficulty()));
+                tv_problemNum.setBackgroundResource(R.drawable.rounded_background); // 배경 리소스 설정
+
+                // Drawable을 GradientDrawable로 캐스팅하여 색상을 동적으로 변경
+                GradientDrawable background = (GradientDrawable) tv_problemNum.getBackground();
+                background.setColor(getColorForDifficulty(problem.getDifficulty()));
+
                 tv_problemTitle.setText(problem.getProblemTitle());
                 tv_problemDifficulty.setText(problem.getDifficulty());
                 tv_problemType.setText(problem.getProblemType());
             }
+
 
             convertView.setOnClickListener(v -> {
                 Intent it = new Intent(getActivity(), ProblemInfo.class);

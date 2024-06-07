@@ -96,13 +96,18 @@ public class ProblemSearch extends AppCompatActivity {
             String searchByOption = selectedRadioButton.getText().toString();
 
             if (searchByOption.equals("문제 번호로 검색")) {
-                Intent it = new Intent(this, ProblemListByNum.class);
-                it.putExtra("userIdToken", userIdToken);
-                it.putExtra("problemNum", Integer.parseInt(searchText));
-                startActivity(it);
-                finish();
+                // 문제 번호 검색일 때 텍스트가 숫자인지 확인
+                if (searchText.matches("\\d+")) {  // 텍스트가 숫자인지 확인하는 정규 표현식
+                    Intent it = new Intent(this, ProblemListByNum.class);
+                    it.putExtra("userIdToken", userIdToken);
+                    it.putExtra("problemNum", Integer.parseInt(searchText));
+                    startActivity(it);
+                    finish();
+                } else {
+                    Toast.makeText(this, "유효한 문제 번호를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                }
             } else if (searchByOption.equals("문제 제목으로 검색")) {
-                Intent it = new Intent(this, ProblemListByTitle.class);  // 수정된 부분
+                Intent it = new Intent(this, ProblemListByTitle.class);
                 it.putExtra("userIdToken", userIdToken);
                 it.putExtra("problemTitle", searchText);
                 startActivity(it);

@@ -12,6 +12,7 @@
         android:id="@+id/tv_problem_num"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/rounded_background"
         android:textSize="30sp"
         android:textColor="@color/light_gray"
         android:paddingBottom="2dp" />

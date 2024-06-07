@@ -1,6 +1,7 @@
 package com.example.smobileeapp;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,8 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_question, parent, false);
+            LayoutInflater inflater = LayoutInflater.from(mContext); // mContext를 사용하여 LayoutInflater 가져오기
+            convertView = inflater.inflate(R.layout.item_question, parent, false);
         }
 
         TextView tvProblemNum = convertView.findViewById(R.id.tv_problem_num);
@@ -48,10 +50,11 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
 
             // 답변 개수 설정
             answerCountTextView.setText("답변 개수: " + question.getAnswerCount());
-            // 검정색으로 텍스트 색상 설정
-            // answerCountTextView.setTextColor(ContextCompat.getColor(getContext(), android.R.color.black));
 
             // 문제 번호의 난이도에 따라 배경색 설정
+            tvProblemNum.setBackgroundResource(R.drawable.rounded_background);
+            GradientDrawable background = (GradientDrawable) tvProblemNum.getBackground();
+
             String difficulty = question.getProblemTier();
             if (difficulty != null) {
                 int backgroundColor = ContextCompat.getColor(getContext(), R.color.default_color); // 기본 배경색 설정
@@ -64,7 +67,7 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
                 } else if (difficulty.contains("플래티넘")) {
                     backgroundColor = ContextCompat.getColor(getContext(), R.color.platinum);
                 }
-                tvProblemNum.setBackgroundColor(backgroundColor);
+                background.setColor(backgroundColor);
             }
         }
 

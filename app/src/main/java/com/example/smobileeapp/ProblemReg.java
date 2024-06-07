@@ -60,6 +60,8 @@ public class ProblemReg extends AppCompatActivity {
         difficultySpinner.setAdapter(adapter);
     }
 
+
+
     public void register(View v) {
         EditText etProblemNum = findViewById(R.id.problemNum);
         String strProblemNum = etProblemNum.getText().toString();
