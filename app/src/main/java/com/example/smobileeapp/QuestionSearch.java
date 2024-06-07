@@ -76,8 +76,7 @@ public class QuestionSearch extends AppCompatActivity {
         searchMyQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(QuestionSearch.this, QuestionsBySearch.class);
-                intent.putExtra("how", "searchmyquestion");
+                Intent intent = new Intent(QuestionSearch.this, QuestionsByOnMyOwn.class);
                 intent.putExtra("userIdToken", userIdToken);
                 startActivity(intent);
                 finish();
@@ -99,14 +98,17 @@ public class QuestionSearch extends AppCompatActivity {
             String searchByOption = selectedRadioButton.getText().toString();
 
             if (searchByOption.equals("문제 번호로 검색")) {
-                Intent it = new Intent(this, QuestionsBySearch.class);
-                it.putExtra("userIdToken", userIdToken);
-                it.putExtra("problemNum", Integer.parseInt(searchText));
-                it.putExtra("how", "ByNum");
-                startActivity(it);
-                finish();
+                if (searchText.matches("\\d+")) {  // 텍스트가 숫자인지 확인하는 정규 표현식
+                    Intent it = new Intent(this, QuestionsByNum.class);
+                    it.putExtra("userIdToken", userIdToken);
+                    it.putExtra("problemNum", Integer.parseInt(searchText));
+                    startActivity(it);
+                    finish();
+                } else {
+                    Toast.makeText(this, "유효한 문제 번호를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                }
             } else if (searchByOption.equals("문제 제목으로 검색")) {
-                Intent it = new Intent(this, QuestionsBySearch.class);  // 수정된 부분
+                Intent it = new Intent(this, QuestionsByTitle.class);  // 수정된 부분
                 it.putExtra("userIdToken", userIdToken);
                 it.putExtra("problemTitle", searchText);
                 it.putExtra("how", "ByTitle");
@@ -122,7 +124,7 @@ public class QuestionSearch extends AppCompatActivity {
         Spinner difficultySpinner = (Spinner) findViewById(R.id.difficultySpinner);
         String difficulty = difficultySpinner.getSelectedItem().toString();
 
-        Intent intent = new Intent(QuestionSearch.this, QuestionsBySearch.class);
+        Intent intent = new Intent(QuestionSearch.this, QuestionsByDifficulty.class);
         intent.putExtra("userIdToken", userIdToken);
         intent.putExtra("problemDifficulty", difficulty);
         intent.putExtra("how", "ByDifficulty");
@@ -253,7 +255,7 @@ public class QuestionSearch extends AppCompatActivity {
             return;
         }
 
-        Intent it = new Intent(this, QuestionsBySearch.class);
+        Intent it = new Intent(this, QuestionsByType.class);
         it.putExtra("problemType", problemType); // 문제 유형을 인텐트에 추가
         if (selectedRadioButtonId == R.id.musthaveall) {
             it.putExtra("how", "musthaveall");

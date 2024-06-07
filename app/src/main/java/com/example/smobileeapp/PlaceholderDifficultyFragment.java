@@ -56,7 +56,6 @@ public class PlaceholderDifficultyFragment extends Fragment {
     }
 
     // 수정된 부분 시작
-    // 수정된 부분 시작
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

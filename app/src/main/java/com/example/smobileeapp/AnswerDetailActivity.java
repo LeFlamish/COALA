@@ -23,6 +23,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -173,6 +175,9 @@ public class AnswerDetailActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     Answer answer = dataSnapshot.getValue(Answer.class);
                     if (answer != null && answer.getUserIdToken().equals(userIdToken)) {
+                        // 삭제하기 전에 answerCount를 1 줄입니다.
+                        decrementAnswerCount(); // answerCount를 감소시키는 메서드 호출
+
                         questionRef.removeValue().addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 Toast.makeText(AnswerDetailActivity.this, "답변이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
@@ -197,6 +202,37 @@ public class AnswerDetailActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(AnswerDetailActivity.this, "질문을 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void decrementAnswerCount() {
+        DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId);
+        questionRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                Question question = mutableData.getValue(Question.class);
+                if (question == null) {
+                    return Transaction.success(mutableData);
+                }
+
+                // 기존 answerCount를 감소시킵니다.
+                int newAnswerCount = Math.max(question.getAnswerCount() - 1, 0); // 최소값은 0입니다.
+                question.setAnswerCount(newAnswerCount);
+
+                // 업데이트된 Question 객체를 저장합니다.
+                mutableData.setValue(question);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    Log.e(TAG, "decrementAnswerCount:onComplete: ", databaseError.toException());
+                } else {
+                    Log.d(TAG, "decrementAnswerCount:onComplete: Answer count decremented successfully");
+                }
             }
         });
     }

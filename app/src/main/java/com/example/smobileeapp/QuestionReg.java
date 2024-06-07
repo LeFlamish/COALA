@@ -104,7 +104,7 @@ public class QuestionReg extends AppCompatActivity {
 
         // Collect the problem types from the checkboxes
         ArrayList<String> problemTypes = new ArrayList<>();
-        addProblemTypeIfChecked(problemTypes, R.id.bruteforce, "브루트포스 알고리즘");
+        addProblemTypeIfChecked(problemTypes, R.id.bruteforce, "브루트포스");
         addProblemTypeIfChecked(problemTypes, R.id.BFS, "BFS");
         addProblemTypeIfChecked(problemTypes, R.id.DFS, "DFS");
         addProblemTypeIfChecked(problemTypes, R.id.DP, "DP");

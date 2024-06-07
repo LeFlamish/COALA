@@ -153,7 +153,7 @@ public class QuestionBulletinPlaceholderFragment extends Fragment {
                         Collections.sort(questionList, (q1, q2) -> Long.compare(q2.getTimePosted(), q1.getTimePosted()));
                 }
 
-                QuestionAdapter adapter = new QuestionAdapter(getContext(), questionList);
+                QuestionAdapter adapter = new QuestionAdapter(getActivity(), questionList);
                 listView.setAdapter(adapter);
             }
 

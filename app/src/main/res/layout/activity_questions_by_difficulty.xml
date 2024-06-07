@@ -21,12 +21,9 @@
         android:background="@color/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <ListView
-        android:id="@+id/question_list_view"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tabs"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp"/>
-
+        android:layout_below="@id/tabs" />
 </RelativeLayout>

@@ -61,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:text="제목 자동 입력"
                 android:onClick="autoTitle"
+                android:background="@drawable/rounded_background"
                 android:backgroundTint="@color/colorPrimary"
                 android:textColor="@android:color/white" />
         </LinearLayout>
@@ -311,6 +312,7 @@
                 android:layout_height="wrap_content"
                 android:text="문제 등록"
                 android:onClick="register"
+                android:background="@drawable/rounded_background"
                 android:backgroundTint="@color/colorPrimary"
                 android:textColor="@android:color/white" />
         </LinearLayout>

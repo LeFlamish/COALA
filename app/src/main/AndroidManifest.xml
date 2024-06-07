@@ -15,13 +15,45 @@
         android:theme="@style/Theme.SMobileEApp"
         tools:targetApi="31">
         <activity
+            android:name=".QuestionsByType"
+            android:exported="true"
+            android:label="유형으로 질문 검색"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".QuestionsByOnMyOwn"
+            android:exported="true"
+            android:label="내가 한 질문 검색"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".QuestionsByDifficulty"
+            android:exported="true"
+            android:label="난이도로 질문 검색"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".QuestionsByTitle"
+            android:exported="true"
+            android:label="제목으로 질문 검색"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".QuestionsByNum"
+            android:exported="true"
+            android:label="번호로 질문 검색"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
             android:name=".QuestionTextDetailActivity"
-            android:exported="false"
-            android:label="질문 내용 상세 보기" />
+            android:exported="true"
+            android:label="질문 내용 상세 보기"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".EditReplyActivity"
             android:exported="true"
-            android:label="질문 수정`"
+            android:label="질문 수정"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
@@ -38,13 +70,13 @@
         <activity
             android:name=".ReplyDetailActivity"
             android:exported="true"
-            android:label="검색한 질문 목록`"
+            android:label="검색한 질문 목록"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ReplyAdapter"
             android:exported="true"
-            android:label="검색한 질문 목록`"
+            android:label="검색한 질문 목록"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
@@ -54,21 +86,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".QuestionsBySearch"
-            android:exported="true"
-            android:label="검색한 질문 목록`"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
             android:name=".QuestionSearch"
             android:exported="true"
-            android:label="질문 검색`"
+            android:label="질문 검색"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".EditQuestion"
             android:exported="true"
-            android:label="질문 수정`"
+            android:label="질문 수정"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity

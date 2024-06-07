@@ -170,7 +170,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
         mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId).child("answers").child(answerId).setValue(answer)
                 .addOnSuccessListener(aVoid -> {
                     // 답변이 제출되면 해당 질문의 answerCount를 증가시킵니다.
-                    incrementAnswerCount();
+                    incrementAnswerCount(); // answerCount를 증가시키는 메서드 호출
                     Toast.makeText(this, "답변이 제출되었습니다.", Toast.LENGTH_SHORT).show();
                     answerEditText.setText("");
                 })
