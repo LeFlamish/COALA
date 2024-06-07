@@ -1,19 +1,28 @@
 package com.example.smobileeapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 public class ProblemListFragment extends Fragment {
-
-    private static final String ARG_USER_ID_TOKEN = "userIdToken";
+    private View view;
     private String userIdToken;
+    private FloatingActionButton fab, fabProblemReg, fabProblemSearch;
+    private Animation fabOpen, fabClose, fabUpdown;
+    private boolean isFabOpen = false;
+    private static final String ARG_USER_ID_TOKEN = "userIdToken";
+
 
     public ProblemListFragment() {
         // Required empty public constructor
@@ -35,10 +44,82 @@ public class ProblemListFragment extends Fragment {
         }
     }
 
+    private void toggleFabMenu() {
+        if (isFabOpen) {
+            closeFabMenu();
+        } else {
+            openFabMenu();
+        }
+    }
+
+    private void openFabMenu() {
+        isFabOpen = true;
+        fab.startAnimation(fabUpdown);
+        fabProblemReg.setVisibility(View.VISIBLE);
+        fabProblemSearch.setVisibility(View.VISIBLE);
+        fabProblemReg.startAnimation(fabOpen);
+        fabProblemSearch.startAnimation(fabOpen);
+        fabProblemReg.setClickable(true);
+        fabProblemSearch.setClickable(true);
+    }
+
+    private void closeFabMenu() {
+        isFabOpen = false;
+        fabProblemReg.setVisibility(View.INVISIBLE);
+        fabProblemSearch.setVisibility(View.INVISIBLE);
+        fabProblemReg.startAnimation(fabClose);
+        fabProblemSearch.startAnimation(fabClose);
+        fabProblemReg.setClickable(false);
+        fabProblemSearch.setClickable(false);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_problem_list, container, false);
+        view = inflater.inflate(R.layout.fragment_problem_list, container, false);
+
+
+        fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fabProblemReg = view.findViewById(R.id.fab_problem_reg);
+        fabProblemSearch = view.findViewById(R.id.fab_problem_search);
+        fabOpen = AnimationUtils.loadAnimation(getContext().getApplicationContext(), R.anim.fab_open);
+        fabClose = AnimationUtils.loadAnimation(getContext().getApplicationContext(), R.anim.fab_close);
+        fabUpdown = AnimationUtils.loadAnimation(getContext().getApplicationContext(), R.anim.fabupdown);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleFabMenu();
+            }
+        });
+        fabProblemReg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(),"문제 등록", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getContext(), ProblemReg.class);
+
+                // Add the userIdToken to the intent
+                intent.putExtra("userIdToken", userIdToken);
+
+                // Start the ProblemReg activity
+                startActivity(intent);
+
+            }
+        });
+
+        fabProblemSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "문제 검색", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), ProblemSearch.class);
+
+                // Add the userIdToken to the intent
+                intent.putExtra("userIdToken", userIdToken);
+
+                // Start the ProblemReg activity
+                startActivity(intent);
+            }
+        });
 
         // Get reference to the TabLayout, ViewPager
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);

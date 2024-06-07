@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -267,6 +268,17 @@ public class ProblemReg extends AppCompatActivity {
         // AsyncTask를 사용하여 백그라운드에서 네트워크 요청 실행
         new ScrapeTask().execute(problemNum);
     }
+    public void autoNumber(View view) {
+        EditText etProblemTitle = findViewById(R.id.problemTitle);
+        String problemTitle = etProblemTitle.getText().toString();
+
+        if (TextUtils.isEmpty(problemTitle)) {
+            Toast.makeText(this, "문제 제목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        new ScrapeNumberTask().execute(problemTitle);
+    }
 
     private class ScrapeTask extends AsyncTask<Integer, Void, String> {
         @Override
@@ -291,6 +303,7 @@ public class ProblemReg extends AppCompatActivity {
         }
     }
 
+
     private String scrapeProblemTitle(int problemNum) {
         String url = "https://www.acmicpc.net/problem/" + problemNum;
         try {
@@ -305,10 +318,50 @@ public class ProblemReg extends AppCompatActivity {
         return null;
     }
 
+
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    private class ScrapeNumberTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... strings) {
+            String problemTitle = strings[0];
+            return scrapeProblemNumber(problemTitle);
+        }
+
+        protected void onPostExecute(String problemNumber) {
+            if (!TextUtils.isEmpty(problemNumber)) {
+                EditText etProblemNum = findViewById(R.id.problemNum);
+                etProblemNum.setText(problemNumber);
+            } else {
+                showToast("문제 번호를 찾을 수 없습니다. 직접 입력해주세요");
+            }
+        }
+    }
+    private String scrapeProblemNumber(String problemTitle) {
+        try {
+            // Google 검색을 통해 문제 번호를 찾는 예제
+            String searchUrl = "https://www.acmicpc.net/problem/" + problemTitle;
+            Document doc = Jsoup.connect(searchUrl).get();
+            Elements results = doc.select("div.BNeawe.iBp4i.AP7Wnd");
+
+            for (Element result : results) {
+                String text = result.text();
+                if (text.contains("문제")) {
+                    String[] parts = text.split(" ");
+                    for (String part : parts) {
+                        if (part.matches("\\d+")) {
+                            return part;
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
