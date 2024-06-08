@@ -83,7 +83,12 @@ public class QuestionBulletinPlaceholderFragment extends Fragment {
                     for (DataSnapshot questionSnapshot : problemSnapshot.getChildren()) {
                         Question question = questionSnapshot.getValue(Question.class);
                         if (question != null) {
-                            questionList.add(question);
+                            if (!question.isDeleted()) { // Check if the question is not deleted
+                                questionList.add(question);
+                            } else {
+                                // If the question is deleted, remove it completely from the database
+                                questionSnapshot.getRef().removeValue();
+                            }
                         }
                     }
                 }

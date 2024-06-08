@@ -7,37 +7,37 @@
     android:padding="16dp">
 
     <Button
-        android:id="@+id/btnDifficulty"
+        android:id="@+id/btnSamsung"
         android:layout_width="250dp"
         android:layout_height="100dp"
+        android:text="삼성"
         android:backgroundTint="@color/colorPrimary"
-        android:text="난이도별 추천 문제"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"/>
 
     <Button
-        android:id="@+id/btnAlgorithm"
+        android:id="@+id/btnKakao"
         android:layout_width="250dp"
         android:layout_height="100dp"
+        android:text="카카오"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="알고리즘별 추천 문제"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"/>
 
     <Button
-        android:id="@+id/btnCompany"
+        android:id="@+id/btnNaver"
         android:layout_width="250dp"
         android:layout_height="100dp"
+        android:text="네이버"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="기업별 추천 문제"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"/>
 
     <Button
-        android:id="@+id/btnCustom"
+        android:id="@+id/btnLG"
         android:layout_width="250dp"
         android:layout_height="100dp"
+        android:text="LG"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="커스텀 문제집"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"/>
 </LinearLayout>

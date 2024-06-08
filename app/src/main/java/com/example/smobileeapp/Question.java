@@ -16,6 +16,7 @@ public class Question {
     public HashMap<String, Reply> replies; // replies 필드 추가
     public int answerCount; // 답변의 개수를 세는 필드
     public int replyCount; // 댓글의 개수를 세는 필드
+    private boolean deleted;
 
     public Question() {
         // Default constructor required for calls to DataSnapshot.getValue(Question.class)
@@ -114,5 +115,13 @@ public class Question {
 
     public void setReplyCount(int replyCount) {
         this.replyCount = replyCount;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

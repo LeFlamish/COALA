@@ -168,51 +168,68 @@ public class AnswerDetailActivity extends AppCompatActivity {
     }
 
     private void deleteAnswer() {
-        DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId).child("answers").child(answerId);
-        questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference answerRef = mDatabase.child("QuestionBulletin")
+                .child(String.valueOf(problemNum))
+                .child(questionId)
+                .child("answers")
+                .child(answerId);
+
+        DatabaseReference replyRef = mDatabase.child("QuestionBulletin")
+                .child(String.valueOf(problemNum))
+                .child(questionId)
+                .child("answers")
+                .child(answerId)
+                .child("replies");
+
+        // 먼저 모든 댓글을 삭제합니다.
+        replyRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    Answer answer = dataSnapshot.getValue(Answer.class);
-                    if (answer != null) {
-                        String answerUserIdToken = answer.getUserIdToken();
-                        Log.d(TAG, "Answer author userIdToken: " + answerUserIdToken);
-                        Log.d(TAG, "Current user userIdToken: " + userIdToken);
-
-                        if (answerUserIdToken.equals(userIdToken)) {
-                            // User is the author, proceed with deletion
-                            decrementAnswerCount();
-                            questionRef.removeValue().addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(AnswerDetailActivity.this, "답변이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                                    Intent it = new Intent(AnswerDetailActivity.this, QuestionDetailActivity.class);
-                                    it.putExtra("userIdToken", userIdToken);
-                                    it.putExtra("questionId", questionId);
-                                    it.putExtra("problemNum", problemNum);
-                                    startActivity(it);
-                                    finish();
-                                } else {
-                                    Toast.makeText(AnswerDetailActivity.this, "파이어베이스에서 답변 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        } else {
-                            Toast.makeText(AnswerDetailActivity.this, "작성자만 답변을 삭제할 수 있습니다.", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(AnswerDetailActivity.this, "답변을 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(AnswerDetailActivity.this, "답변이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    snapshot.getRef().removeValue(); // 각 댓글에 대해 삭제 진행
                 }
+
+                decrementAnswerCount();
+
+                // replyCount 필드를 null로 설정하여 삭제합니다.
+                answerRef.child("replyCount").setValue(null).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // replyCount 필드가 성공적으로 삭제된 후에 답변을 삭제합니다.
+                        answerRef.removeValue().addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                // 삭제가 성공하면 해당 필드들도 함께 삭제합니다.
+                                answerRef.child("problemNum").removeValue(); // problemNum 필드 삭제
+                                // deleted 필드를 true로 설정하여 삭제된 상태를 나타냅니다.
+                                answerRef.child("deleted").setValue(true).addOnCompleteListener(task2 -> {
+                                    if (task2.isSuccessful()) {
+                                        Toast.makeText(AnswerDetailActivity.this, "답변이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                        // 삭제 후에는 질문 상세 화면으로 이동합니다.
+                                        Intent intent = new Intent(AnswerDetailActivity.this, QuestionDetailActivity.class);
+                                        intent.putExtra("userIdToken", userIdToken);
+                                        intent.putExtra("problemNum", problemNum);
+                                        intent.putExtra("questionId", questionId);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        Toast.makeText(AnswerDetailActivity.this, "답변 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(AnswerDetailActivity.this, "답변 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(AnswerDetailActivity.this, "replyCount 필드 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(AnswerDetailActivity.this, "질문을 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AnswerDetailActivity.this, "Failed to load replies: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
-
 
     private void decrementAnswerCount() {
         DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId);

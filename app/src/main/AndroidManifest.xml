@@ -182,6 +182,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
+            android:name=".RProblemInfo"
+            android:exported="true"
+            android:label="추천 문제 정보"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
             android:name=".RegisterActivity"
             android:exported="true"
             android:label="회원가입"

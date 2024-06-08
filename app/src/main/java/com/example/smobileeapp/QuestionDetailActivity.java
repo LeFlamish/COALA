@@ -96,6 +96,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
         displayQuestion();
         loadAnswers();
+        checkAndDeleteAnswers();
 
         answersListView.setOnItemClickListener((parent, view, position, id) -> {
             Answer selectedAnswer = answerList.get(position);
@@ -169,7 +170,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
             return;
         }
 
-        Answer answer = new Answer(answerId, answerText, userIdToken, problemNum);
+        Answer answer = new Answer(answerId, answerText, userIdToken);
         mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId).child("answers").child(answerId).setValue(answer)
                 .addOnSuccessListener(aVoid -> {
                     // 답변이 제출되면 해당 질문의 answerCount를 증가시킵니다.
@@ -255,32 +256,105 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
     private void deleteQuestion() {
         DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId);
-        questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference answersRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId).child("answers");
+
+        // Delete all answers first
+        answersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    Question question = dataSnapshot.getValue(Question.class);
-                    if (question != null && question.getUserIdToken().equals(userIdToken)) {
-                        questionRef.removeValue().addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(QuestionDetailActivity.this, "질문이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    snapshot.getRef().removeValue();
+                }
 
-                                finish();
+                // After all answers are deleted, remove the question
+                questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            Question question = dataSnapshot.getValue(Question.class);
+                            if (question != null && question.getUserIdToken().equals(userIdToken)) {
+                                questionRef.removeValue().addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        // Set 'deleted' field to true indicating question is deleted
+                                        questionRef.child("deleted").setValue(true).addOnCompleteListener(deletionTask -> {
+                                            if (deletionTask.isSuccessful()) {
+                                                Toast.makeText(QuestionDetailActivity.this, "질문과 답변이 모두 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                                finish();
+                                            } else {
+                                                Toast.makeText(QuestionDetailActivity.this, "질문 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    } else {
+                                        Toast.makeText(QuestionDetailActivity.this, "질문 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             } else {
-                                Toast.makeText(QuestionDetailActivity.this, "파이어베이스에서 질문 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(QuestionDetailActivity.this, "작성자만 질문을 삭제할 수 있습니다.", Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    } else {
-                        Toast.makeText(QuestionDetailActivity.this, "작성자만 질문을 삭제할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(QuestionDetailActivity.this, "질문이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                } else {
-                    Toast.makeText(QuestionDetailActivity.this, "질문이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(QuestionDetailActivity.this, "질문을 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(QuestionDetailActivity.this, "답변을 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 모든 답변 필드를 확인하고 delete가 true인 경우 삭제를 수행합니다.
+        checkAndDeleteAnswers();
+    }
+
+    private void checkAndDeleteAnswers() {
+        DatabaseReference answersRef = mDatabase.child("QuestionBulletin")
+                .child(String.valueOf(problemNum))
+                .child(questionId)
+                .child("answers");
+
+        answersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Answer answer = snapshot.getValue(Answer.class);
+                    if (answer != null && answer.isDeleted()) {
+                        // delete 필드가 true인 경우 해당 답변을 삭제합니다.
+                        String answerId = snapshot.getKey();
+                        snapshot.getRef().removeValue()
+                                .addOnSuccessListener(aVoid -> {
+                                    // 삭제 성공 시
+                                    Toast.makeText(QuestionDetailActivity.this, "답변이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                    // 삭제된 답변을 answerList에서 제거하고 ListView를 업데이트합니다.
+                                    for (int i = 0; i < answerList.size(); i++) {
+                                        if (answerList.get(i).getAnswerId() != null && answerList.get(i).getAnswerId().equals(answerId)) {
+                                            answerList.remove(i);
+                                            answerAdapter.notifyDataSetChanged();
+                                            break;
+                                        }
+                                    }
+                                })
+                                .addOnFailureListener(e -> {
+                                    // 삭제 실패 시
+                                    Toast.makeText(QuestionDetailActivity.this, "답변 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                });
+                    }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(QuestionDetailActivity.this, "질문을 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(QuestionDetailActivity.this, "Failed to check answers: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
