@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionDetailActivity extends AppCompatActivity {
-
+    private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private String userIdToken;
     private String questionId;
@@ -63,8 +64,10 @@ public class QuestionDetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼 표시
         }
 
+        mAuth = FirebaseAuth.getInstance();
+
         Intent intent = getIntent();
-        userIdToken = intent.getStringExtra("userIdToken");
+        userIdToken = mAuth.getCurrentUser().getUid();
         questionId = intent.getStringExtra("questionId");
         problemNum = intent.getIntExtra("problemNum", -1);
 

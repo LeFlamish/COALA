@@ -1,5 +1,6 @@
 package com.example.smobileeapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.smobileeapp.Question;
-import com.example.smobileeapp.QuestionAdapter;
-import com.example.smobileeapp.QuestionDetailActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,20 +28,27 @@ public class QuestionBulletinPlaceholderFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "sectionNumber";
     private ListView listView;
-    private String userIdToken; // userIdToken 추가
+    private String userIdToken;
     private FirebaseAuth mAuth;
+    private Context mContext; // 추가된 멤버 변수
 
     public QuestionBulletinPlaceholderFragment() {
         // Required empty public constructor
     }
 
-    public static QuestionBulletinPlaceholderFragment newInstance(int sectionNumber, String userIdToken) { // userIdToken 인자 추가
+    public static QuestionBulletinPlaceholderFragment newInstance(int sectionNumber, String userIdToken) {
         QuestionBulletinPlaceholderFragment fragment = new QuestionBulletinPlaceholderFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        args.putString("userIdToken", userIdToken); // userIdToken을 Argument에 추가
+        args.putString("userIdToken", userIdToken);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context; // Context를 저장
     }
 
     @Override
@@ -66,6 +71,7 @@ public class QuestionBulletinPlaceholderFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
+        userIdToken = getArguments().getString("userIdToken");
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("QuestionBulletin");
 
@@ -90,9 +96,7 @@ public class QuestionBulletinPlaceholderFragment extends Fragment {
                         Collections.sort(questionList, new Comparator<Question>() {
                             @Override
                             public int compare(Question q1, Question q2) {
-                                // 먼저 난이도를 비교
                                 int difficultyComparison = Integer.compare(getDifficultyOrder(q1.getProblemTier()), getDifficultyOrder(q2.getProblemTier()));
-                                // 난이도가 같으면 문제 번호로 비교
                                 if (difficultyComparison == 0) {
                                     return Integer.compare(q1.getProblemNum(), q2.getProblemNum());
                                 } else {
@@ -101,7 +105,6 @@ public class QuestionBulletinPlaceholderFragment extends Fragment {
                             }
 
                             private int getDifficultyOrder(String difficulty) {
-                                // 각 난이도에 대한 순서를 정의하여 반환
                                 switch (difficulty) {
                                     case "플래티넘Ⅰ":
                                         return 1;
@@ -144,7 +147,7 @@ public class QuestionBulletinPlaceholderFragment extends Fragment {
                                     case "브론즈Ⅴ":
                                         return 20;
                                     default:
-                                        return Integer.MAX_VALUE; // 그 외의 경우는 가장 큰 값으로 처리하여 가장 뒤로 정렬
+                                        return Integer.MAX_VALUE;
                                 }
                             }
                         });
@@ -153,7 +156,7 @@ public class QuestionBulletinPlaceholderFragment extends Fragment {
                         Collections.sort(questionList, (q1, q2) -> Long.compare(q2.getTimePosted(), q1.getTimePosted()));
                 }
 
-                QuestionAdapter adapter = new QuestionAdapter(getActivity(), questionList);
+                QuestionAdapter adapter = new QuestionAdapter(mContext, questionList); // mContext 사용
                 listView.setAdapter(adapter);
             }
 
@@ -165,18 +168,15 @@ public class QuestionBulletinPlaceholderFragment extends Fragment {
 
         mDatabase.addValueEventListener(questionListener);
 
-        // ListView item click listener
         listView.setOnItemClickListener((parent, view1, position, id) -> {
-            // Handle item click
             Question question = (Question) parent.getItemAtPosition(position);
             if (question != null) {
                 String questionId = question.getQuestionId();
-                int problemNum = question.getProblemNum(); // 질문 번호 가져오기
-                // Open question detail activity
-                Intent intent = new Intent(getActivity(), QuestionDetailActivity.class);
+                int problemNum = question.getProblemNum();
+                Intent intent = new Intent(mContext, QuestionDetailActivity.class);
                 intent.putExtra("questionId", questionId);
-                intent.putExtra("problemNum", problemNum); // 질문 번호도 전달
-                intent.putExtra("userIdToken", userIdToken); // userIdToken도 전달
+                intent.putExtra("problemNum", problemNum);
+                intent.putExtra("userIdToken", userIdToken);
                 startActivity(intent);
             }
         });

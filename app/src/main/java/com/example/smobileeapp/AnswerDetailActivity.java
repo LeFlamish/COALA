@@ -174,25 +174,32 @@ public class AnswerDetailActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     Answer answer = dataSnapshot.getValue(Answer.class);
-                    if (answer != null && answer.getUserIdToken().equals(userIdToken)) {
-                        // 삭제하기 전에 answerCount를 1 줄입니다.
-                        decrementAnswerCount(); // answerCount를 감소시키는 메서드 호출
+                    if (answer != null) {
+                        String answerUserIdToken = answer.getUserIdToken();
+                        Log.d(TAG, "Answer author userIdToken: " + answerUserIdToken);
+                        Log.d(TAG, "Current user userIdToken: " + userIdToken);
 
-                        questionRef.removeValue().addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(AnswerDetailActivity.this, "답변이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                                Intent it = new Intent(AnswerDetailActivity.this, QuestionDetailActivity.class);
-                                it.putExtra("userIdToken", userIdToken);
-                                it.putExtra("questionId", questionId);
-                                it.putExtra("problemNum", problemNum);
-                                startActivity(it);
-                                finish();
-                            } else {
-                                Toast.makeText(AnswerDetailActivity.this, "파이어베이스에서 답변 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        if (answerUserIdToken.equals(userIdToken)) {
+                            // User is the author, proceed with deletion
+                            decrementAnswerCount();
+                            questionRef.removeValue().addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(AnswerDetailActivity.this, "답변이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                    Intent it = new Intent(AnswerDetailActivity.this, QuestionDetailActivity.class);
+                                    it.putExtra("userIdToken", userIdToken);
+                                    it.putExtra("questionId", questionId);
+                                    it.putExtra("problemNum", problemNum);
+                                    startActivity(it);
+                                    finish();
+                                } else {
+                                    Toast.makeText(AnswerDetailActivity.this, "파이어베이스에서 답변 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(AnswerDetailActivity.this, "작성자만 답변을 삭제할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(AnswerDetailActivity.this, "작성자만 답변을 삭제할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AnswerDetailActivity.this, "답변을 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(AnswerDetailActivity.this, "답변이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
@@ -205,6 +212,7 @@ public class AnswerDetailActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void decrementAnswerCount() {
         DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId);

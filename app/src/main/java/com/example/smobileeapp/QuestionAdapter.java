@@ -17,50 +17,43 @@ import java.util.List;
 
 public class QuestionAdapter extends ArrayAdapter<Question> {
 
-    private Context mContext; // Context 변수 추가
-    private List<Question> mQuestionList;
+    private final Context mContext;
+    private final List<Question> mQuestionList;
 
-    public QuestionAdapter(Context context, List<Question> questionList) {
+    public QuestionAdapter(@NonNull Context context, @NonNull List<Question> questionList) {
         super(context, 0, questionList);
-        mContext = context;
-        mQuestionList = questionList;
+        this.mContext = context;
+        this.mQuestionList = questionList;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(mContext); // mContext를 사용하여 LayoutInflater 가져오기
+            LayoutInflater inflater = LayoutInflater.from(mContext);
             convertView = inflater.inflate(R.layout.item_question, parent, false);
         }
 
         TextView tvProblemNum = convertView.findViewById(R.id.tv_problem_num);
         TextView problemTitleTextView = convertView.findViewById(R.id.problemTitleTextView);
         TextView questionTextView = convertView.findViewById(R.id.questionTextView);
-        TextView answerCountTextView = convertView.findViewById(R.id.answerCountTextView); // 답변 개수를 표시할 TextView 추가
+        TextView answerCountTextView = convertView.findViewById(R.id.answerCountTextView);
         Question question = getItem(position);
 
         if (question != null) {
-            // 문제 번호 설정
             tvProblemNum.setText(String.valueOf(question.getProblemNum()));
-            // 텍스트 색상 회색으로 설정
             tvProblemNum.setTextColor(ContextCompat.getColor(mContext, R.color.light_gray));
 
-            // 문제 제목 설정
             problemTitleTextView.setText(question.getProblemTitle());
-            // 질문 제목 설정
             questionTextView.setText(question.getQuestionTitle());
-
-            // 답변 개수 설정
             answerCountTextView.setText("답변 개수 : " + question.getAnswerCount());
 
-            // 문제 번호의 난이도에 따라 배경색 설정
             tvProblemNum.setBackgroundResource(R.drawable.rounded_background);
             GradientDrawable background = (GradientDrawable) tvProblemNum.getBackground();
 
             String difficulty = question.getProblemTier();
             if (difficulty != null) {
-                int backgroundColor = ContextCompat.getColor(mContext, R.color.default_color); // 기본 배경색 설정
+                int backgroundColor = ContextCompat.getColor(mContext, R.color.default_color);
                 if (difficulty.contains("골드")) {
                     backgroundColor = ContextCompat.getColor(mContext, R.color.gold);
                 } else if (difficulty.contains("실버")) {
@@ -73,17 +66,14 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
                 background.setColor(backgroundColor);
             }
 
-            // 클릭 이벤트 추가
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (question != null) {
-                        Intent intent = new Intent(mContext, QuestionDetailActivity.class);
-                        intent.putExtra("userIdToken", question.getUserIdToken());
-                        intent.putExtra("questionId", question.getQuestionId());
-                        intent.putExtra("problemNum", question.getProblemNum());
-                        mContext.startActivity(intent);
-                    }
+                    Intent intent = new Intent(mContext, QuestionDetailActivity.class);
+                    intent.putExtra("userIdToken", question.getUserIdToken());
+                    intent.putExtra("questionId", question.getQuestionId());
+                    intent.putExtra("problemNum", question.getProblemNum());
+                    mContext.startActivity(intent);
                 }
             });
         }
