@@ -2,6 +2,7 @@ package com.example.smobileeapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,10 @@ public class RProblemInfo extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("추천 문제 정보");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         Intent intent = getIntent();
         type = intent.getStringExtra("type");
         problemNum = intent.getIntExtra("problemNum", 0);
@@ -99,5 +104,16 @@ public class RProblemInfo extends AppCompatActivity {
         Intent intent = new Intent(this, ProblemURL.class);
         intent.putExtra("ProblemURL", url);
         startActivity(intent);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // 뒤로가기 버튼 클릭 시 액티비티 종료
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

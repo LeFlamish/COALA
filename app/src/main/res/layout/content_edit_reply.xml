@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/updateButton"
                 android:text="수정 완료"
+                android:background="@drawable/rounded_background"
                 android:onClick="updateReply"
                 android:backgroundTint="@color/colorPrimary"/>
         </LinearLayout>

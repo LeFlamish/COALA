@@ -62,6 +62,7 @@
             android:id="@+id/searchthequestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_background"
             android:text="검색"
             android:backgroundTint="@color/colorPrimary"
             android:textColor="@color/white"/>
@@ -93,6 +94,7 @@
             android:id="@+id/searchbydifficulty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_background"
             android:text="해당 난이도만 모아 보기"
             android:backgroundTint="@color/colorPrimary"
             android:textColor="@color/white"/>
@@ -288,6 +290,7 @@
             android:id="@+id/searchbytype"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_background"
             android:text="해당 문제 유형만 모아 보기"
             android:backgroundTint="@color/colorPrimary" />
 
@@ -295,8 +298,9 @@
             android:id="@+id/searchmyquestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:text="내가 한 질문 모아 보기"
-            android:backgroundTint="@color/colorPrimary" />
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_background"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="내가 한 질문 모아 보기" />
     </LinearLayout>
 </ScrollView>

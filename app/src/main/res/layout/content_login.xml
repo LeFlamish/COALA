@@ -59,6 +59,7 @@
             android:layout_width="250dp"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_background"
             android:text="로그인"
             android:textSize="20sp"
             android:backgroundTint="#2A2898" />
@@ -74,6 +75,7 @@
                 android:id="@+id/btn_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/rounded_background"
                 android:text="회원가입"
                 android:backgroundTint="#2A2898" />
 
@@ -85,6 +87,7 @@
                 android:id="@+id/btn_find"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/rounded_background"
                 android:backgroundTint="#2A2898"
                 android:text="@string/forget_PWD" />
 

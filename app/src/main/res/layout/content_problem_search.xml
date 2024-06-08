@@ -65,6 +65,7 @@
             android:id="@+id/searchtheproblem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_background"
             android:text="검색"
             android:backgroundTint="@color/colorPrimary"/>
 
@@ -95,6 +96,7 @@
             android:id="@+id/searchbydifficulty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_background"
             android:text="해당 난이도만 모아 보기"
             android:backgroundTint="@color/colorPrimary"/>
 
@@ -288,6 +290,7 @@
             android:id="@+id/searchbytype"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_background"
             android:text="해당 문제 유형만 모아 보기"
             android:backgroundTint="@color/colorPrimary"/>
 
@@ -326,6 +329,7 @@
             android:id="@+id/searchbyonemyownbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_background"
             android:text="스스로 풀거나 스스로 못푼 문제 검색"
             android:backgroundTint="@color/colorPrimary"/>
     </LinearLayout>

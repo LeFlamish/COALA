@@ -285,6 +285,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="정보 수정"
+                android:background="@drawable/rounded_background"
                 android:onClick="updateProblem"
                 android:backgroundTint="@color/colorPrimary"/>
         </LinearLayout>

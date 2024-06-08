@@ -59,6 +59,7 @@
             android:layout_width="250dp"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_background"
             android:text="가입 완료"
             android:textSize="20sp"
             android:backgroundTint="#2A2898" />
@@ -74,6 +75,7 @@
                 android:id="@+id/btn_login"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/rounded_background"
                 android:text="로그인"
                 android:backgroundTint="#2A2898" />
 

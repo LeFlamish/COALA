@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+
         if (id == R.id.action_settings12) {
             Intent intent = new Intent(this, QuestionSearch.class);
             intent.putExtra("userIdToken", userIdToken);
