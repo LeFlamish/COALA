@@ -11,50 +11,51 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class RecommendFragment extends Fragment {
+public class DifficultyFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recommend, container, false);
+        View view = inflater.inflate(R.layout.fragment_recommend_difficulty, container, false);
 
-        Button btnDifficulty = view.findViewById(R.id.btnDifficulty);
-        Button btnAlgorithm = view.findViewById(R.id.btnAlgorithm);
-        Button btnCompany = view.findViewById(R.id.btnCompany);
-        Button btnCustom = view.findViewById(R.id.btnCustom);
+        Button btnBronze = view.findViewById(R.id.btnBronze);
+        Button btnSilver = view.findViewById(R.id.btnSilver);
+        Button btnGold = view.findViewById(R.id.btnGold);
+        Button btnPlatinum = view.findViewById(R.id.btnPlatinum);
 
-        btnDifficulty.setOnClickListener(new View.OnClickListener() {
+        btnBronze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment(new DifficultyFragment());
+                openRecommendListFragment("bronze");
             }
         });
 
-        btnAlgorithm.setOnClickListener(new View.OnClickListener() {
+        btnSilver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment(new AlgorithmFragment());
+                openRecommendListFragment("silver");
             }
         });
 
-        btnCompany.setOnClickListener(new View.OnClickListener() {
+        btnGold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment(new CompanyFragment());
+                openRecommendListFragment("gold");
             }
         });
 
-        btnCustom.setOnClickListener(new View.OnClickListener() {
+        btnPlatinum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment(new CustomFragment());
+                openRecommendListFragment("platinum");
             }
         });
 
         return view;
     }
 
-    private void openFragment(Fragment fragment) {
+    private void openRecommendListFragment(String difficulty) {
+        RecommendListFragment fragment = RecommendListFragment.newInstance(difficulty);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
