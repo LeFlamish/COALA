@@ -11,50 +11,51 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class RecommendFragment extends Fragment {
+public class CompanyFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recommend, container, false);
+        View view = inflater.inflate(R.layout.fragment_recommend_company, container, false);
 
-        Button btnDifficulty = view.findViewById(R.id.btnDifficulty);
-        Button btnAlgorithm = view.findViewById(R.id.btnAlgorithm);
-        Button btnCompany = view.findViewById(R.id.btnCompany);
-        Button btnCustom = view.findViewById(R.id.btnCustom);
+        Button btnSamsung = view.findViewById(R.id.btnSamsung);
+        Button btnKakao = view.findViewById(R.id.btnKakao);
+        Button btnNaver = view.findViewById(R.id.btnNaver);
+        Button btnLG = view.findViewById(R.id.btnLG);
 
-        btnDifficulty.setOnClickListener(new View.OnClickListener() {
+        btnSamsung.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment(new DifficultyFragment());
+                openRecommendListFragment("samsung");
             }
         });
 
-        btnAlgorithm.setOnClickListener(new View.OnClickListener() {
+        btnKakao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment(new AlgorithmFragment());
+                openRecommendListFragment("kakao");
             }
         });
 
-        btnCompany.setOnClickListener(new View.OnClickListener() {
+        btnNaver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment(new CompanyFragment());
+                openRecommendListFragment("naver");
             }
         });
 
-        btnCustom.setOnClickListener(new View.OnClickListener() {
+        btnLG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment(new CustomFragment());
+                openRecommendListFragment("lg");
             }
         });
 
         return view;
     }
 
-    private void openFragment(Fragment fragment) {
+    private void openRecommendListFragment(String company) {
+        RecommendListFragment fragment = RecommendListFragment.newInstance(company);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
