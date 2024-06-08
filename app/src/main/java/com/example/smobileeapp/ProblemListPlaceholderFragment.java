@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +35,7 @@ public class ProblemListPlaceholderFragment extends Fragment {
     private static final String TAG = "ProblemListPlaceholder";
     private String userIdToken;
     private ProblemListAdapter adapter;
+    private FirebaseAuth mAuth;
 
     public ProblemListPlaceholderFragment() {
         // Required empty public constructor
@@ -54,6 +56,7 @@ public class ProblemListPlaceholderFragment extends Fragment {
         if (getArguments() != null) {
             userIdToken = getArguments().getString(ARG_USER_ID_TOKEN);
         }
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -63,7 +66,8 @@ public class ProblemListPlaceholderFragment extends Fragment {
         ListView listView = rootView.findViewById(R.id.problem_list_view);
 
         int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
-        userIdToken = getArguments().getString(ARG_USER_ID_TOKEN);
+        // userIdToken = getArguments().getString(ARG_USER_ID_TOKEN);
+        userIdToken = mAuth.getCurrentUser().getUid();
 
         List<Problem> problemList = new LinkedList<>();
         adapter = new ProblemListAdapter(getActivity(), problemList);
