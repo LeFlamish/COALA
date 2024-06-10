@@ -1,9 +1,13 @@
 package com.example.smobileeapp;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -11,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,6 +42,12 @@ public class EditAnswer extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("답변 수정");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼 표시
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -131,5 +142,14 @@ public class EditAnswer extends AppCompatActivity {
         intent.putExtra("answerId", answerId);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // 뒤로가기 버튼 클릭 시 액티비티 종료
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

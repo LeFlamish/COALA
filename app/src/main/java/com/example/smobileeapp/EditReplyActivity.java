@@ -1,13 +1,18 @@
 package com.example.smobileeapp;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +40,12 @@ public class EditReplyActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("댓글 수정");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
         // Retrieve data from intent
@@ -102,5 +113,14 @@ public class EditReplyActivity extends AppCompatActivity {
                         Toast.makeText(EditReplyActivity.this, "댓글 수정에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // 뒤로가기 버튼 클릭 시 액티비티 종료
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

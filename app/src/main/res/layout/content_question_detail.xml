@@ -143,22 +143,35 @@
         android:layout_weight="1"
         android:padding="16dp"/>
 
-    <EditText
-        android:id="@+id/answerEditText"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="답변을 입력해주세요."
-        android:padding="16dp"
-        android:backgroundTint="@color/gray"
-        android:textColor="@color/black"
-        android:theme="@style/CustomEditText"/>
+        android:layout_height="wrap_content">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="답변 작성"
-        android:background="@drawable/rounded_background"
-        android:onClick="submitAnswer"
-        android:padding="16dp"
-        android:backgroundTint="@color/colorPrimary"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <EditText
+                android:id="@+id/answerEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="답변을 입력해주세요."
+                android:padding="16dp"
+                android:backgroundTint="@color/gray"
+                android:textColor="@color/black"
+                android:theme="@style/CustomEditText"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="답변 작성"
+                android:background="@drawable/rounded_background"
+                android:onClick="submitAnswer"
+                android:padding="16dp"
+                android:backgroundTint="@color/colorPrimary"/>
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

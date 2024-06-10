@@ -1,9 +1,13 @@
 package com.example.smobileeapp;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -11,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +41,12 @@ public class EditProblemInfo extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("문제 정보 수정");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼 표시
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
         Intent intent = getIntent();
@@ -217,5 +229,14 @@ public class EditProblemInfo extends AppCompatActivity {
         intent.putExtra("problemNum", problemNum);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // 뒤로가기 버튼 클릭 시 액티비티 종료
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

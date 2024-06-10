@@ -5,6 +5,14 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/white</item>
+    </style>
+
     <style name="Apptheme" parent="Theme.AppCompat.Light.DarkActionBar" />
 
     <style name="SpinnerDivideStyle" parent="android:style/Widget.ListView.DropDown">

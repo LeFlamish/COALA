@@ -1,11 +1,15 @@
 package com.example.smobileeapp;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -27,6 +31,12 @@ public class ProblemListByNum extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("번호로 문제 검색");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼 표시
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
         Intent intent = getIntent();

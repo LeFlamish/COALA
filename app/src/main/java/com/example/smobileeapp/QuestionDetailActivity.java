@@ -237,8 +237,20 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                // Update the UI if an answer is removed
+                String answerId = dataSnapshot.getKey();
+                if (answerId == null) {
+                    return; // answerId가 null인 경우 메서드를 종료
+                }
+                for (int i = 0; i < answerList.size(); i++) {
+                    Answer answer = answerList.get(i);
+                    if (answer != null && answer.getAnswerId() != null && answer.getAnswerId().equals(answerId)) {
+                        answerList.remove(i);
+                        answerAdapter.notifyDataSetChanged();
+                        break;
+                    }
+                }
             }
+
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -329,25 +341,23 @@ public class QuestionDetailActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Answer answer = snapshot.getValue(Answer.class);
                     if (answer != null && answer.isDeleted()) {
-                        // delete 필드가 true인 경우 해당 답변을 삭제합니다.
                         String answerId = snapshot.getKey();
+                        if (answerId == null) {
+                            continue; // answerId가 null인 경우 루프를 계속
+                        }
                         snapshot.getRef().removeValue()
                                 .addOnSuccessListener(aVoid -> {
-                                    // 삭제 성공 시
-                                    Toast.makeText(QuestionDetailActivity.this, "답변이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                                    // 삭제된 답변을 answerList에서 제거하고 ListView를 업데이트합니다.
                                     for (int i = 0; i < answerList.size(); i++) {
-                                        if (answerList.get(i).getAnswerId() != null && answerList.get(i).getAnswerId().equals(answerId)) {
+                                        Answer currentAnswer = answerList.get(i);
+                                        if (currentAnswer != null && currentAnswer.getAnswerId() != null && currentAnswer.getAnswerId().equals(answerId)) {
                                             answerList.remove(i);
                                             answerAdapter.notifyDataSetChanged();
                                             break;
                                         }
                                     }
+                                    Toast.makeText(QuestionDetailActivity.this, "답변이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                                 })
-                                .addOnFailureListener(e -> {
-                                    // 삭제 실패 시
-                                    Toast.makeText(QuestionDetailActivity.this, "답변 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                                });
+                                .addOnFailureListener(e -> Toast.makeText(QuestionDetailActivity.this, "답변 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show());
                     }
                 }
             }

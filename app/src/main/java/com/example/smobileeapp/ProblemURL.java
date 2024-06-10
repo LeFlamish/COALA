@@ -1,14 +1,18 @@
 package com.example.smobileeapp;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 public class ProblemURL extends AppCompatActivity {
     private String ProblemURL;
@@ -30,6 +34,12 @@ public class ProblemURL extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("문제 URL");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼 표시
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
         webView = findViewById(R.id.webview);
