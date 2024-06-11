@@ -119,7 +119,7 @@ public class CustomFragment extends Fragment {
         RecommendListFragment fragment = RecommendListFragment.newInstance(customName);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
-        transaction.addToBackStack(null);
+        //transaction.addToBackStack(null);
         transaction.commit();
     }
 }

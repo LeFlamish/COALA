@@ -58,7 +58,7 @@ public class DifficultyFragment extends Fragment {
         RecommendListFragment fragment = RecommendListFragment.newInstance(difficulty);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
-        transaction.addToBackStack(null);
+        //transaction.addToBackStack(null);
         transaction.commit();
     }
 }

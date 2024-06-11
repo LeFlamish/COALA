@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -119,4 +120,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String getUserIdToken() { return this.userIdToken; }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            // 백스택이 비어있다면 첫 화면으로 이동
+            Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+            if (currentFragment instanceof ProblemListFragment) {
+                // 현재 프래그먼트가 첫 화면이라면 종료
+                super.onBackPressed();
+            } else {
+                // 그렇지 않다면 첫 화면으로 이동
+                switchFragment(ProblemListFragment.newInstance(userIdToken));
+                bottomNavigationView.setSelectedItemId(R.id.navigation_problem_list);
+            }
+        }
+    }
 }

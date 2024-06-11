@@ -141,13 +141,13 @@ public class RecommendListFragment extends Fragment {
         if (difficulty == null) {
             return ContextCompat.getColor(getActivity(), R.color.default_color);
         }
-        if (difficulty.contains("골드")) {
+        if (difficulty.contains("골드")||difficulty.contains("gold")) {
             return ContextCompat.getColor(getActivity(), R.color.gold);
-        } else if (difficulty.contains("실버")) {
+        } else if (difficulty.contains("실버")||difficulty.contains("silver")) {
             return ContextCompat.getColor(getActivity(), R.color.silver);
-        } else if (difficulty.contains("브론즈")) {
+        } else if (difficulty.contains("브론즈")||difficulty.contains("bronze")) {
             return ContextCompat.getColor(getActivity(), R.color.bronze);
-        } else if (difficulty.contains("플래티넘")) {
+        } else if (difficulty.contains("플래티넘")||difficulty.contains("platinum")) {
             return ContextCompat.getColor(getActivity(), R.color.platinum);
         } else {
             return ContextCompat.getColor(getActivity(), R.color.default_color);

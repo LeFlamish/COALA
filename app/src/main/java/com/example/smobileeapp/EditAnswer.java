@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -143,13 +144,20 @@ public class EditAnswer extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+       // Log.d("222","back222");
+        return true;
+    }
+ /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish(); // 뒤로가기 버튼 클릭 시 액티비티 종료
+           // finish(); // 뒤로가기 버튼 클릭 시 액티비티 종료
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+  */
 }

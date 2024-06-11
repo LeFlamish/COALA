@@ -120,7 +120,7 @@ public class AnswerDetailActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (item.getItemId() == android.R.id.home) {
-            finish();
+          onBackPressed();
             return true;
         } else if (id == R.id.action_settings15) {
             DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId).child("answers").child(answerId);
@@ -167,7 +167,15 @@ public class AnswerDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        Log.d("555","back555");
+        onBackPressed();
+        return true;
+    }
+
+    @Override
     public void onBackPressed() {
+        Log.d("444","back444");
         super.onBackPressed();
         Intent intent = new Intent(AnswerDetailActivity.this, QuestionDetailActivity.class);
         intent.putExtra("userIdToken", userIdToken);
