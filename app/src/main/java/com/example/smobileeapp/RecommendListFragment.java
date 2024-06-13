@@ -2,6 +2,7 @@ package com.example.smobileeapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -98,7 +99,13 @@ public class RecommendListFragment extends Fragment {
                     TextView tv_problemNum = new TextView(context);
                     tv_problemNum.setText(String.valueOf(problem.getProblemNum()));
                     tv_problemNum.setTextSize(30);
-                    tv_problemNum.setBackgroundColor(getColorForDifficulty(problem.getDifficulty()));
+                   // tv_problemNum.setBackgroundColor(getColorForDifficulty(problem.getDifficulty()));
+                    tv_problemNum.setBackgroundResource(R.drawable.rounded_background); // 배경 리소스 설정
+
+                    // Drawable을 GradientDrawable로 캐스팅하여 색상을 동적으로 변경
+                    GradientDrawable background = (GradientDrawable) tv_problemNum.getBackground();
+
+                    background.setColor(getColorForDifficulty(problem.getDifficulty()));
                     layout_item.addView(tv_problemNum);
 
                     TextView tv_problemTitle = new TextView(context);
@@ -125,6 +132,21 @@ public class RecommendListFragment extends Fragment {
                     });
 
                     layout.addView(layout_item);
+
+
+
+                     // 문제 항목 아래에 선 추가
+                    View separator = new View(context);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            3
+                    );
+                    separator.setLayoutParams(params);
+                    separator.setBackgroundColor(ContextCompat.getColor(context, R.color.silver));
+                    layout.addView(separator);
+
+
+
                 }
             }
 
