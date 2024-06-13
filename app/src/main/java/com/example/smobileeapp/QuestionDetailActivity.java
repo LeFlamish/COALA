@@ -150,7 +150,23 @@ public class QuestionDetailActivity extends AppCompatActivity {
             });
             return true;
         } else if (id == R.id.action_settings14) {
-            deleteQuestion();
+            DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId);
+            questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Question existingQuestion = dataSnapshot.getValue(Question.class);
+                        if (existingQuestion != null && existingQuestion.getUserIdToken().equals(userIdToken)) {
+                            deleteQuestion();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(QuestionDetailActivity.this, "Failed to load question data: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
             return true;
         }
 

@@ -152,7 +152,27 @@ public class AnswerDetailActivity extends AppCompatActivity {
             });
             return true;
         } else if (id == R.id.action_settings16) {
-            deleteAnswer();
+            DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId).child("answers").child(answerId);
+            questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Answer existingAnswer = dataSnapshot.getValue(Answer.class);
+                        if (existingAnswer != null && existingAnswer.getUserIdToken().equals(userIdToken)) {
+                            deleteAnswer();
+                        } else {
+                            Toast.makeText(AnswerDetailActivity.this, "작성자만 답변을 삭제할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(AnswerDetailActivity.this, "답변을 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(AnswerDetailActivity.this, "Failed to load question data: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
             return true;
         }
 
@@ -232,12 +252,8 @@ public class AnswerDetailActivity extends AppCompatActivity {
                                         Toast.makeText(AnswerDetailActivity.this, "답변 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                            } else {
-                                Toast.makeText(AnswerDetailActivity.this, "답변 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
                             }
                         });
-                    } else {
-                        Toast.makeText(AnswerDetailActivity.this, "replyCount 필드 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
