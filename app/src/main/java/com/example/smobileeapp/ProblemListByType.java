@@ -3,6 +3,7 @@ package com.example.smobileeapp;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -48,7 +49,7 @@ public class ProblemListByType extends AppCompatActivity {
         if (modifiedType.length() > 12) {
             modifiedType.replace(12, modifiedType.length(), "…");
         }
-        getSupportActionBar().setTitle("\"" + modifiedType + "\"" + " 유형 질문 보기");
+        getSupportActionBar().setTitle("\"" + modifiedType + "\"" + " 유형 문제 보기");
 
         mSectionsPagerAdapter = new SectionsPagerAdapterType(getSupportFragmentManager(), problemType, how, userIdToken);
         mViewPager = findViewById(R.id.container);
@@ -70,5 +71,12 @@ public class ProblemListByType extends AppCompatActivity {
         return how;
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // 뒤로가기 버튼 클릭 시 액티비티 종료
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

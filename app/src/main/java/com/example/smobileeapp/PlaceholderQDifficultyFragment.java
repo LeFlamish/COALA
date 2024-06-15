@@ -89,7 +89,7 @@ public class PlaceholderQDifficultyFragment extends Fragment {
                         for (DataSnapshot problemSnapshot : dataSnapshot.getChildren()) {
                             for (DataSnapshot questionSnapshot : problemSnapshot.getChildren()) {
                                 Question question = questionSnapshot.getValue(Question.class);
-                                if (question != null && question.getProblemTier().equals(selectedDifficulty)) {
+                                if (question != null && selectedDifficulty != null && selectedDifficulty.equals(question.getProblemTier())) {
                                     questionList.add(question);
                                 }
                             }

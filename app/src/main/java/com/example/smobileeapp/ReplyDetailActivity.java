@@ -117,6 +117,12 @@ public class ReplyDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadReplyDetail();
+    }
+
     // 댓글 수정 기능 추가
     private void editReply() {
         // 현재 로그인된 사용자의 아이디 가져오기

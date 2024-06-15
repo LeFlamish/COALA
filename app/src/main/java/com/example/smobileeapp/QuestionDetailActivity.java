@@ -158,7 +158,11 @@ public class QuestionDetailActivity extends AppCompatActivity {
                         Question existingQuestion = dataSnapshot.getValue(Question.class);
                         if (existingQuestion != null && existingQuestion.getUserIdToken().equals(userIdToken)) {
                             deleteQuestion();
+                        } else {
+                            Toast.makeText(QuestionDetailActivity.this, "작성자만 질문을 삭제할 수 있습니다.", Toast.LENGTH_SHORT).show();
                         }
+                    } else {
+                        Toast.makeText(QuestionDetailActivity.this, "질문이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -193,6 +197,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
                     incrementAnswerCount(); // answerCount를 증가시키는 메서드 호출
                     Toast.makeText(this, "답변이 제출되었습니다.", Toast.LENGTH_SHORT).show();
                     answerEditText.setText("");
+                    loadAnswers();
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "답변을 제출하는 데 실패했습니다.", Toast.LENGTH_SHORT).show());
     }
@@ -236,50 +241,26 @@ public class QuestionDetailActivity extends AppCompatActivity {
     private void loadAnswers() {
         DatabaseReference answersRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId).child("answers");
 
-        answersListener = new ChildEventListener() {
+        answersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Answer answer = dataSnapshot.getValue(Answer.class);
-                if (answer != null) {
-                    answerList.add(answer);
-                    answerAdapter.notifyDataSetChanged();
-                }
-            }
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                answerList.clear(); // 기존의 답변 리스트를 모두 비웁니다.
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                // Update the UI if an answer is changed
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                String answerId = dataSnapshot.getKey();
-                if (answerId == null) {
-                    return; // answerId가 null인 경우 메서드를 종료
-                }
-                for (int i = 0; i < answerList.size(); i++) {
-                    Answer answer = answerList.get(i);
-                    if (answer != null && answer.getAnswerId() != null && answer.getAnswerId().equals(answerId)) {
-                        answerList.remove(i);
-                        answerAdapter.notifyDataSetChanged();
-                        break;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Answer answer = snapshot.getValue(Answer.class);
+                    if (answer != null) {
+                        answerList.add(answer);
                     }
                 }
-            }
 
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                // Update the UI if an answer is moved
+                answerAdapter.notifyDataSetChanged(); // 어댑터에 변경 사항을 알립니다.
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(QuestionDetailActivity.this, "답변을 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(QuestionDetailActivity.this, "Failed to load answers: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        };
-
-        answersRef.addChildEventListener(answersListener);
+        });
     }
 
     private void deleteQuestion() {
@@ -316,11 +297,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
                                         Toast.makeText(QuestionDetailActivity.this, "질문 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                            } else {
-                                Toast.makeText(QuestionDetailActivity.this, "작성자만 질문을 삭제할 수 있습니다.", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(QuestionDetailActivity.this, "질문이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -343,6 +320,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
         super.onResume();
         // 모든 답변 필드를 확인하고 delete가 true인 경우 삭제를 수행합니다.
         checkAndDeleteAnswers();
+        displayQuestion();
     }
 
     private void checkAndDeleteAnswers() {
@@ -363,14 +341,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
                         }
                         snapshot.getRef().removeValue()
                                 .addOnSuccessListener(aVoid -> {
-                                    for (int i = 0; i < answerList.size(); i++) {
-                                        Answer currentAnswer = answerList.get(i);
-                                        if (currentAnswer != null && currentAnswer.getAnswerId() != null && currentAnswer.getAnswerId().equals(answerId)) {
-                                            answerList.remove(i);
-                                            answerAdapter.notifyDataSetChanged();
-                                            break;
-                                        }
-                                    }
+                                    answerList.clear(); // 답변 리스트를 비웁니다.
+                                    loadAnswers(); // 답변을 다시 로드합니다.
                                     Toast.makeText(QuestionDetailActivity.this, "답변이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                                 })
                                 .addOnFailureListener(e -> Toast.makeText(QuestionDetailActivity.this, "답변 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show());

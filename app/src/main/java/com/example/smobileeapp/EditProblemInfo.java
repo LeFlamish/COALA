@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -24,13 +25,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class EditProblemInfo extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private String userIdToken;
     private int problemNum;
+    private EditText etcInput; // etcInput을 전역으로 선언
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,25 @@ public class EditProblemInfo extends AppCompatActivity {
         List<String> difficultyLevels = Arrays.asList(getResources().getStringArray(R.array.difficulty_array));
         CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(this, R.layout.custom_spinner_item, difficultyLevels);
         difficultySpinner.setAdapter(adapter);
+
+        // etcInput 초기화
+        etcInput = findViewById(R.id.etc_input);
+
+        // etcCheckBox의 상태에 따라 초기 가시성 설정
+        CheckBox etcCheckBox = findViewById(R.id.etc);
+        etcInput.setVisibility(etcCheckBox.isChecked() ? View.VISIBLE : View.GONE);
+
+        // etcCheckBox의 체크 상태 변경 리스너 설정
+        etcCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    etcInput.setVisibility(View.VISIBLE); // etcCheckBox가 선택된 경우, etcInput 보이기
+                } else {
+                    etcInput.setVisibility(View.GONE); // etcCheckBox가 선택되지 않은 경우, etcInput 숨기기
+                }
+            }
+        });
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -106,23 +129,31 @@ public class EditProblemInfo extends AppCompatActivity {
             }
         }
 
-        setCheckboxState(R.id.bruteforce, problem.getProblemType().contains("브루트포스 알고리즘"));
-        setCheckboxState(R.id.BFS, problem.getProblemType().contains("BFS"));
-        setCheckboxState(R.id.DFS, problem.getProblemType().contains("DFS"));
-        setCheckboxState(R.id.DP, problem.getProblemType().contains("DP"));
-        setCheckboxState(R.id.backtracking, problem.getProblemType().contains("백트래킹"));
-        setCheckboxState(R.id.queue, problem.getProblemType().contains("큐"));
-        setCheckboxState(R.id.stack, problem.getProblemType().contains("스택"));
-        setCheckboxState(R.id.math, problem.getProblemType().contains("수학"));
-        setCheckboxState(R.id.realization, problem.getProblemType().contains("구현"));
-        setCheckboxState(R.id.datastructure, problem.getProblemType().contains("자료 구조"));
-        setCheckboxState(R.id.greedy, problem.getProblemType().contains("그리디 알고리즘"));
-        setCheckboxState(R.id.sort, problem.getProblemType().contains("정렬"));
-        setCheckboxState(R.id.string, problem.getProblemType().contains("문자열"));
-        setCheckboxState(R.id.graphtheory, problem.getProblemType().contains("그래프 이론"));
-        setCheckboxState(R.id.graphsearch, problem.getProblemType().contains("그래프 탐색"));
-        setCheckboxState(R.id.tree, problem.getProblemType().contains("트리"));
-        setCheckboxState(R.id.simulation, problem.getProblemType().contains("시뮬레이션"));
+        // Predefined types
+        Set<String> predefinedTypes = new HashSet<>(Arrays.asList(
+                "브루트포스", "BFS", "DFS", "DP", "백트래킹", "큐", "스택", "수학",
+                "구현", "자료 구조", "그리디 알고리즘", "정렬", "문자열",
+                "그래프 이론", "그래프 탐색", "트리", "시뮬레이션"));
+
+        // Split the problem types
+        String[] problemTypes = problem.getProblemType().split(", ");
+        StringBuilder etcTypes = new StringBuilder();
+
+        for (String type : problemTypes) {
+            if (predefinedTypes.contains(type)) {
+                setCheckboxState(getCheckboxId(type), true);
+            } else {
+                if (etcTypes.length() > 0) {
+                    etcTypes.append(", ");
+                }
+                etcTypes.append(type);
+            }
+        }
+
+        if (etcTypes.length() > 0) {
+            setCheckboxState(R.id.etc, true);
+            etcInput.setText(etcTypes.toString());
+        }
 
         RadioGroup radioGroup = findViewById(R.id.onmyown);
         if (problem.getOnmyown().equals("yes")) {
@@ -135,9 +166,52 @@ public class EditProblemInfo extends AppCompatActivity {
         etProblemMemo.setText(problem.getProblemMemo());
     }
 
+    private int getCheckboxId(String type) {
+        switch (type) {
+            case "브루트포스":
+                return R.id.bruteforce;
+            case "BFS":
+                return R.id.BFS;
+            case "DFS":
+                return R.id.DFS;
+            case "DP":
+                return R.id.DP;
+            case "백트래킹":
+                return R.id.backtracking;
+            case "큐":
+                return R.id.queue;
+            case "스택":
+                return R.id.stack;
+            case "수학":
+                return R.id.math;
+            case "구현":
+                return R.id.realization;
+            case "자료 구조":
+                return R.id.datastructure;
+            case "그리디 알고리즘":
+                return R.id.greedy;
+            case "정렬":
+                return R.id.sort;
+            case "문자열":
+                return R.id.string;
+            case "그래프 이론":
+                return R.id.graphtheory;
+            case "그래프 탐색":
+                return R.id.graphsearch;
+            case "트리":
+                return R.id.tree;
+            case "시뮬레이션":
+                return R.id.simulation;
+            default:
+                return -1;
+        }
+    }
+
     private void setCheckboxState(int checkBoxId, boolean isChecked) {
-        CheckBox checkBox = findViewById(checkBoxId);
-        checkBox.setChecked(isChecked);
+        if (checkBoxId != -1) {
+            CheckBox checkBox = findViewById(checkBoxId);
+            checkBox.setChecked(isChecked);
+        }
     }
 
     public void updateProblem(View v) {
@@ -168,9 +242,10 @@ public class EditProblemInfo extends AppCompatActivity {
         boolean graphsearch = ((CheckBox) findViewById(R.id.graphsearch)).isChecked();
         boolean tree = ((CheckBox) findViewById(R.id.tree)).isChecked();
         boolean simulation = ((CheckBox) findViewById(R.id.simulation)).isChecked();
+        boolean etc = ((CheckBox) findViewById(R.id.etc)).isChecked();
 
         StringBuilder problemTypeBuilder = new StringBuilder();
-        if (bruteforce) problemTypeBuilder.append("브루트포스 알고리즘, ");
+        if (bruteforce) problemTypeBuilder.append("브루트포스, ");
         if (bfs) problemTypeBuilder.append("BFS, ");
         if (dfs) problemTypeBuilder.append("DFS, ");
         if (dp) problemTypeBuilder.append("DP, ");
@@ -187,6 +262,10 @@ public class EditProblemInfo extends AppCompatActivity {
         if (graphsearch) problemTypeBuilder.append("그래프 탐색, ");
         if (tree) problemTypeBuilder.append("트리, ");
         if (simulation) problemTypeBuilder.append("시뮬레이션, ");
+        if (etc) {
+            String etcTypes = etcInput.getText().toString();
+            problemTypeBuilder.append(etcTypes).append(", ");
+        }
 
         String problemType = problemTypeBuilder.toString();
         if (problemType.endsWith(", ")) {

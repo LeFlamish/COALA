@@ -15,6 +15,9 @@
         android:theme="@style/Theme.SMobileEApp"
         tools:targetApi="31">
         <activity
+            android:name=".ChatBot"
+            android:exported="false" />
+        <activity
             android:name=".QuestionsByType"
             android:exported="true"
             android:label="유형으로 질문 검색"

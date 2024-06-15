@@ -206,6 +206,9 @@ public class PlaceholderQTypeFragment extends Fragment {
 
     // 문제 유효성 검사
     private boolean isValidProblem(Question question) {
+        if (how == null || question == null) {
+            return false;
+        }
         if (how.equals("musthaveall")) {
             return containsAllTypes(question.getProblemType(), problemType);
         } else if (how.equals("atleastone")) {
@@ -216,6 +219,9 @@ public class PlaceholderQTypeFragment extends Fragment {
 
     // 문제 유형에 모든 타입이 포함되어 있는지 확인
     private boolean containsAllTypes(String problemType, String type) {
+        if (problemType == null || type == null) {
+            return false;
+        }
         String[] typeWords = type.split(", ");
         for (String word : typeWords) {
             if (!problemType.contains(word)) {
@@ -227,6 +233,9 @@ public class PlaceholderQTypeFragment extends Fragment {
 
     // 문제 유형에 하나라도 타입이 포함되어 있는지 확인
     private boolean containsAnyType(String problemType, String type) {
+        if (problemType == null || type == null) {
+            return false;
+        }
         String[] typeWords = type.split(", ");
         for (String word : typeWords) {
             if (problemType.contains(word)) {

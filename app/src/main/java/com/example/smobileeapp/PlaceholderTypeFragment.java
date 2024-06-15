@@ -34,7 +34,7 @@ public class PlaceholderTypeFragment extends Fragment {
     private String userIdToken;
     private String problemType;
     private int how;
-    private PlaceholderTypeFragment.ProblemListAdapter adapter;
+    private ProblemListAdapter adapter;
     private List<Problem> problemList = new ArrayList<>();
 
     public PlaceholderTypeFragment() {
@@ -81,7 +81,6 @@ public class PlaceholderTypeFragment extends Fragment {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     problemList.clear();
 
-                    List<Problem> problemList = new LinkedList<>();
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                         if (userSnapshot.getKey().equals(userIdToken)) {
                             for (DataSnapshot problemSnapshot : userSnapshot.getChildren()) {
@@ -174,7 +173,8 @@ public class PlaceholderTypeFragment extends Fragment {
                             });
                     }
 
-                    PlaceholderTypeFragment.ProblemListAdapter adapter = new PlaceholderTypeFragment.ProblemListAdapter(getActivity(), problemList);
+                    // ProblemListAdapter를 생성할 때 getActivity() 대신 getContext()를 사용하여 문제를 어댑터에 전달
+                    adapter = new ProblemListAdapter(getContext(), problemList);
                     listView.setAdapter(adapter);
                 }
 
@@ -189,9 +189,11 @@ public class PlaceholderTypeFragment extends Fragment {
 
     private class ProblemListAdapter extends ArrayAdapter<Problem> {
         private final List<Problem> problems;
+        private final Context mContext;
 
         ProblemListAdapter(Context context, List<Problem> problems) {
             super(context, 0, problems);
+            this.mContext = context != null ? context : getActivity(); // getActivity()로 변경
             this.problems = problems;
         }
 
@@ -199,7 +201,7 @@ public class PlaceholderTypeFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_problem, parent, false);
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.item_problem, parent, false);
             }
 
             Problem problem = getItem(position);
@@ -222,12 +224,11 @@ public class PlaceholderTypeFragment extends Fragment {
                 tv_problemType.setText(problem.getProblemType());
             }
 
-
             convertView.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), ProblemInfo.class);
+                Intent intent = new Intent(mContext, ProblemInfo.class);
                 intent.putExtra("userIdToken", userIdToken);
-                intent.putExtra("problemNum", problem.getProblemNum());
-                startActivity(intent);
+                intent.putExtra("problemNum", problem.getProblemNum()); // 문제가 null이 아닌지 확인
+                mContext.startActivity(intent);
             });
 
             return convertView;
@@ -267,16 +268,21 @@ public class PlaceholderTypeFragment extends Fragment {
     }
 
     private int getColorForDifficulty(String difficulty) {
+        Context context = getContext(); // Get the context
+        if (context == null) {
+            return ContextCompat.getColor(requireContext(), R.color.default_color); // Default color if context is null
+        }
+
         if (difficulty.contains("골드")) {
-            return ContextCompat.getColor(getActivity(), R.color.gold);
+            return ContextCompat.getColor(context, R.color.gold);
         } else if (difficulty.contains("실버")) {
-            return ContextCompat.getColor(getActivity(), R.color.silver);
+            return ContextCompat.getColor(context, R.color.silver);
         } else if (difficulty.contains("브론즈")) {
-            return ContextCompat.getColor(getActivity(), R.color.bronze);
+            return ContextCompat.getColor(context, R.color.bronze);
         } else if (difficulty.contains("플래티넘")) {
-            return ContextCompat.getColor(getActivity(), R.color.platinum);
+            return ContextCompat.getColor(context, R.color.platinum);
         } else {
-            return ContextCompat.getColor(getActivity(), R.color.default_color);
+            return ContextCompat.getColor(context, R.color.default_color);
         }
     }
 }

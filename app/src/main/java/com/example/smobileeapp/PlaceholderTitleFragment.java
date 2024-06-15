@@ -185,9 +185,11 @@ public class PlaceholderTitleFragment extends Fragment {
 
     private class ProblemListAdapter extends ArrayAdapter<Problem> {
         private final List<Problem> problems;
+        private final Context mContext;
 
         ProblemListAdapter(Context context, List<Problem> problems) {
             super(context, 0, problems);
+            this.mContext = context;
             this.problems = problems;
         }
 
@@ -195,7 +197,7 @@ public class PlaceholderTitleFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_problem, parent, false);
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.item_problem, parent, false);
             }
 
             Problem problem = getItem(position);
@@ -218,12 +220,11 @@ public class PlaceholderTitleFragment extends Fragment {
                 tv_problemType.setText(problem.getProblemType());
             }
 
-
             convertView.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), ProblemInfo.class);
+                Intent intent = new Intent(mContext, ProblemInfo.class);
                 intent.putExtra("userIdToken", userIdToken);
                 intent.putExtra("problemNum", problem.getProblemNum());
-                startActivity(intent);
+                mContext.startActivity(intent);
             });
 
             return convertView;

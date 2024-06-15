@@ -118,7 +118,7 @@ public class EditAnswer extends AppCompatActivity {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                 if (databaseError == null) {
-                    Toast.makeText(EditAnswer.this, "답변이 성공적으로 등록되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditAnswer.this, "답변이 성공적으로 수정되었습니다.", Toast.LENGTH_SHORT).show();
                     Intent it = new Intent(EditAnswer.this, AnswerDetailActivity.class);
                     it.putExtra("userIdToken", userIdToken);
                     it.putExtra("problemNum", problemNum);

@@ -110,7 +110,7 @@ public class PlaceholderQTitleFragment extends Fragment {
                         for (DataSnapshot problemSnapshot : dataSnapshot.getChildren()) {
                             for (DataSnapshot questionSnapshot : problemSnapshot.getChildren()) {
                                 Question question = questionSnapshot.getValue(Question.class);
-                                if (question != null && question.getProblemTitle().contains(problemTitle)) {
+                                if (question != null && question.getProblemTitle() != null && problemTitle != null && question.getProblemTitle().contains(problemTitle)) {
                                     questionList.add(question);
                                 }
                             }

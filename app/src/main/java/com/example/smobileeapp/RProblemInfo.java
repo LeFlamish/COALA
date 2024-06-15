@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +22,12 @@ public class RProblemInfo extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private int problemNum;
+    private String problemTitle;
+    private String problemType;
+    private String difficulty;
+
     private String type;
+    private String userIdToken; // 유저 토큰 변수 추가
 
     private TextView tvProblemNum;
     private TextView tvProblemTitle;
@@ -41,8 +47,10 @@ public class RProblemInfo extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         Intent intent = getIntent();
+
         type = intent.getStringExtra("type");
         problemNum = intent.getIntExtra("problemNum", 0);
+        userIdToken = intent.getStringExtra("userIdToken"); // 유저 토큰 받아오기
 
         tvProblemNum = findViewById(R.id.problemNum);
         tvProblemTitle = findViewById(R.id.problemTitle);
@@ -77,7 +85,11 @@ public class RProblemInfo extends AppCompatActivity {
                         tvProblemTitle.setText(problem.getProblemTitle());
                         tvProblemDifficulty.setText(problem.getDifficulty());
                         tvProblemType.setText(problem.getProblemType());
-                        tvProblemURL.setText("https://www.acmicpc.net/problem/" + problem.getProblemNum());
+                        tvProblemURL.setText(problem.getProblemURL());
+
+                        problemTitle=problem.getProblemTitle();
+                        problemType=problem.getProblemType();
+                        difficulty=problem.getDifficulty();
                     } else {
                         // 해당 문제가 없는 경우
                         Toast.makeText(RProblemInfo.this, "해당 문제 정보를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -96,6 +108,22 @@ public class RProblemInfo extends AppCompatActivity {
                 Toast.makeText(RProblemInfo.this, "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
             }
         });
+
+        Button btnRegister = findViewById(R.id.btnRegister);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RProblemInfo.this, ProblemReg.class);
+                intent.putExtra("userIdToken", userIdToken); // 유저 토큰 전달
+                intent.putExtra("type", type); // 문제 정보 전달
+                intent.putExtra("problemNum", problemNum);
+                intent.putExtra("problemType", problemType);
+                intent.putExtra("problemTitle", problemTitle);
+                intent.putExtra("difficulty", difficulty);
+                // 문제 정보 전달
+                startActivity(intent);
+            }
+        });
     }
 
     // 문제 URL 열기
@@ -105,11 +133,9 @@ public class RProblemInfo extends AppCompatActivity {
         intent.putExtra("ProblemURL", url);
         startActivity(intent);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-
         if (item.getItemId() == android.R.id.home) {
             finish(); // 뒤로가기 버튼 클릭 시 액티비티 종료
             return true;

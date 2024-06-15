@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -35,6 +36,7 @@ public class QuestionReg extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private String userIdToken;
+    private EditText etcInput; // etcInput을 전역으로 선언
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,25 @@ public class QuestionReg extends AppCompatActivity {
         List<String> difficultyLevels = Arrays.asList(getResources().getStringArray(R.array.difficulty_array));
         CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(this, R.layout.custom_spinner_item, difficultyLevels);
         difficultySpinner.setAdapter(adapter);
+
+        // etcInput 초기화
+        etcInput = findViewById(R.id.etc_input);
+
+        // etcCheckBox의 상태에 따라 초기 가시성 설정
+        CheckBox etcCheckBox = findViewById(R.id.etc);
+        etcInput.setVisibility(etcCheckBox.isChecked() ? View.VISIBLE : View.GONE);
+
+        // etcCheckBox의 체크 상태 변경 리스너 설정
+        etcCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    etcInput.setVisibility(View.VISIBLE); // etcCheckBox가 선택된 경우, etcInput 보이기
+                } else {
+                    etcInput.setVisibility(View.GONE); // etcCheckBox가 선택되지 않은 경우, etcInput 숨기기
+                }
+            }
+        });
     }
 
     @Override
@@ -132,6 +153,14 @@ public class QuestionReg extends AppCompatActivity {
         addProblemTypeIfChecked(problemTypes, R.id.tree, "트리");
         addProblemTypeIfChecked(problemTypes, R.id.simulation, "시뮬레이션");
 
+        CheckBox etcCheckBox = findViewById(R.id.etc);
+        if (etcCheckBox.isChecked()) {
+            String etcTypes = etcInput.getText().toString().trim();
+            if (!TextUtils.isEmpty(etcTypes)) {
+                problemTypes.add(etcTypes);
+            }
+        }
+
         String problemType = TextUtils.join(", ", problemTypes);
 
         Question question = new Question(questionId, questionTitle, questionText, problemTitle, problemTier, problemType, userIdToken, problemNum, currentTime);
@@ -139,6 +168,10 @@ public class QuestionReg extends AppCompatActivity {
 
         Toast.makeText(this, "질문을 등록하는 데 성공했습니다.", Toast.LENGTH_SHORT).show();
 
+        Intent intent = new Intent(QuestionReg.this, QuestionDetailActivity.class);
+        intent.putExtra("questionId", questionId);
+        intent.putExtra("problemNum", problemNum);
+        startActivity(intent);
         finish();
     }
 

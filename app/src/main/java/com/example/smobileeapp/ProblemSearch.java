@@ -3,12 +3,14 @@ package com.example.smobileeapp;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -26,6 +28,7 @@ public class ProblemSearch extends AppCompatActivity {
     private String userIdToken;
     private EditText problemSearch;
     private RadioGroup searchBy, allorone, searchByOnMyOwn;
+    private EditText etcInput; // etcInput을 전역으로 선언
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +93,25 @@ public class ProblemSearch extends AppCompatActivity {
         List<String> difficultyLevels = Arrays.asList(getResources().getStringArray(R.array.difficulty_array));
         CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(this, R.layout.custom_spinner_item, difficultyLevels);
         difficultySpinner.setAdapter(adapter);
+
+        // etcInput 초기화
+        etcInput = findViewById(R.id.etc_input);
+
+        // etcCheckBox의 상태에 따라 초기 가시성 설정
+        CheckBox etcCheckBox = findViewById(R.id.etc);
+        etcInput.setVisibility(etcCheckBox.isChecked() ? View.VISIBLE : View.GONE);
+
+        // etcCheckBox의 체크 상태 변경 리스너 설정
+        etcCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    etcInput.setVisibility(View.VISIBLE); // etcCheckBox가 선택된 경우, etcInput 보이기
+                } else {
+                    etcInput.setVisibility(View.GONE); // etcCheckBox가 선택되지 않은 경우, etcInput 숨기기
+                }
+            }
+        });
     }
 
     // 문제 검색 메서드
@@ -193,6 +215,10 @@ public class ProblemSearch extends AppCompatActivity {
         CheckBox simulationCheckBox = (CheckBox) findViewById(R.id.simulation);
         boolean simulation = simulationCheckBox.isChecked();
 
+        EditText etcInput = findViewById(R.id.etc_input);
+        CheckBox etcCheckBox = findViewById(R.id.etc);
+        boolean etc = etcCheckBox.isChecked();
+
         StringBuilder problemTypeBuilder = new StringBuilder();
 
         if (bruteforce) {
@@ -245,6 +271,15 @@ public class ProblemSearch extends AppCompatActivity {
         }
         if (simulation) {
             problemTypeBuilder.append("시뮬레이션, ");
+        }
+
+        if (etc) {
+            // etc 체크박스가 체크되어 있으면 사용자가 입력한 문자열을 가져와서 설정
+            String etcText = etcInput.getText().toString().trim(); // 사용자가 입력한 문자열
+            if (!TextUtils.isEmpty(etcText)) {
+                // 사용자가 입력한 문자열이 비어 있지 않다면 설정
+                problemTypeBuilder.append(etcText + ", "); // 기타 유형 문자열에 추가
+            }
         }
 
         String problemType = problemTypeBuilder.toString();

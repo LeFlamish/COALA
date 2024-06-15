@@ -221,9 +221,25 @@
                         android:buttonTint="@color/gray"
                         android:textColor="@android:color/black" />
 
-                    <!-- 추가적인 체크박스들... -->
+                    <CheckBox
+                        android:id="@+id/etc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="기타"
+                        android:buttonTint="@color/gray"
+                        android:textColor="@android:color/black" />
                 </LinearLayout>
             </LinearLayout>
+            <!-- 기타 선택 시 보여질 EditText -->
+            <EditText
+                android:id="@+id/etc_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="기타 문제 유형을 입력하세요."
+                android:backgroundTint="@color/gray"
+                android:textColor="@android:color/black"
+                android:theme="@style/CustomEditText"
+                android:visibility="gone"/> <!-- 기본적으로는 숨겨둡니다. -->
         </LinearLayout>
 
         <LinearLayout
