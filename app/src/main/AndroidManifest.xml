@@ -15,8 +15,17 @@
         android:theme="@style/Theme.SMobileEApp"
         tools:targetApi="31">
         <activity
+            android:name=".RProblemReg"
+            android:exported="true"
+            android:label="내가 푼 문제 등록"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
             android:name=".ChatBot"
-            android:exported="false" />
+            android:exported="true"
+            android:label="GPT한테 물어보기"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".QuestionsByType"
             android:exported="true"

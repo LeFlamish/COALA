@@ -113,7 +113,7 @@ public class RProblemInfo extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RProblemInfo.this, ProblemReg.class);
+                Intent intent = new Intent(RProblemInfo.this, RProblemReg.class);
                 intent.putExtra("userIdToken", userIdToken); // 유저 토큰 전달
                 intent.putExtra("type", type); // 문제 정보 전달
                 intent.putExtra("problemNum", problemNum);
