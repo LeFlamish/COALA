@@ -12,29 +12,24 @@
         android:layout_weight="1">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="70dp">
-
-            <LinearLayout
-                android:orientation="horizontal"
+            android:paddingTop="50dp">
+            <TextView
+                android:layout_width="90sp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:text="답변 내용"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/answerDetailTextView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="90sp"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:text="답변 내용"
-                    android:textColor="@color/black"/>
-                <TextView
-                    android:id="@+id/answerDetailTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="16dp"
-                    android:textColor="@color/black"
-                    android:text="답변을 불러오는 중입니다..."/>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:paddingRight="16dp"
+                android:padding="16dp"
+                android:textColor="@color/black"
+                android:text="답변을 불러오는 중입니다..."/>
         </LinearLayout>
     </ScrollView>
 
@@ -43,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp"/>
+        android:padding="16dp" />
 
     <ScrollView
         android:layout_width="match_parent"
