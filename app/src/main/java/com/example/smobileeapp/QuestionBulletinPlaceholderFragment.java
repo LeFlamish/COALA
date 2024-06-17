@@ -157,6 +157,19 @@ public class QuestionBulletinPlaceholderFragment extends Fragment {
                             }
                         });
                         break;
+                    case 3: // 추천 수 많은 질문 순서대로 정렬
+                        Collections.sort(questionList, new Comparator<Question>() {
+                            @Override
+                            public int compare(Question q1, Question q2) {
+                                int goodHelpComparison = Integer.compare(q2.getGoodHelpCount(), q1.getGoodHelpCount());
+                                if (goodHelpComparison == 0) {
+                                    return Integer.compare(q1.getProblemNum(), q2.getProblemNum()); // 문제 번호 순으로 정렬
+                                } else {
+                                    return goodHelpComparison;
+                                }
+                            }
+                        });
+                        break;
                     default: // 최신순
                         Collections.sort(questionList, (q1, q2) -> Long.compare(q2.getTimePosted(), q1.getTimePosted()));
                 }

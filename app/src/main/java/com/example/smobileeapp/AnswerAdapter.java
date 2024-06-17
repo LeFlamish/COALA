@@ -28,6 +28,7 @@ public class AnswerAdapter extends ArrayAdapter<Answer> {
         }
 
         TextView answerTextView = convertView.findViewById(R.id.answerTextView);
+        TextView likeCountTextView = convertView.findViewById(R.id.likeCountTextView);
         TextView commentCountTextView = convertView.findViewById(R.id.commentCountTextView); // 새로 추가된 TextView
 
         Answer answer = getItem(position);
@@ -36,8 +37,11 @@ public class AnswerAdapter extends ArrayAdapter<Answer> {
             answerTextView.setText(answer.getAnswerText());
             answerTextView.setTextColor(getContext().getResources().getColor(R.color.black));
 
+            // 좋아요 개수 설정
+            likeCountTextView.setText("좋아요 개수 : " + answer.getLikeCount());
+
             // 댓글 개수 설정
-            commentCountTextView.setText("댓글 개수: " + answer.getReplyCount());
+            commentCountTextView.setText("댓글 개수 : " + answer.getReplyCount());
 
             // 삭제된 답변에 대한 처리
             if (answer.isDeleted()) {

@@ -72,21 +72,28 @@ public class LoginActivity extends AppCompatActivity {
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Disable the login button to prevent multiple clicks
+                mBtnLogin.setEnabled(false);
+
                 String strEmail = mEtEmail.getText().toString();
                 String strPwd = mEtPwd.getText().toString();
 
                 if (strEmail.length() == 0) {
                     Toast.makeText(LoginActivity.this, "아이디 입력 필요", Toast.LENGTH_SHORT).show();
+                    mBtnLogin.setEnabled(true); // Re-enable the button
                     return;
                 } else if (!strEmail.contains("@") || !strEmail.contains(".com")) {
                     Toast.makeText(LoginActivity.this, "이메일 양식 필수", Toast.LENGTH_SHORT).show();
+                    mBtnLogin.setEnabled(true); // Re-enable the button
                     return;
                 }
                 if (strPwd.length() == 0) {
                     Toast.makeText(LoginActivity.this, "비밀번호 입력 필요", Toast.LENGTH_SHORT).show();
+                    mBtnLogin.setEnabled(true); // Re-enable the button
                     return;
                 } else if (strPwd.length() < 6) {
                     Toast.makeText(LoginActivity.this, "비밀번호는 6자리 이상", Toast.LENGTH_SHORT).show();
+                    mBtnLogin.setEnabled(true); // Re-enable the button
                     return;
                 }
 
@@ -116,6 +123,9 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
                         }
+
+                        // Re-enable the login button regardless of login success or failure
+                        mBtnLogin.setEnabled(true);
                     }
                 });
             }

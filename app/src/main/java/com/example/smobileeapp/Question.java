@@ -1,6 +1,7 @@
 package com.example.smobileeapp;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Question {
     public String questionId;
@@ -16,7 +17,10 @@ public class Question {
     public HashMap<String, Reply> replies; // replies 필드 추가
     public int answerCount; // 답변의 개수를 세는 필드
     public int replyCount; // 댓글의 개수를 세는 필드
+    private int goodHelpCount; // goodhelp의 개수를 나타내는 필드
     private boolean deleted;
+    private Map<String, Boolean> goodHelpsByUsers; // 사용자별 좋아요 여부를 저장할 Map
+    private boolean solved;
 
     public Question() {
         // Default constructor required for calls to DataSnapshot.getValue(Question.class)
@@ -34,6 +38,10 @@ public class Question {
         this.timePosted = timePosted;
         this.answerCount = 0; // 초기화
         this.replyCount = 0; // 초기화
+        this.goodHelpCount = 0; // 초기화
+        this.deleted = false;
+        this.goodHelpsByUsers = new HashMap<>(); // 좋아요 여부를 저장할 Map 초기화
+        this.solved = false;
     }
 
     public void setAnswers(HashMap<String, Answer> answers) {
@@ -97,6 +105,7 @@ public class Question {
     public void setQuestionId(String questionId) {
         this.questionId = questionId;
     }
+
     public void setQuestionTitle(String questionTitle) {
         this.questionTitle = questionTitle;
     }
@@ -123,5 +132,38 @@ public class Question {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public int getGoodHelpCount() {
+        return goodHelpCount;
+    }
+
+    public void setGoodHelpCount(int goodHelpCount) {
+        this.goodHelpCount = goodHelpCount;
+    }
+
+    public Map<String, Boolean> getGoodHelpsByUsers() {
+        return goodHelpsByUsers;
+    }
+
+    public boolean isSolved() { return this.solved; }
+
+    public void setSolved(boolean solved) { this.solved = solved; }
+
+    public void setGoodHelpsByUsers(Map<String, Boolean> goodHelpsByUsers) {
+        this.goodHelpsByUsers = goodHelpsByUsers;
+    }
+
+    // Method to add or remove like by a user
+    public void toggleGoodHelp(String userIdToken) {
+        if (goodHelpsByUsers.containsKey(userIdToken)) {
+            // User already liked, remove like
+            goodHelpsByUsers.remove(userIdToken);
+            goodHelpCount--;
+        } else {
+            // User has not liked, add like
+            goodHelpsByUsers.put(userIdToken, true);
+            goodHelpCount++;
+        }
     }
 }

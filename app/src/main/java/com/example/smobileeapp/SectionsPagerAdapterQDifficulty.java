@@ -25,6 +25,8 @@ public class SectionsPagerAdapterQDifficulty extends FragmentPagerAdapter {
                 return PlaceholderQDifficultyFragment.newInstance(0, selectedDifficulty); // 첫 번째 탭
             case 1:
                 return PlaceholderQDifficultyFragment.newInstance(1, selectedDifficulty); // 두 번째 탭
+            case 2:
+                return PlaceholderQDifficultyFragment.newInstance(2, selectedDifficulty); // 세 번째 탭
             default:
                 return null;
         }
@@ -44,6 +46,8 @@ public class SectionsPagerAdapterQDifficulty extends FragmentPagerAdapter {
                 return "등록 시간 순";
             case 1:
                 return "문제 번호 순";
+            case 2:
+                return "추천 순";
         }
         return null;
     }

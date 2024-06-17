@@ -21,7 +21,9 @@ public class SectionsPagerAdapterQOnMyOwn extends FragmentPagerAdapter {
             case 1:
                 return PlaceholderQOnMyOwnFragment.newInstance(1, userIdToken); // 두 번째 탭
             case 2:
-                return PlaceholderQOnMyOwnFragment.newInstance(2, userIdToken); // 두 번째 탭
+                return PlaceholderQOnMyOwnFragment.newInstance(2, userIdToken); // 세 번째 탭
+            case 3:
+                return PlaceholderQOnMyOwnFragment.newInstance(3, userIdToken); // 네 번째 탭
             default:
                 return null;
         }
@@ -42,6 +44,8 @@ public class SectionsPagerAdapterQOnMyOwn extends FragmentPagerAdapter {
                 return "문제 번호 순";
             case 2:
                 return "문제 난이도 순";
+            case 3:
+                return "추천 순";
         }
         return null;
     }

@@ -350,6 +350,4 @@
             android:text="스스로 풀거나 스스로 못푼 문제 검색"
             android:backgroundTint="@color/colorPrimary"/>
     </LinearLayout>
-
-
 </ScrollView>

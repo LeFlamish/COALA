@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,10 +36,13 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
             convertView = inflater.inflate(R.layout.item_question, parent, false);
         }
 
+        LinearLayout problem_num_layout = convertView.findViewById(R.id.problem_num_layout);
         TextView tvProblemNum = convertView.findViewById(R.id.tv_problem_num);
         TextView problemTitleTextView = convertView.findViewById(R.id.problemTitleTextView);
         TextView questionTextView = convertView.findViewById(R.id.questionTextView);
+        TextView goodhelpCountTextView = convertView.findViewById(R.id.goodghelpCountTextView);
         TextView answerCountTextView = convertView.findViewById(R.id.answerCountTextView);
+        ImageView isSolvedImageView = convertView.findViewById(R.id.success_image);
         Question question = getItem(position);
 
         if (question != null) {
@@ -46,10 +51,19 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
 
             problemTitleTextView.setText(question.getProblemTitle());
             questionTextView.setText(question.getQuestionTitle());
+            goodhelpCountTextView.setText("도움이 됐어요! : " + question.getGoodHelpCount() + "명");
             answerCountTextView.setText("답변 개수 : " + question.getAnswerCount());
 
-            tvProblemNum.setBackgroundResource(R.drawable.rounded_background);
-            GradientDrawable background = (GradientDrawable) tvProblemNum.getBackground();
+            problem_num_layout.setBackgroundResource(R.drawable.rounded_background);
+            // tvProblemNum.setBackgroundResource(R.drawable.rounded_background);
+            GradientDrawable background = (GradientDrawable) problem_num_layout.getBackground();
+
+            boolean solved = question.isSolved();
+            if (solved) {
+                isSolvedImageView.setVisibility(View.VISIBLE);
+            } else {
+                isSolvedImageView.setVisibility(View.INVISIBLE);
+            }
 
             String difficulty = question.getProblemTier();
             if (difficulty != null) {

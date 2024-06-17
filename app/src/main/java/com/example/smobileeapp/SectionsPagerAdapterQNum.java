@@ -23,7 +23,9 @@ public class SectionsPagerAdapterQNum extends FragmentPagerAdapter {
             case 1:
                 return PlaceholderQNumFragment.newInstance(1, problemNum); // 두 번째 탭
             case 2:
-                return PlaceholderQNumFragment.newInstance(2, problemNum); // 두 번째 탭
+                return PlaceholderQNumFragment.newInstance(2, problemNum); // 세 번째 탭
+            case 3:
+                return PlaceholderQNumFragment.newInstance(3, problemNum); // 네 번째 탭
             default:
                 return null;
         }
@@ -44,6 +46,8 @@ public class SectionsPagerAdapterQNum extends FragmentPagerAdapter {
                 return "문제 번호 순";
             case 2:
                 return "문제 난이도 순";
+            case 3:
+                return "추천 순";
         }
         return null;
     }

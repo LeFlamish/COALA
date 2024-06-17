@@ -154,6 +154,7 @@ public class QuestionBulletinFragment extends Fragment {
         pagerAdapter.addFragment(QuestionBulletinPlaceholderFragment.newInstance(0, userIdToken), "최신 순");
         pagerAdapter.addFragment(QuestionBulletinPlaceholderFragment.newInstance(1, userIdToken), "문제 번호 순");
         pagerAdapter.addFragment(QuestionBulletinPlaceholderFragment.newInstance(2, userIdToken), "난이도 순");
+        pagerAdapter.addFragment(QuestionBulletinPlaceholderFragment.newInstance(3, userIdToken), "추천 순");
 
         // Set the adapter to the ViewPager
         viewPager.setAdapter(pagerAdapter);

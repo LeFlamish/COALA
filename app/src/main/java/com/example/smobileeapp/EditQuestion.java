@@ -13,12 +13,14 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -168,6 +170,13 @@ public class EditQuestion extends AppCompatActivity {
 
         EditText etQuestionText = findViewById(R.id.questionText);
         etQuestionText.setText(question.getQuestionText());
+
+        RadioGroup radioGroup = findViewById(R.id.solved);
+        if (question.isSolved()) {
+            radioGroup.check(R.id.yes);
+        } else {
+            radioGroup.check(R.id.no);
+        }
     }
 
     private int getCheckboxId(String type) {
@@ -284,16 +293,34 @@ public class EditQuestion extends AppCompatActivity {
 
         long timePosted = System.currentTimeMillis();
 
+        RadioGroup solvedGroup = findViewById(R.id.solved);
+        boolean solved = false;
+        if (solvedGroup.getCheckedRadioButtonId() == R.id.yes) {
+            solved = true;
+        }
+        if (solvedGroup.getCheckedRadioButtonId() == R.id.no) {
+            solved = false;
+        }
+
         try {
             Question question = new Question(questionId, questionTitle, questionText, problemTitle, difficulty, problemType, userIdToken, problemNum, timePosted);
-            mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId)
-                    .setValue(question)
+            DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId);
+            questionRef.child("questionId").setValue(question.getQuestionId());
+            questionRef.child("questionTitle").setValue(question.getQuestionTitle());
+            questionRef.child("questionText").setValue(question.getQuestionText());
+            questionRef.child("problemTitle").setValue(question.getProblemTitle());
+            questionRef.child("difficulty").setValue(question.getProblemTier());
+            questionRef.child("problemType").setValue(question.getProblemType());
+            questionRef.child("userIdToken").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            questionRef.child("problemNum").setValue(question.getProblemNum());
+            questionRef.child("solved").setValue(solved);
+            questionRef.child("timePosted").setValue(timePosted)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(EditQuestion.this, "질문 업데이트에 성공했습니다.", Toast.LENGTH_SHORT).show();
                         finish();
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(EditQuestion.this, "Failed to update question: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditQuestion.this, "질문 업데이트에 실패했습니다: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     });
 
         } catch (Exception e) {

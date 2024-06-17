@@ -8,14 +8,30 @@
     android:paddingEnd="20dp"
     android:paddingBottom="10dp">
 
-    <TextView
-        android:id="@+id/tv_problem_num"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_background"
-        android:textSize="30sp"
-        android:textColor="@color/light_gray"
-        android:paddingBottom="2dp" />
+        android:orientation="horizontal"
+        android:id="@+id/problem_num_layout">
+
+        <TextView
+            android:id="@+id/tv_problem_num"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:textColor="@color/light_gray"
+            android:paddingBottom="2dp" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:id="@+id/success_image"
+            android:layout_gravity="end|center_vertical"
+            android:src="@drawable/success"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,6 +74,16 @@
             android:textColor="@color/black" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/goodghelpCountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="추천 개수"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:paddingTop="2dp" />
 
     <TextView
         android:id="@+id/answerCountTextView"

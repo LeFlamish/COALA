@@ -1,6 +1,7 @@
 package com.example.smobileeapp;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,6 +54,10 @@ public class AnswerDetailActivity extends AppCompatActivity {
     private ListView repliesListView;
     private List<Reply> repliesList;
     private ReplyAdapter replyAdapter;
+    private ImageButton likeButton;
+    private boolean isLiked = false;
+    private Map<String, Boolean> likesByUsers;
+    private Answer currentAnswer; // 현재 답변 객체, 초기화 필요
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,7 @@ public class AnswerDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_answer_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        likesByUsers = new HashMap<>();
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("답변 상세 보기");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -95,7 +103,19 @@ public class AnswerDetailActivity extends AppCompatActivity {
 
         // 초기에 답변 및 답글 로드
         loadAnswerDetail();
-        loadReplies(); // 이 부분을 추가합니다.
+        loadReplies();
+
+        likeButton = findViewById(R.id.likeButton);
+
+        // 좋아요 버튼 초기 상태 설정
+        checkUserLikedAnswer();
+
+        likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleLike(); // 좋아요 버튼 클릭 시 좋아요 토글
+            }
+        });
 
         repliesListView.setOnItemClickListener((parent, view, position, id) -> {
             Reply selectedReply = repliesList.get(position);
@@ -307,14 +327,14 @@ public class AnswerDetailActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    Answer answer = dataSnapshot.getValue(Answer.class);
-                    if (answer != null) {
+                    currentAnswer = dataSnapshot.getValue(Answer.class);
+                    if (currentAnswer != null) {
                         // 답변 텍스트를 표시
-                        answerDetailTextView.setText(answer.getAnswerText());
+                        answerDetailTextView.setText(currentAnswer.getAnswerText());
                         answerDetailTextView.setTextColor(getResources().getColor(android.R.color.black));
 
-                        // 답변에 대한 답글 목록 로드
-                        loadReplies();
+                        // 좋아요 버튼 상태 설정
+                        checkUserLikedAnswer();
                     }
                 } else {
                     Toast.makeText(AnswerDetailActivity.this, "답변을 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -423,5 +443,152 @@ public class AnswerDetailActivity extends AppCompatActivity {
                 .setValue(count)
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "updateReplyCount: Reply count updated successfully"))
                 .addOnFailureListener(e -> Log.e(TAG, "updateReplyCount: Failed to update Reply count", e));
+    }
+
+    private void toggleLike() {
+        if (currentAnswer == null) {
+            return;
+        }
+
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference likesRef = mDatabase.child("QuestionBulletin")
+                .child(String.valueOf(problemNum))
+                .child(questionId)
+                .child("answers")
+                .child(answerId)
+                .child("likesByUsers")
+                .child(currentUserId);
+
+        likesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // User already liked, so remove the like
+                    likesRef.removeValue();
+                    decrementLikeCount(); // Decrease like count in database
+                    isLiked = false;
+                    updateLikeButton(isLiked); // Update like button UI
+                } else {
+                    // User has not liked, so add the like
+                    likesRef.setValue(true);
+                    incrementLikeCount(); // Increase like count in database
+                    isLiked = true;
+                    updateLikeButton(isLiked); // Update like button UI
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(AnswerDetailActivity.this, "Failed to change like status.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void incrementLikeCount() {
+        DatabaseReference answerRef = mDatabase.child("QuestionBulletin")
+                .child(String.valueOf(problemNum))
+                .child(questionId)
+                .child("answers")
+                .child(answerId);
+
+        answerRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                Answer answer = mutableData.getValue(Answer.class);
+                if (answer == null) {
+                    return Transaction.success(mutableData);
+                }
+
+                // Increase the like count
+                int newLikeCount = answer.getLikeCount() + 1;
+                answer.setLikeCount(newLikeCount);
+
+                // Update the answer object in the database
+                mutableData.setValue(answer);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    Log.e(TAG, "incrementLikeCount:onComplete: ", databaseError.toException());
+                } else {
+                    Log.d(TAG, "incrementLikeCount:onComplete: Like count incremented successfully");
+                }
+            }
+        });
+    }
+
+    private void decrementLikeCount() {
+        DatabaseReference answerRef = mDatabase.child("QuestionBulletin")
+                .child(String.valueOf(problemNum))
+                .child(questionId)
+                .child("answers")
+                .child(answerId);
+
+        answerRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                Answer answer = mutableData.getValue(Answer.class);
+                if (answer == null) {
+                    return Transaction.success(mutableData);
+                }
+
+                // Decrease the like count
+                int newLikeCount = Math.max(answer.getLikeCount() - 1, 0); // Ensure like count doesn't go below zero
+                answer.setLikeCount(newLikeCount);
+
+                // Update the answer object in the database
+                mutableData.setValue(answer);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    Log.e(TAG, "decrementLikeCount:onComplete: ", databaseError.toException());
+                } else {
+                    Log.d(TAG, "decrementLikeCount:onComplete: Like count decremented successfully");
+                }
+            }
+        });
+    }
+
+    private void checkUserLikedAnswer() {
+        if (currentAnswer == null) {
+            return;
+        }
+
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference likesRef = mDatabase.child("QuestionBulletin")
+                .child(String.valueOf(problemNum))
+                .child(questionId)
+                .child("answers")
+                .child(answerId)
+                .child("likesByUsers")
+                .child(currentUserId);
+
+        likesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                isLiked = dataSnapshot.exists();
+                updateLikeButton(isLiked); // 좋아요 버튼 이미지 업데이트
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(AnswerDetailActivity.this, "좋아요 상태를 확인하는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateLikeButton(boolean liked) {
+        if (liked) {
+            likeButton.setImageResource(R.drawable.redheart); // 좋아요 이미지
+        } else {
+            likeButton.setImageResource(R.drawable.lineheart); // 좋아요가 안 눌러진 이미지
+        }
     }
 }

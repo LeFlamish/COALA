@@ -1,10 +1,13 @@
 package com.example.smobileeapp;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -12,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
@@ -19,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -37,6 +42,7 @@ public class QuestionReg extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private String userIdToken;
     private EditText etcInput; // etcInput을 전역으로 선언
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +63,10 @@ public class QuestionReg extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        userIdToken = intent.getStringExtra("userIdToken");
+        mAuth = FirebaseAuth.getInstance();
+        userIdToken = mAuth.getCurrentUser().getUid();
+
+        Log.d(TAG, "Current Question: " + userIdToken);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -84,6 +93,9 @@ public class QuestionReg extends AppCompatActivity {
                 }
             }
         });
+
+        RadioButton noButton = findViewById(R.id.no);
+        noButton.setChecked(true); // "아니오" 버튼을 기본값으로 설정
     }
 
     @Override

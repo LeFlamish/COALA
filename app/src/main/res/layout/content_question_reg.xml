@@ -301,6 +301,40 @@
 
         <LinearLayout
             android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp">
+            <TextView
+                android:paddingTop="6dp"
+                android:layout_width="100sp"
+                android:layout_height="wrap_content"
+                android:text="해결 완료?"
+                android:textColor="@android:color/black" />
+            <RadioGroup
+                android:id="@+id/solved"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/gray"
+                android:orientation="horizontal" >
+                <RadioButton
+                    android:id="@+id/yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="네"
+                    android:buttonTint="@color/gray"
+                    android:textColor="@android:color/black" />
+                <RadioButton
+                    android:id="@+id/no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="아니오"
+                    android:buttonTint="@color/gray"
+                    android:textColor="@android:color/black" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
@@ -308,6 +342,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="질문 등록"
+                android:layout_margin="16dp"
                 android:background="@drawable/rounded_background"
                 android:backgroundTint="@color/colorPrimary"
                 android:onClick="registerQuestion" />

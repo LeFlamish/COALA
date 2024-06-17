@@ -1,0 +1,143 @@
+Index: app/src/main/res/layout/content_answer_detail.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:orientation=\"vertical\"\r\n    tools:context=\".AnswerDetailActivity\"\r\n    android:background=\"@color/white\">\r\n\r\n    <ScrollView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_weight=\"1\">\r\n\r\n        <LinearLayout\r\n            android:orientation=\"vertical\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:paddingTop=\"70dp\">\r\n\r\n            <LinearLayout\r\n                android:orientation=\"horizontal\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\">\r\n                <TextView\r\n                    android:layout_width=\"90sp\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:paddingLeft=\"16dp\"\r\n                    android:text=\"답변 내용\"\r\n                    android:textColor=\"@color/black\"/>\r\n                <TextView\r\n                    android:id=\"@+id/answerDetailTextView\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:paddingRight=\"16dp\"\r\n                    android:textColor=\"@color/black\"\r\n                    android:text=\"답변을 불러오는 중입니다...\"/>\r\n            </LinearLayout>\r\n        </LinearLayout>\r\n    </ScrollView>\r\n\r\n    <ListView\r\n        android:id=\"@+id/repliesListView\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_weight=\"1\"\r\n        android:padding=\"16dp\"/>\r\n\r\n    <ScrollView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\">\r\n\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:orientation=\"vertical\"\r\n            android:padding=\"16dp\">\r\n\r\n            <EditText\r\n                android:id=\"@+id/replyEditText\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:hint=\"댓글을 입력해주세요.\"\r\n                android:padding=\"16dp\"\r\n                android:backgroundTint=\"@color/gray\"\r\n                android:textColor=\"@color/black\"\r\n                android:theme=\"@style/CustomEditText\"/>\r\n\r\n            <Button\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:background=\"@drawable/rounded_background\"\r\n                android:text=\"댓글 제출\"\r\n                android:onClick=\"submitReply\"\r\n                android:padding=\"16dp\"\r\n                android:backgroundTint=\"@color/colorPrimary\"/>\r\n\r\n        </LinearLayout>\r\n    </ScrollView>\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/content_answer_detail.xml b/app/src/main/res/layout/content_answer_detail.xml
+--- a/app/src/main/res/layout/content_answer_detail.xml	(revision a3681a127934d9db0dc55963d03c410f2ae2a89a)
++++ b/app/src/main/res/layout/content_answer_detail.xml	(date 1718622344513)
+@@ -12,29 +12,24 @@
+         android:layout_weight="1">
+ 
+         <LinearLayout
+-            android:orientation="vertical"
++            android:orientation="horizontal"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+-            android:paddingTop="70dp">
+-
+-            <LinearLayout
+-                android:orientation="horizontal"
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content">
+-                <TextView
+-                    android:layout_width="90sp"
+-                    android:layout_height="wrap_content"
+-                    android:paddingLeft="16dp"
+-                    android:text="답변 내용"
+-                    android:textColor="@color/black"/>
+-                <TextView
+-                    android:id="@+id/answerDetailTextView"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:paddingRight="16dp"
+-                    android:textColor="@color/black"
+-                    android:text="답변을 불러오는 중입니다..."/>
+-            </LinearLayout>
++            android:paddingTop="50dp">
++            <TextView
++                android:layout_width="90sp"
++                android:layout_height="wrap_content"
++                android:paddingLeft="16dp"
++                android:text="답변 내용"
++                android:textColor="@color/black"/>
++            <TextView
++                android:id="@+id/answerDetailTextView"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:paddingRight="16dp"
++                android:padding="16dp"
++                android:textColor="@color/black"
++                android:text="답변을 불러오는 중입니다..."/>
+         </LinearLayout>
+     </ScrollView>
+ 
+@@ -43,7 +38,7 @@
+         android:layout_width="match_parent"
+         android:layout_height="0dp"
+         android:layout_weight="1"
+-        android:padding="16dp"/>
++        android:padding="16dp" />
+ 
+     <ScrollView
+         android:layout_width="match_parent"
+Index: app/src/main/res/layout/content_reply_detail.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:orientation=\"vertical\"\r\n    tools:context=\".MainActivity\"\r\n    android:background=\"@color/white\">\r\n\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_weight=\"1\"\r\n        android:orientation=\"vertical\">\r\n\r\n        <ScrollView\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\">\r\n\r\n            <LinearLayout\r\n                android:orientation=\"vertical\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:paddingTop=\"50dp\">\r\n\r\n                <LinearLayout\r\n                    android:orientation=\"horizontal\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\">\r\n                    <TextView\r\n                        android:layout_width=\"90sp\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:padding=\"16dp\"\r\n                        android:text=\"댓글 내용\"\r\n                        android:textColor=\"@color/black\"/>\r\n                    <TextView\r\n                        android:id=\"@+id/replyDetailTextView\"\r\n                        android:layout_width=\"match_parent\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:textColor=\"@color/black\"\r\n                        android:text=\"댓글을 불러오는 중입니다...\"/>\r\n                </LinearLayout>\r\n            </LinearLayout>\r\n        </ScrollView>\r\n    </LinearLayout>\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/content_reply_detail.xml b/app/src/main/res/layout/content_reply_detail.xml
+--- a/app/src/main/res/layout/content_reply_detail.xml	(revision a3681a127934d9db0dc55963d03c410f2ae2a89a)
++++ b/app/src/main/res/layout/content_reply_detail.xml	(date 1718622836397)
+@@ -6,41 +6,31 @@
+     tools:context=".MainActivity"
+     android:background="@color/white">
+ 
+-    <LinearLayout
+-        android:layout_width="match_parent"
+-        android:layout_height="0dp"
+-        android:layout_weight="1"
+-        android:orientation="vertical">
+-
+-        <ScrollView
+-            android:layout_width="match_parent"
+-            android:layout_height="wrap_content">
++    <ScrollView
++        android:layout_width="match_parent"
++        android:layout_height="0dp"
++        android:layout_weight="1">
+ 
+-            <LinearLayout
+-                android:orientation="vertical"
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:paddingTop="50dp">
+-
+-                <LinearLayout
+-                    android:orientation="horizontal"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content">
+-                    <TextView
+-                        android:layout_width="90sp"
+-                        android:layout_height="wrap_content"
+-                        android:padding="16dp"
+-                        android:text="댓글 내용"
+-                        android:textColor="@color/black"/>
+-                    <TextView
+-                        android:id="@+id/replyDetailTextView"
+-                        android:layout_width="match_parent"
+-                        android:layout_height="wrap_content"
+-                        android:textColor="@color/black"
+-                        android:text="댓글을 불러오는 중입니다..."/>
+-                </LinearLayout>
+-            </LinearLayout>
+-        </ScrollView>
+-    </LinearLayout>
++        <LinearLayout
++            android:orientation="horizontal"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:paddingTop="50dp">
++            <TextView
++                android:layout_width="90sp"
++                android:layout_height="wrap_content"
++                android:padding="16dp"
++                android:text="댓글 내용"
++                android:textColor="@color/black"/>
++            <TextView
++                android:id="@+id/replyDetailTextView"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:textColor="@color/black"
++                android:paddingRight="16dp"
++                android:padding="16dp"
++                android:text="댓글을 불러오는 중입니다..."/>
++        </LinearLayout>
++    </ScrollView>
+ 
+ </LinearLayout>
+\ No newline at end of file

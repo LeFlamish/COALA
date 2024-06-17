@@ -10,11 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.smobileeapp.Reply;
-
 import java.util.List;
 
 public class ReplyAdapter extends ArrayAdapter<Reply> {
+
     private Context mContext;
     private List<Reply> mReplyList;
 
@@ -29,7 +28,7 @@ public class ReplyAdapter extends ArrayAdapter<Reply> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
         if (listItem == null) {
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.item_reply, parent, false); // 수정된 레이아웃 파일을 사용합니다.
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.item_reply, parent, false);
         }
 
         Reply currentReply = mReplyList.get(position);
