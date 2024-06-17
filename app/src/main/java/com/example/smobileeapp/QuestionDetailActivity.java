@@ -184,9 +184,14 @@ public class QuestionDetailActivity extends AppCompatActivity {
             return;
         }
 
+        // Disable the submit button to prevent multiple submissions
+        view.setEnabled(false);
+
         String answerId = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId).child("answers").push().getKey();
         if (answerId == null) {
             Toast.makeText(this, "답변을 제출하는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+            // Re-enable the submit button in case of failure
+            view.setEnabled(true);
             return;
         }
 
@@ -198,9 +203,16 @@ public class QuestionDetailActivity extends AppCompatActivity {
                     Toast.makeText(this, "답변이 제출되었습니다.", Toast.LENGTH_SHORT).show();
                     answerEditText.setText("");
                     loadAnswers();
+                    // Re-enable the submit button after successful submission
+                    view.setEnabled(true);
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "답변을 제출하는 데 실패했습니다.", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "답변을 제출하는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    // Re-enable the submit button in case of failure
+                    view.setEnabled(true);
+                });
     }
+
 
     private void displayQuestion() {
         DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId);
