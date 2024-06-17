@@ -31,6 +31,8 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class QuestionDetailActivity extends AppCompatActivity {
@@ -189,6 +191,16 @@ public class QuestionDetailActivity extends AppCompatActivity {
                         answerList.add(answer);
                     }
                 }
+
+                // likeCount 내림차순으로 정렬 (같으면 원래 순서 유지)
+                Collections.sort(answerList, new Comparator<Answer>() {
+                    @Override
+                    public int compare(Answer a1, Answer a2) {
+                        // likeCount 비교 (내림차순)
+                        return Integer.compare(a2.getLikeCount(), a1.getLikeCount());
+                    }
+                });
+
                 answerAdapter.notifyDataSetChanged();
             }
 
