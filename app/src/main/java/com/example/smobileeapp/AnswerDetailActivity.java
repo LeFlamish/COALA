@@ -335,6 +335,9 @@ public class AnswerDetailActivity extends AppCompatActivity {
             return;
         }
 
+        // 버튼을 비활성화합니다.
+        view.setEnabled(false);
+
         long currentTime = System.currentTimeMillis();
 
         String replyId = mDatabase.child("QuestionBulletin")
@@ -347,6 +350,8 @@ public class AnswerDetailActivity extends AppCompatActivity {
 
         if (replyId == null) {
             Toast.makeText(this, "답글을 제출하는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+            // 버튼을 다시 활성화합니다.
+            view.setEnabled(true);
             return;
         }
 
@@ -371,6 +376,8 @@ public class AnswerDetailActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(this, "답글을 제출하는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
                     }
+                    // 버튼을 다시 활성화합니다.
+                    view.setEnabled(true);
                 });
     }
 
