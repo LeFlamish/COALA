@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     android:padding="16dp">
 
     <Button
@@ -11,37 +11,45 @@
         android:layout_width="250dp"
         android:layout_height="100dp"
         android:background="@drawable/rounded_background"
+        android:backgroundTint="@color/white"
+        android:paddingStart="20dp"
+        android:drawableLeft="@drawable/samsung"
         android:text="삼성"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"/>
+        android:textColor="@color/black" />
 
     <Button
         android:id="@+id/btnKakao"
         android:layout_width="250dp"
         android:layout_height="100dp"
-        android:background="@drawable/rounded_background"
-        android:text="카카오"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"/>
+        android:background="@drawable/rounded_background"
+        android:backgroundTint="@color/white"
+        android:paddingStart="20dp"
+        android:drawableLeft="@drawable/kakao"
+        android:text="카카오"
+        android:textColor="@color/black" />
 
     <Button
         android:id="@+id/btnNaver"
         android:layout_width="250dp"
         android:layout_height="100dp"
-        android:background="@drawable/rounded_background"
-        android:text="네이버"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"/>
+        android:background="@drawable/rounded_background"
+        android:backgroundTint="@color/white"
+        android:paddingStart="20dp"
+        android:drawableLeft="@drawable/naver"
+        android:text="네이버"
+        android:textColor="@color/black" />
 
     <Button
         android:id="@+id/btnLG"
         android:layout_width="250dp"
         android:layout_height="100dp"
-        android:background="@drawable/rounded_background"
-        android:text="LG"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"/>
+        android:background="@drawable/rounded_background"
+        android:backgroundTint="@color/white"
+        android:paddingStart="20dp"
+        android:drawableLeft="@drawable/lg"
+        android:text="LG"
+        android:textColor="@color/black" />
 </LinearLayout>

@@ -138,9 +138,9 @@ public class RProblemReg extends AppCompatActivity {
 
         RadioGroup radioGroup = findViewById(R.id.onmyown);
         //if (problem.getOnmyown().equals("yes")) {
-            //radioGroup.check(R.id.yes);
+        //radioGroup.check(R.id.yes);
         //} else {
-            //radioGroup.check(R.id.no);
+        //radioGroup.check(R.id.no);
         //}
 
         EditText etProblemMemo = findViewById(R.id.problemMemo);

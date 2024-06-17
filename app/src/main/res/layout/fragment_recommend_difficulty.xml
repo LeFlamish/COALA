@@ -12,7 +12,7 @@
         android:layout_height="100dp"
         android:background="@drawable/rounded_background"
         android:text="브론즈"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/bronze"
         android:textColor="@android:color/white"/>
 
     <Button
@@ -22,7 +22,7 @@
         android:background="@drawable/rounded_background"
         android:text="실버"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/silver"
         android:textColor="@android:color/white"/>
 
     <Button
@@ -32,7 +32,7 @@
         android:background="@drawable/rounded_background"
         android:text="골드"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/gold"
         android:textColor="@android:color/white"/>
 
     <Button
@@ -42,6 +42,6 @@
         android:background="@drawable/rounded_background"
         android:text="플래티넘"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/platinum"
         android:textColor="@android:color/white"/>
 </LinearLayout>

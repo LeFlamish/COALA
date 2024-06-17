@@ -1,47 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnBFS"
-        android:layout_width="250dp"
-        android:layout_height="100dp"
-        android:background="@drawable/rounded_background"
-        android:text="BFS"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp">
 
-    <Button
-        android:id="@+id/btnDFS"
-        android:layout_width="250dp"
-        android:layout_height="100dp"
-        android:background="@drawable/rounded_background"
-        android:text="DFS"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"/>
+        <Button
+            android:id="@+id/btnBFS"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:background="@drawable/rounded_background"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/baekjoon"
+            android:paddingStart="20dp"
+            android:text="BFS"
+            android:backgroundTint="@color/white"
+            android:textColor="@android:color/black"/>
 
-    <Button
-        android:id="@+id/btnDP"
-        android:layout_width="250dp"
-        android:layout_height="100dp"
-        android:background="@drawable/rounded_background"
-        android:text="DP"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"/>
+        <Button
+            android:id="@+id/btnDFS"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:background="@drawable/rounded_background"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/baekjoon"
+            android:paddingStart="20dp"
+            android:text="DFS"
+            android:backgroundTint="@color/white"
+            android:textColor="@android:color/black"/>
 
-    <Button
-        android:id="@+id/btnGreedy"
-        android:layout_width="250dp"
-        android:layout_height="100dp"
-        android:background="@drawable/rounded_background"
-        android:text="Greedy"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"/>
-</LinearLayout>
+        <Button
+            android:id="@+id/btnDP"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:background="@drawable/rounded_background"
+            android:text="DP"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/baekjoon"
+            android:paddingStart="20dp"
+            android:backgroundTint="@color/white"
+            android:textColor="@android:color/black"/>
+
+        <Button
+            android:id="@+id/btnGreedy"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:background="@drawable/rounded_background"
+            android:text="GREEDY"
+            android:paddingStart="20dp"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/baekjoon"
+            android:backgroundTint="@color/white"
+            android:textColor="@android:color/black"/>
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:background="@drawable/rounded_background"
+            android:text="Back"
+            android:paddingStart="20dp"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/baekjoon"
+            android:backgroundTint="@color/white"
+            android:textColor="@android:color/black"/>
+
+        <Button
+            android:id="@+id/btnData"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:background="@drawable/rounded_background"
+            android:text="Data"
+            android:layout_marginTop="16dp"
+            android:paddingStart="20dp"
+            android:layout_marginBottom="16dp"
+            android:drawableLeft="@drawable/baekjoon"
+            android:backgroundTint="@color/white"
+            android:textColor="@android:color/black"/>
+
+    </LinearLayout>
+
+</ScrollView>

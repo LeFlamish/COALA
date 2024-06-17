@@ -22,6 +22,9 @@ public class AlgorithmFragment extends Fragment {
         Button btnDFS = view.findViewById(R.id.btnDFS);
         Button btnDP = view.findViewById(R.id.btnDP);
         Button btnGreedy = view.findViewById(R.id.btnGreedy);
+        Button btnBack = view.findViewById(R.id.btnBack);
+        Button btnData = view.findViewById(R.id.btnData);
+
 
         btnBFS.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +51,18 @@ public class AlgorithmFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 openRecommendListFragment("Greedy");
+            }
+        });
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRecommendListFragment("Back");
+            }
+        });
+        btnData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRecommendListFragment("Data");
             }
         });
 

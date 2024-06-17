@@ -66,7 +66,7 @@ public class RProblemInfo extends AppCompatActivity {
         } else if (type.equals("samsung") || type.equals("kakao") || type.equals("naver") || type.equals("lg")) {
             databaseRef = FirebaseDatabase.getInstance()
                     .getReference().child("Rproblem").child("company").child(type).child(String.valueOf(problemNum));
-        } else if (type.equals("BFS") || type.equals("DFS") || type.equals("DP") || type.equals("Greedy")) {
+        } else if (type.equals("BFS") || type.equals("DFS") || type.equals("DP") || type.equals("Greedy") || type.equals("Back") || type.equals("Data")) {
             databaseRef = FirebaseDatabase.getInstance()
                     .getReference().child("Rproblem").child("Algorithm").child(type).child(String.valueOf(problemNum));
         } else {
