@@ -105,7 +105,7 @@ public class PlaceholderQOnMyOwnFragment extends Fragment {
                         for (DataSnapshot problemSnapshot : dataSnapshot.getChildren()) {
                             for (DataSnapshot questionSnapshot : problemSnapshot.getChildren()) {
                                 Question question = questionSnapshot.getValue(Question.class);
-                                if (question != null) {
+                                if (question != null && question.getUserIdToken().equals(userIdToken)) {
                                     questionList.add(question);
                                 }
                             }
