@@ -12,6 +12,8 @@
         android:layout_height="100dp"
         android:background="@drawable/rounded_background"
         android:text="브론즈"
+        android:textStyle="bold"
+        android:textSize="17dp"
         android:backgroundTint="@color/bronze"
         android:textColor="@android:color/white"/>
 
@@ -21,6 +23,8 @@
         android:layout_height="100dp"
         android:background="@drawable/rounded_background"
         android:text="실버"
+        android:textStyle="bold"
+        android:textSize="17dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/silver"
         android:textColor="@android:color/white"/>
@@ -31,6 +35,8 @@
         android:layout_height="100dp"
         android:background="@drawable/rounded_background"
         android:text="골드"
+        android:textStyle="bold"
+        android:textSize="17dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/gold"
         android:textColor="@android:color/white"/>
@@ -41,6 +47,8 @@
         android:layout_height="100dp"
         android:background="@drawable/rounded_background"
         android:text="플래티넘"
+        android:textStyle="bold"
+        android:textSize="17dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/platinum"
         android:textColor="@android:color/white"/>

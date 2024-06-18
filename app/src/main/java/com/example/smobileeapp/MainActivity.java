@@ -1,12 +1,10 @@
 package com.example.smobileeapp;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -15,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -60,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction().commitNow(); // 트랜잭션을 즉시 적용
+                clearBackStack();
                 switchFragment(selectedFragment);
             }
             return true;
@@ -73,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
     private void switchFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
-                .commit();
+                .setTransition(FragmentTransaction.TRANSIT_NONE) // 애니메이션 없이 전환
+                .commitNow(); // 트랜잭션을 즉시 적용
     }
 
     private void setToolbarTitle(String title) {
@@ -89,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
 
         if (id == R.id.action_settings12) {
             Intent intent = new Intent(this, QuestionSearch.class);
@@ -119,7 +120,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public String getUserIdToken() { return this.userIdToken; }
+    public String getUserIdToken() {
+        return this.userIdToken;
+    }
 
     @Override
     public void onBackPressed() {
@@ -137,6 +140,13 @@ public class MainActivity extends AppCompatActivity {
                 switchFragment(ProblemListFragment.newInstance(userIdToken));
                 bottomNavigationView.setSelectedItemId(R.id.navigation_problem_list);
             }
+        }
+    }
+
+    private void clearBackStack() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        while (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStackImmediate();
         }
     }
 }

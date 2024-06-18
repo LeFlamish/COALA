@@ -37,6 +37,10 @@ public class CustomFragment extends Fragment {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!isAdded()) {
+                    return;
+                }
+
                 layout.removeAllViews(); // 기존 뷰 삭제
 
                 List<String> customList = new ArrayList<>();
@@ -46,6 +50,7 @@ public class CustomFragment extends Fragment {
                         customList.add(customName);
                     }
                 }
+
                 // 목록을 정렬 및 추가
                 int i = 0;
                 Context context = requireContext(); // 컨텍스트 가져오기
@@ -56,14 +61,14 @@ public class CustomFragment extends Fragment {
                     layout_item.setPadding(20, 20, 25, 40); // 크기 조정
                     layout_item.setBackground(ContextCompat.getDrawable(context, R.drawable.custom_background)); // 배경 추가
 
-// 섹션을 구분하기 위한 여백 추가
+                    // 섹션을 구분하기 위한 여백 추가
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                     );
                     params.setMargins(15, 10, 15, 20); // 위, 아래 여백 설정
                     layout_item.setLayoutParams(params);
-                    String orgin=customEntry;
+                    String orgin = customEntry;
                     String[] parts = customEntry.split("@");
                     String customName = parts.length > 0 ? parts[0] : "Unknown";
                     String creatorName = parts.length > 1 ? parts[1] : "Unknown";
@@ -80,9 +85,10 @@ public class CustomFragment extends Fragment {
                     paramsCustomName.setMargins(15, 30, 35, 35); // 여백 설정
                     tv_customName.setLayoutParams(paramsCustomName);
 
-// TextView를 LinearLayout에 추가
+                    // TextView를 LinearLayout에 추가
                     layout_item.addView(tv_customName);
-// 새로운 LinearLayout 생성하여 만든 사람을 오른쪽에 정렬
+
+                    // 새로운 LinearLayout 생성하여 만든 사람을 오른쪽에 정렬
                     LinearLayout creatorLayout = new LinearLayout(context);
                     creatorLayout.setLayoutParams(new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -92,13 +98,12 @@ public class CustomFragment extends Fragment {
                     creatorLayout.setGravity(Gravity.END); // 오른쪽 정렬
 
                     TextView tv_creatorName = new TextView(context);
-                    tv_creatorName.setText("만든 사람: " + creatorName+" ");
+                    tv_creatorName.setText("만든 사람: " + creatorName + " ");
                     tv_creatorName.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.black));
                     tv_creatorName.setTextSize(15); // 텍스트 크기 조정
                     creatorLayout.addView(tv_creatorName);
 
                     layout_item.addView(creatorLayout);
-
 
                     layout_item.setOnClickListener(v -> openCustomProblemListFragment(orgin));
 
@@ -119,7 +124,7 @@ public class CustomFragment extends Fragment {
         RecommendListFragment fragment = RecommendListFragment.newInstance(customName);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
-        //transaction.addToBackStack(null);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 }

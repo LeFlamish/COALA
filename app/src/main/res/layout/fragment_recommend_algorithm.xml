@@ -19,6 +19,7 @@
             android:drawableLeft="@drawable/baekjoon"
             android:paddingStart="20dp"
             android:text="BFS"
+            android:textSize="17dp"
             android:backgroundTint="@color/white"
             android:textColor="@android:color/black"/>
 
@@ -31,6 +32,7 @@
             android:drawableLeft="@drawable/baekjoon"
             android:paddingStart="20dp"
             android:text="DFS"
+            android:textSize="17dp"
             android:backgroundTint="@color/white"
             android:textColor="@android:color/black"/>
 
@@ -40,6 +42,7 @@
             android:layout_height="100dp"
             android:background="@drawable/rounded_background"
             android:text="DP"
+            android:textSize="17dp"
             android:layout_marginTop="16dp"
             android:drawableLeft="@drawable/baekjoon"
             android:paddingStart="20dp"
@@ -52,6 +55,7 @@
             android:layout_height="100dp"
             android:background="@drawable/rounded_background"
             android:text="GREEDY"
+            android:textSize="14dp"
             android:paddingStart="20dp"
             android:layout_marginTop="16dp"
             android:drawableLeft="@drawable/baekjoon"
@@ -64,6 +68,7 @@
             android:layout_height="100dp"
             android:background="@drawable/rounded_background"
             android:text="Back"
+            android:textSize="16dp"
             android:paddingStart="20dp"
             android:layout_marginTop="16dp"
             android:drawableLeft="@drawable/baekjoon"
@@ -76,6 +81,7 @@
             android:layout_height="100dp"
             android:background="@drawable/rounded_background"
             android:text="Data"
+            android:textSize="16dp"
             android:layout_marginTop="16dp"
             android:paddingStart="20dp"
             android:layout_marginBottom="16dp"

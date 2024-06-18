@@ -14,7 +14,9 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_background"
         android:textSize="30sp"
-        android:textColor="@color/light_gray" />
+        android:textColor="@color/light_gray"
+        android:layout_marginBottom="4dp"
+        android:paddingLeft="5dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,8 +63,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="2dp">
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="60sp"

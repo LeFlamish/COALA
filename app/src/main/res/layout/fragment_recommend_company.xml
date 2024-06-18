@@ -12,9 +12,10 @@
         android:layout_height="100dp"
         android:background="@drawable/rounded_background"
         android:backgroundTint="@color/white"
-        android:paddingStart="20dp"
-        android:drawableLeft="@drawable/samsung"
+        android:paddingStart="30dp"
+        android:drawableLeft="@drawable/samsung_new"
         android:text="삼성"
+        android:textSize="17dp"
         android:textColor="@color/black" />
 
     <Button
@@ -24,9 +25,10 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_background"
         android:backgroundTint="@color/white"
-        android:paddingStart="20dp"
+        android:paddingStart="30dp"
         android:drawableLeft="@drawable/kakao"
         android:text="카카오"
+        android:textSize="17dp"
         android:textColor="@color/black" />
 
     <Button
@@ -36,9 +38,10 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_background"
         android:backgroundTint="@color/white"
-        android:paddingStart="20dp"
+        android:paddingStart="30dp"
         android:drawableLeft="@drawable/naver"
         android:text="네이버"
+        android:textSize="17dp"
         android:textColor="@color/black" />
 
     <Button
@@ -48,8 +51,9 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_background"
         android:backgroundTint="@color/white"
-        android:paddingStart="20dp"
+        android:paddingStart="30dp"
         android:drawableLeft="@drawable/lg"
         android:text="LG"
+        android:textSize="17dp"
         android:textColor="@color/black" />
 </LinearLayout>
