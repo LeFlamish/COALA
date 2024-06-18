@@ -100,17 +100,7 @@ public class PlaceholderQTitleFragment extends Fragment {
                     query = mDatabase.orderByChild("problemTier");
                     break;
                 case 3: // 추천 수 많은 질문 순서대로 정렬
-                    Collections.sort(questionList, new Comparator<Question>() {
-                        @Override
-                        public int compare(Question q1, Question q2) {
-                            int goodHelpComparison = Integer.compare(q2.getGoodHelpCount(), q1.getGoodHelpCount());
-                            if (goodHelpComparison == 0) {
-                                return Integer.compare(q1.getProblemNum(), q2.getProblemNum()); // 문제 번호 순으로 정렬
-                            } else {
-                                return goodHelpComparison;
-                            }
-                        }
-                    });
+                    query = mDatabase;
                     break;
             }
 
@@ -195,6 +185,19 @@ public class PlaceholderQTitleFragment extends Fragment {
                                                 return 20;
                                             default:
                                                 return Integer.MAX_VALUE; // 그 외의 경우는 가장 큰 값으로 처리하여 가장 뒤로 정렬
+                                        }
+                                    }
+                                });
+                                break;
+                            case 3: // 추천 수 많은 질문 순서대로 정렬
+                                Collections.sort(questionList, new Comparator<Question>() {
+                                    @Override
+                                    public int compare(Question q1, Question q2) {
+                                        int goodHelpComparison = Integer.compare(q2.getGoodHelpCount(), q1.getGoodHelpCount());
+                                        if (goodHelpComparison == 0) {
+                                            return Integer.compare(q1.getProblemNum(), q2.getProblemNum()); // 문제 번호 순으로 정렬
+                                        } else {
+                                            return goodHelpComparison;
                                         }
                                     }
                                 });

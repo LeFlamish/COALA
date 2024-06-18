@@ -35,7 +35,6 @@ public class QuestionsByOnMyOwn extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("스스로 해결 유무로 질문 검색");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼 표시
         }
 
