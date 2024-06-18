@@ -250,6 +250,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
             return;
         }
 
+        goodhelpButton.setEnabled(false);
+
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference goodHelpRef = mDatabase.child("QuestionBulletin")
                 .child(String.valueOf(problemNum))
@@ -271,11 +273,13 @@ public class QuestionDetailActivity extends AppCompatActivity {
                     isGoodHelp = true;
                     updateGoodHelpButton(isGoodHelp);
                 }
+                new Handler().postDelayed(() -> goodhelpButton.setEnabled(true), 1000);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(QuestionDetailActivity.this, "좋아요 상태를 변경하는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                goodhelpButton.setEnabled(true);
             }
         });
     }
