@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/left_chat_view"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="#1E88E5"
+        android:padding="8dp"
+        android:layout_marginEnd="100dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/left_chat_text_view"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:text="안녕하세요. 무엇을 도와드릴까요?" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/right_chat_view"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="#66BB6A"
+        android:padding="8dp"
+        android:layout_marginStart="100dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/right_chat_text_view"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+</RelativeLayout>
