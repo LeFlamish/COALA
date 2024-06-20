@@ -1,5 +1,6 @@
 package com.example.smobileeapp;
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,13 +17,19 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -121,7 +128,7 @@ public class ProblemReg extends AppCompatActivity {
                     public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
                             // 문제 번호가 이미 존재하는 경우
-                            Toast.makeText(ProblemReg.this, "이미 등록된 문제입니다.", Toast.LENGTH_SHORT).show();
+                            showUpdateConfirmationDialog(String.valueOf(problemNum));
                         } else {
                             // 문제 번호가 존재하지 않는 경우, 문제 등록 로직 실행
                             registerProblem(problemNum);
@@ -133,6 +140,191 @@ public class ProblemReg extends AppCompatActivity {
                         Toast.makeText(ProblemReg.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    private void showUpdateConfirmationDialog(String problemNum) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProblemReg.this);
+        builder.setTitle("문제 기록 수정");
+        builder.setMessage("이미 등록된 문제입니다. 문제 기록을 수정하시겠습니까?");
+        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Call method to update the existing problem record
+                updateExistingProblem(problemNum);
+            }
+        });
+        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing or handle accordingly if user chooses "No"
+            }
+        });
+        builder.show();
+    }
+
+    private void updateExistingProblem(String problemNum) {
+        EditText etProblemTitle = findViewById(R.id.problemTitle);
+        String problemTitle = etProblemTitle.getText().toString();
+
+        Spinner difficultySpinner = findViewById(R.id.difficultySpinner);
+        String difficulty = difficultySpinner.getSelectedItem().toString();
+
+        CheckBox bruteforceCheckBox = findViewById(R.id.bruteforce);
+        boolean bruteforce = bruteforceCheckBox.isChecked();
+
+        CheckBox bfsCheckBox = findViewById(R.id.BFS);
+        boolean bfs = bfsCheckBox.isChecked();
+
+        CheckBox dfsCheckBox = findViewById(R.id.DFS);
+        boolean dfs = dfsCheckBox.isChecked();
+
+        CheckBox dpCheckBox = findViewById(R.id.DP);
+        boolean dp = dpCheckBox.isChecked();
+
+        CheckBox backtrackingCheckBox = findViewById(R.id.backtracking);
+        boolean backtracking = backtrackingCheckBox.isChecked();
+
+        CheckBox queueCheckBox = findViewById(R.id.queue);
+        boolean queue = queueCheckBox.isChecked();
+
+        CheckBox stackCheckBox = findViewById(R.id.stack);
+        boolean stack = stackCheckBox.isChecked();
+
+        CheckBox mathCheckBox = findViewById(R.id.math);
+        boolean math = mathCheckBox.isChecked();
+
+        CheckBox realizationCheckBox = findViewById(R.id.realization);
+        boolean realization = realizationCheckBox.isChecked();
+
+        CheckBox datastructureCheckBox = findViewById(R.id.datastructure);
+        boolean datastructure = datastructureCheckBox.isChecked();
+
+        CheckBox greedyCheckBox = findViewById(R.id.greedy);
+        boolean greedy = greedyCheckBox.isChecked();
+
+        CheckBox sortCheckBox = findViewById(R.id.sort);
+        boolean sort = sortCheckBox.isChecked();
+
+        CheckBox stringCheckBox = findViewById(R.id.string);
+        boolean string = stringCheckBox.isChecked();
+
+        CheckBox graphtheoryCheckBox = findViewById(R.id.graphtheory);
+        boolean graphtheory = graphtheoryCheckBox.isChecked();
+
+        CheckBox graphsearchCheckBox = findViewById(R.id.graphsearch);
+        boolean graphsearch = graphsearchCheckBox.isChecked();
+
+        CheckBox treeCheckBox = findViewById(R.id.tree);
+        boolean tree = treeCheckBox.isChecked();
+
+        CheckBox simulationCheckBox = findViewById(R.id.simulation);
+        boolean simulation = simulationCheckBox.isChecked();
+
+        EditText etcInput = findViewById(R.id.etc_input);
+        CheckBox etcCheckBox = findViewById(R.id.etc);
+        boolean etc = etcCheckBox.isChecked();
+
+        StringBuilder problemTypeBuilder = new StringBuilder();
+
+        if (bruteforce) {
+            problemTypeBuilder.append("브루트포스, ");
+        }
+        if (bfs) {
+            problemTypeBuilder.append("BFS, ");
+        }
+        if (dfs) {
+            problemTypeBuilder.append("DFS, ");
+        }
+        if (dp) {
+            problemTypeBuilder.append("DP, ");
+        }
+        if (backtracking) {
+            problemTypeBuilder.append("백트래킹, ");
+        }
+        if (queue) {
+            problemTypeBuilder.append("큐, ");
+        }
+        if (stack) {
+            problemTypeBuilder.append("스택, ");
+        }
+        if (math) {
+            problemTypeBuilder.append("수학, ");
+        }
+        if (realization) {
+            problemTypeBuilder.append("구현, ");
+        }
+        if (datastructure) {
+            problemTypeBuilder.append("자료 구조, ");
+        }
+        if (greedy) {
+            problemTypeBuilder.append("그리디 알고리즘, ");
+        }
+        if (sort) {
+            problemTypeBuilder.append("정렬, ");
+        }
+        if (string) {
+            problemTypeBuilder.append("문자열, ");
+        }
+        if (graphtheory) {
+            problemTypeBuilder.append("그래프 이론, ");
+        }
+        if (graphsearch) {
+            problemTypeBuilder.append("그래프 탐색, ");
+        }
+        if (tree) {
+            problemTypeBuilder.append("트리, ");
+        }
+        if (simulation) {
+            problemTypeBuilder.append("시뮬레이션, ");
+        }
+        if (etc) {
+            // etc 체크박스가 체크되어 있으면 사용자가 입력한 문자열을 가져와서 설정
+            String etcText = etcInput.getText().toString().trim(); // 사용자가 입력한 문자열
+            if (!TextUtils.isEmpty(etcText)) {
+                // 사용자가 입력한 문자열이 비어 있지 않다면 설정
+                problemTypeBuilder.append(etcText + ", "); // 기타 유형 문자열에 추가
+            }
+        }
+
+        String problemType = problemTypeBuilder.toString();
+        if (problemType.endsWith(", ")) {
+            problemType = problemType.substring(0, problemType.length() - 2);
+        }
+
+        EditText etProblemMemo = findViewById(R.id.problemMemo);
+        String problemMemo = etProblemMemo.getText().toString();
+
+        Long timeposted = System.currentTimeMillis(); // 현재 시간 저장
+
+        // 스스로 푸는지 여부 저장
+        RadioGroup onmyownGroup = findViewById(R.id.onmyown);
+        String onmyown = "";
+        if (onmyownGroup.getCheckedRadioButtonId() == R.id.yes) {
+            onmyown = "yes";
+        }
+        if (onmyownGroup.getCheckedRadioButtonId() == R.id.no) {
+            onmyown = "no";
+        }
+
+        try {
+            // problemNum을 int로 변환
+            int num = Integer.parseInt(problemNum);
+
+            // Problem 객체 생성 및 데이터베이스에 저장
+            Problem problem = new Problem(num, problemTitle, difficulty, problemType, problemMemo, userIdToken, timeposted, onmyown);
+            mDatabase.child("Problems").child(userIdToken).child(String.valueOf(num)).setValue(problem);
+
+            // Intent로 ProblemInfo 액티비티로 이동
+            Intent it = new Intent(this, ProblemInfo.class);
+            it.putExtra("userIdToken", userIdToken);
+            it.putExtra("problemNum", num); // 변환된 int 값을 전달
+            startActivity(it);
+            finish();
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "문제 번호가 유효하지 않습니다.", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
     }
 
     private void registerProblem(int problemNum) {
