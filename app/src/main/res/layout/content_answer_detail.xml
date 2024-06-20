@@ -36,7 +36,7 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="90sp"
+                        android:layout_width="75sp"
                         android:layout_height="wrap_content"
                         android:paddingLeft="16dp"
                         android:text="답변 내용"
@@ -48,7 +48,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:paddingRight="16dp"
-                        android:padding="16dp"
+                        android:paddingLeft="10dp"
+                        android:paddingBottom="16dp"
                         android:textColor="@color/black"
                         android:text="답변을 불러오는 중입니다..."/>
                 </LinearLayout>

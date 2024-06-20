@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="100dp"
+        android:paddingTop="70dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp" >
 
@@ -25,14 +25,17 @@
                 android:id="@+id/problemNum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="문제 번호를 입력하세요."
                 android:backgroundTint="@color/gray"
-                android:textColor="@android:color/black"/>
+                android:textColor="@android:color/black"
+                android:theme="@style/CustomEditText"/>
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp">
             <TextView
                 android:layout_width="60sp"
                 android:layout_height="wrap_content"
@@ -42,8 +45,10 @@
                 android:id="@+id/problemTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="제목을 입력하세요."
                 android:backgroundTint="@color/gray"
-                android:textColor="@android:color/black"  />
+                android:textColor="@android:color/black"
+                android:theme="@style/CustomEditText"  />
         </LinearLayout>
 
         <LinearLayout
@@ -51,7 +56,8 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp">
+            android:layout_marginBottom="10dp"
+>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,14 +73,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
             <TextView
-                android:layout_width="60sp"
+                android:layout_width="50sp"
                 android:layout_height="wrap_content"
                 android:text="난이도"
                 android:textColor="@android:color/black" />
             <Spinner
                 android:id="@+id/difficultySpinner"
                 android:layout_width="150dp"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:textColor="@android:color/black"
                 android:entries="@array/difficulty_array"
                 android:popupBackground="@color/white"
@@ -82,23 +88,16 @@
                 android:theme="@style/SpinnerTheme"/>
 
         </LinearLayout>
-
-        <TextView
-            android:layout_width="60sp"
-            android:layout_height="wrap_content"
-            android:text="문제 유형"
-            android:textColor="@android:color/black" />
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="60sp"
                 android:layout_height="wrap_content"
                 android:text="문제 유형"
+                android:layout_marginBottom="10dp"
                 android:textColor="@android:color/black" />
 
             <LinearLayout
@@ -306,8 +305,8 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp">
             <TextView
-                android:paddingTop="6dp"
-                android:layout_width="100sp"
+                android:paddingTop="5dp"
+                android:layout_width="70sp"
                 android:layout_height="wrap_content"
                 android:text="해결 완료?"
                 android:textColor="@android:color/black" />
@@ -323,7 +322,8 @@
                     android:layout_height="wrap_content"
                     android:text="네"
                     android:buttonTint="@color/gray"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/black"
+                    android:layout_marginRight="5dp"/>
                 <RadioButton
                     android:id="@+id/no"
                     android:layout_width="wrap_content"
@@ -339,7 +339,7 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="20dp"
+            android:paddingTop="15dp"
             android:paddingBottom="20dp" >
             <Button
                 android:layout_width="wrap_content"

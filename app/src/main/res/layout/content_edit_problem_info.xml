@@ -24,14 +24,17 @@
                 android:id="@+id/problemNum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:backgroundTint="@color/gray"/>
+                android:hint="문제 번호를 입력하세요."
+                android:backgroundTint="@color/gray"
+                android:textColor="@android:color/black"
+                android:theme="@style/CustomEditText"/>
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp">
             <TextView
                 android:layout_width="60sp"
                 android:layout_height="wrap_content"
@@ -41,8 +44,27 @@
                 android:id="@+id/problemTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:backgroundTint="@color/gray"/>
+                android:hint="제목을 입력하세요."
+                android:backgroundTint="@color/gray"
+                android:textColor="@android:color/black"
+                android:theme="@style/CustomEditText"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            >
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="제목 자동 입력"
+                android:background="@drawable/rounded_background"
+                android:onClick="autoTitle"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@android:color/white"/>
         </LinearLayout>
 
         <LinearLayout
@@ -50,14 +72,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
             <TextView
-                android:layout_width="60sp"
+                android:layout_width="50sp"
                 android:layout_height="wrap_content"
                 android:text="난이도"
                 android:textColor="@color/black"/>
             <Spinner
                 android:id="@+id/difficultySpinner"
                 android:layout_width="150dp"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:textColor="@android:color/black"
                 android:entries="@array/difficulty_array"
                 android:popupBackground="@color/white"
@@ -69,13 +91,13 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="60sp"
                 android:layout_height="wrap_content"
                 android:text="문제 유형"
+                android:layout_marginBottom="10dp"
                 android:textColor="@android:color/black" />
 
             <LinearLayout
@@ -246,11 +268,12 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp">
+            android:paddingTop="10dp">
             <TextView
-                android:layout_width="60sp"
+                android:layout_width="80sp"
                 android:layout_height="wrap_content"
                 android:text="스스로 해결?"
+                android:paddingTop="5dp"
                 android:textColor="@color/black"/>
             <RadioGroup
                 android:id="@+id/onmyown"
@@ -265,7 +288,8 @@
                     android:layout_height="wrap_content"
                     android:text="네"
                     android:buttonTint="@color/gray"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:layout_marginRight="5dp"/>
                 <RadioButton
                     android:id="@+id/no"
                     android:layout_width="wrap_content"
@@ -279,7 +303,8 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp">
             <TextView
                 android:layout_width="60sp"
                 android:layout_height="wrap_content"
@@ -298,7 +323,7 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp" >
+            android:paddingBottom="20dp">
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -11,13 +11,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp">
 
             <EditText
                 android:id="@+id/replyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="50dp"
+                android:paddingTop="70dp"
                 android:textSize="16sp"
                 android:textColor="@color/black"
                 android:backgroundTint="@color/gray"/>
@@ -29,7 +31,8 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp">
+            android:paddingBottom="20dp"
+            android:layout_marginTop="5dp">
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -8,9 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="100dp"
+        android:paddingTop="70dp"
         android:paddingLeft="30dp"
-        android:paddingRight="30dp">
+        android:paddingRight="30dp"
+        android:paddingBottom="15dp">
 
         <!-- 검색 입력 -->
         <LinearLayout
@@ -18,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:layout_width="60sp"
+                android:layout_width="40sp"
                 android:layout_height="wrap_content"
                 android:text="검색"
                 android:textColor="@color/black"/>
@@ -36,12 +37,12 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
             <RadioGroup
                 android:id="@+id/searchBy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/gray"
                 android:orientation="horizontal">
                 <RadioButton
                     android:id="@+id/byproblemNum"
@@ -49,7 +50,8 @@
                     android:layout_height="wrap_content"
                     android:text="문제 번호로 검색"
                     android:buttonTint="@color/gray"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:layout_marginRight="10dp"/>
                 <RadioButton
                     android:id="@+id/byproblemTitle"
                     android:layout_width="wrap_content"
@@ -67,23 +69,24 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_background"
             android:text="검색"
-            android:backgroundTint="@color/colorPrimary"/>
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"/>
 
         <!-- 난이도 선택 -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="10dp">
             <TextView
-                android:layout_width="60sp"
+                android:layout_width="50sp"
                 android:layout_height="wrap_content"
                 android:text="난이도"
                 android:textColor="@color/black"/>
             <Spinner
                 android:id="@+id/difficultySpinner"
                 android:layout_width="150dp"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:textColor="@android:color/black"
                 android:entries="@array/difficulty_array"
                 android:popupBackground="@color/white"
@@ -104,12 +107,13 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp">
+            android:paddingTop="20dp">
 
             <TextView
                 android:layout_width="60sp"
                 android:layout_height="wrap_content"
                 android:text="문제 유형"
+                android:layout_marginBottom="10dp"
                 android:textColor="@android:color/black" />
 
             <LinearLayout
@@ -280,7 +284,8 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp">
             <RadioGroup
                 android:id="@+id/allorone"
                 android:layout_width="match_parent"
@@ -292,7 +297,8 @@
                     android:layout_height="wrap_content"
                     android:text="반드시 모두 포함"
                     android:textColor="@android:color/black"
-                    android:buttonTint="@color/gray"/>
+                    android:buttonTint="@color/gray"
+                    android:layout_marginRight="10dp"/>
                 <RadioButton
                     android:id="@+id/atleastone"
                     android:layout_width="wrap_content"
@@ -309,16 +315,19 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_background"
             android:text="해당 문제 유형만 모아 보기"
+            android:layout_marginTop="10dp"
             android:backgroundTint="@color/colorPrimary"/>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
             <TextView
-                android:layout_width="60sp"
+                android:layout_width="80sp"
                 android:layout_height="wrap_content"
                 android:text="스스로 해결?"
+                android:paddingTop="5dp"
                 android:textColor="@android:color/black"/>
             <RadioGroup
                 android:id="@+id/searchbyonmyown"
@@ -331,7 +340,8 @@
                     android:layout_height="wrap_content"
                     android:text="네"
                     android:textColor="@android:color/black"
-                    android:buttonTint="@color/gray"/>
+                    android:buttonTint="@color/gray"
+                    android:layout_marginRight="5dp"/>
                 <RadioButton
                     android:id="@+id/no"
                     android:layout_width="wrap_content"
@@ -348,6 +358,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_background"
             android:text="스스로 풀거나 스스로 못푼 문제 검색"
+            android:layout_marginTop="10dp"
             android:backgroundTint="@color/colorPrimary"/>
     </LinearLayout>
 </ScrollView>
