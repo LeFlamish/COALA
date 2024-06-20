@@ -92,23 +92,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings12) {
-            Intent intent = new Intent(this, QuestionSearch.class);
-            intent.putExtra("userIdToken", userIdToken);
-            startActivity(intent);
-            return true;
-        } else if (id == R.id.action_settings11) {
-            Intent intent = new Intent(this, QuestionReg.class);
-            intent.putExtra("userIdToken", userIdToken);
-            startActivity(intent);
-            return true;
-        } else if (id == R.id.action_settings10) {
-            Intent intent = new Intent(this, ProblemSearch.class);
-            intent.putExtra("userIdToken", userIdToken);
-            startActivity(intent);
-            return true;
-        } else if (id == R.id.action_settings5) {
-            Intent intent = new Intent(this, ProblemReg.class);
+        if (id == R.id.chat_bot) {
+            Intent intent = new Intent(this, ChatBotActivity.class);
             intent.putExtra("userIdToken", userIdToken);
             startActivity(intent);
             return true;

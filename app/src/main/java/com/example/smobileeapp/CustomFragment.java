@@ -28,7 +28,7 @@ public class CustomFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_custom_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_recommend_custom, container, false);
         LinearLayout layout = view.findViewById(R.id.custom_list);
 
         // Firebase 데이터베이스 참조 설정
@@ -74,7 +74,7 @@ public class CustomFragment extends Fragment {
                     String creatorName = parts.length > 1 ? parts[1] : "Unknown";
 
                     TextView tv_customName = new TextView(context);
-                    tv_customName.setText(i + ". " + customName);
+                    tv_customName.setText(" " + customName);
                     tv_customName.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.black));
                     tv_customName.setTextSize(24); // 텍스트 크기 조정
                     // TextView에 여백 추가
@@ -99,7 +99,7 @@ public class CustomFragment extends Fragment {
 
                     TextView tv_creatorName = new TextView(context);
                     tv_creatorName.setText("만든 사람: " + creatorName + " ");
-                    tv_creatorName.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.black));
+                    tv_creatorName.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.darker_gray));
                     tv_creatorName.setTextSize(15); // 텍스트 크기 조정
                     creatorLayout.addView(tv_creatorName);
 

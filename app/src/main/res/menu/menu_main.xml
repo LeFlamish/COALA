@@ -11,26 +11,8 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_settings12"
+        android:id="@+id/chat_bot"
         android:orderInCategory="100"
-        android:title="@string/action_settings12"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_settings11"
-        android:orderInCategory="100"
-        android:title="@string/action_settings11"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_settings10"
-        android:orderInCategory="100"
-        android:title="@string/action_settings10"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_settings5"
-        android:orderInCategory="100"
-        android:title="@string/action_settings5"
+        android:title="@string/chat_bot"
         app:showAsAction="never" />
 </menu>

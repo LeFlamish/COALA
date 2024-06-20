@@ -48,7 +48,12 @@
                     android:text="문제 제목"
                     android:textColor="@color/black"
                     android:paddingEnd="2dp" />
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="|"
+                    android:textColor="@color/black"
+                    android:layout_marginRight="8dp"/>
                 <TextView
                     android:id="@+id/problemTitleTextView"
                     android:layout_width="match_parent"
@@ -69,7 +74,12 @@
                     android:text="질문 제목"
                     android:textColor="@color/black"
                     android:paddingEnd="2dp" />
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="|"
+                    android:textColor="@color/black"
+                    android:layout_marginRight="8dp"/>
                 <TextView
                     android:id="@+id/questionTextView"
                     android:layout_width="match_parent"
@@ -83,7 +93,7 @@
             android:layout_height="30dp"
             android:id="@+id/success_image"
             android:layout_gravity="end|center_vertical"
-            android:src="@drawable/success"/>
+            android:src="@drawable/finish"/>
     </LinearLayout>
 
     <TextView
