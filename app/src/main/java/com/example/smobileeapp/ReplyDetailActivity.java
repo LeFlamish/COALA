@@ -1,5 +1,6 @@
 package com.example.smobileeapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -130,14 +132,25 @@ public class ReplyDetailActivity extends AppCompatActivity {
 
         // 댓글을 작성한 사용자의 아이디와 현재 로그인된 사용자의 아이디 비교
         if (replyUserIdToken != null && replyUserIdToken.equals(currentUserID)) {
-            // 수정 화면으로 이동
-            Intent intent = new Intent(ReplyDetailActivity.this, EditReplyActivity.class);
-            intent.putExtra("userIdToken", userIdToken);
-            intent.putExtra("problemNum", problemNum);
-            intent.putExtra("questionId", questionId);
-            intent.putExtra("answerId", answerId);
-            intent.putExtra("replyIdToken", replyIdToken);
-            startActivity(intent);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("댓글 수정");
+            builder.setMessage("정말로 이 댓글을 수정하시겠습니까?")
+                    .setCancelable(false)
+                    .setPositiveButton("네", (dialog, which) -> {
+                        // 수정 화면으로 이동
+                        Intent intent = new Intent(ReplyDetailActivity.this, EditReplyActivity.class);
+                        intent.putExtra("userIdToken", userIdToken);
+                        intent.putExtra("problemNum", problemNum);
+                        intent.putExtra("questionId", questionId);
+                        intent.putExtra("answerId", answerId);
+                        intent.putExtra("replyIdToken", replyIdToken);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("아니오", (dialog, which) -> dialog.cancel());
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+
         } else {
             // 현재 로그인된 사용자가 댓글 작성자가 아닌 경우
             Toast.makeText(ReplyDetailActivity.this, "본인이 작성한 댓글만 수정할 수 있습니다.", Toast.LENGTH_SHORT).show();
@@ -168,15 +181,28 @@ public class ReplyDetailActivity extends AppCompatActivity {
                         String replyUserID = reply.getUserIdToken();
                         // 댓글을 작성한 사용자의 아이디와 현재 로그인된 사용자의 아이디가 같으면 삭제
                         if (replyUserID.equals(currentUserID)) {
-                            replyRef.removeValue().addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(ReplyDetailActivity.this, "댓글 삭제에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                                    finish(); // 현재 액티비티 종료
-                                } else {
-                                    // 댓글 삭제 실패
-                                    Toast.makeText(ReplyDetailActivity.this, "댓글 삭제에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(ReplyDetailActivity.this);
+                            builder.setTitle("댓글 삭제");
+                            builder.setMessage("정말로 이 댓글을 삭제하시겠습니까?");
+                            builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    replyRef.removeValue().addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(ReplyDetailActivity.this, "댓글 삭제에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                                            finish(); // 현재 액티비티 종료
+                                        } else {
+                                            // 댓글 삭제 실패
+                                            Toast.makeText(ReplyDetailActivity.this, "댓글 삭제에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
                             });
+                            builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Do nothing if user clicks No
+                                }
+                            });
+                            builder.show();
                         } else {
                             // 현재 로그인된 사용자가 댓글 작성자가 아닌 경우
                             Toast.makeText(ReplyDetailActivity.this, "본인이 작성한 댓글만 삭제할 수 있습니다.", Toast.LENGTH_SHORT).show();

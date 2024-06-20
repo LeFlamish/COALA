@@ -1,5 +1,6 @@
 package com.example.smobileeapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -150,13 +152,7 @@ public class AnswerDetailActivity extends AppCompatActivity {
                     if (dataSnapshot.exists()) {
                         Answer existingAnswer = dataSnapshot.getValue(Answer.class);
                         if (existingAnswer != null && existingAnswer.getUserIdToken().equals(userIdToken)) {
-                            Intent it = new Intent(AnswerDetailActivity.this, EditAnswer.class);
-                            it.putExtra("userIdToken", userIdToken);
-                            it.putExtra("problemNum", problemNum);
-                            it.putExtra("questionId", questionId);
-                            it.putExtra("answerId", answerId);
-                            startActivity(it);
-                            finish();
+                            showEditConfirmationDialog();
                         } else {
                             Toast.makeText(AnswerDetailActivity.this, "작성자만 답변을 수정할 수 있습니다.", Toast.LENGTH_SHORT).show();
                         }
@@ -179,7 +175,7 @@ public class AnswerDetailActivity extends AppCompatActivity {
                     if (dataSnapshot.exists()) {
                         Answer existingAnswer = dataSnapshot.getValue(Answer.class);
                         if (existingAnswer != null && existingAnswer.getUserIdToken().equals(userIdToken)) {
-                            deleteAnswer();
+                            showDeleteConfirmationDialog();
                         } else {
                             Toast.makeText(AnswerDetailActivity.this, "작성자만 답변을 삭제할 수 있습니다.", Toast.LENGTH_SHORT).show();
                         }
@@ -197,6 +193,46 @@ public class AnswerDetailActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("답변 삭제");
+        builder.setMessage("정말로 이 답변을 삭제하시겠습니까?");
+        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                deleteAnswer(); // Call deleteAnswer method if user clicks Yes
+            }
+        });
+        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing if user clicks No
+            }
+        });
+        builder.show();
+    }
+
+    private void showEditConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("답변 수정");
+        builder.setMessage("정말로 이 답변을 수정하시겠습니까?");
+        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent it = new Intent(AnswerDetailActivity.this, EditAnswer.class);
+                it.putExtra("userIdToken", userIdToken);
+                it.putExtra("problemNum", problemNum);
+                it.putExtra("questionId", questionId);
+                it.putExtra("answerId", answerId);
+                startActivity(it);
+                finish();
+            }
+        });
+        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing if user clicks No
+            }
+        });
+        builder.show();
     }
 
     @Override

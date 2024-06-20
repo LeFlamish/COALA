@@ -1,8 +1,10 @@
 package com.example.smobileeapp;
 
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +26,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -317,5 +324,67 @@ public class EditProblemInfo extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void autoTitle(View view) {
+        EditText etProblemNum = findViewById(R.id.problemNum);
+        String strProblemNum = etProblemNum.getText().toString();
+
+        if (TextUtils.isEmpty(strProblemNum)) {
+            showToast("문제 번호를 입력해주세요.");
+            return;
+        }
+
+        int problemNum;
+        try {
+            problemNum = Integer.parseInt(strProblemNum);
+        } catch (NumberFormatException e) {
+            showToast("숫자로 유효한 문제 번호를 입력해주세요.");
+            return;
+        }
+
+        // AsyncTask를 사용하여 백그라운드에서 네트워크 요청 실행
+        new EditProblemInfo.ScrapeTask().execute(problemNum);
+    }
+
+    private class ScrapeTask extends AsyncTask<Integer, Void, String> {
+        @Override
+        protected String doInBackground(Integer... params) {
+            int problemNum = params[0];
+            return scrapeProblemTitle(problemNum);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (TextUtils.isEmpty(result)) {
+                showToast("문제 제목을 가져오는 데 실패했습니다. 직접 입력해주세요.");
+            } else {
+                // 여기서 "1001번: " 부분을 제거하고 뒤의 제목만 사용합니다.
+                String[] parts = result.split(": ");
+                if (parts.length > 1) {
+                    result = parts[1]; // "1001번: " 이후의 문자열만 사용합니다.
+                }
+                EditText etProblemTitle = findViewById(R.id.problemTitle);
+                etProblemTitle.setText(result);
+            }
+        }
+    }
+
+    private String scrapeProblemTitle(int problemNum) {
+        String url = "https://www.acmicpc.net/problem/" + problemNum;
+        try {
+            Document doc = Jsoup.connect(url).get();
+            Element titleElement = doc.selectFirst("title");
+            if (titleElement != null) {
+                return titleElement.text();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

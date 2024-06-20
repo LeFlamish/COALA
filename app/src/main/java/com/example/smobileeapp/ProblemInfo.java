@@ -1,5 +1,6 @@
 package com.example.smobileeapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -141,14 +143,40 @@ public class ProblemInfo extends AppCompatActivity {
 
 
         if (id == R.id.action_settings6) {
-            deleteProblem();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("문제 기록 삭제");
+            builder.setMessage("정말로 이 문제 기록을 삭제하시겠습니까?");
+            builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    deleteProblem();
+                }
+            });
+            builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // Do nothing if user clicks No
+                }
+            });
+            builder.show();
             return true;
         } else if (id == R.id.action_settings8) {
-            Intent it = new Intent(this, EditProblemInfo.class);
-            it.putExtra("userIdToken", userIdToken);
-            it.putExtra("problemNum", problemNum);
-            startActivity(it);
-            finish();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("문제 기록 수정");
+            builder.setMessage("정말로 이 문제 기록을 수정하시겠습니까?");
+            builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent it = new Intent(ProblemInfo.this, EditProblemInfo.class);
+                    it.putExtra("userIdToken", userIdToken);
+                    it.putExtra("problemNum", problemNum);
+                    startActivity(it);
+                    finish();
+                }
+            });
+            builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // Do nothing if user clicks No
+                }
+            });
+            builder.show();
             return true;
         } if (item.getItemId() == android.R.id.home) {
             finish(); // 뒤로가기 버튼 클릭 시 액티비티 종료

@@ -120,7 +120,7 @@ public class QuestionBulletinFragment extends Fragment {
         fabProblemReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),"질문 등록", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),"질문 등록", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getContext(), QuestionReg.class);
 
@@ -136,7 +136,7 @@ public class QuestionBulletinFragment extends Fragment {
         fabProblemSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "질문 검색", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "질문 검색", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), QuestionSearch.class);
 
                 // Add the userIdToken to the intent

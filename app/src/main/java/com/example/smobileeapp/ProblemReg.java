@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -89,9 +90,10 @@ public class ProblemReg extends AppCompatActivity {
                 }
             }
         });
+
+        RadioButton yesButton = findViewById(R.id.yes);
+        yesButton.setChecked(true); // "네" 버튼을 기본값으로 설정
     }
-
-
 
     public void register(View v) {
         EditText etProblemNum = findViewById(R.id.problemNum);

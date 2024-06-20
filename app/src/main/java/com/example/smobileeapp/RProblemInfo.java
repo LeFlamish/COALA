@@ -1,5 +1,6 @@
 package com.example.smobileeapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,9 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,6 +53,8 @@ public class RProblemInfo extends AppCompatActivity {
     private TextView tvProblemInput;
     private TextView tvProblemOutput;
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,11 +66,14 @@ public class RProblemInfo extends AppCompatActivity {
             getSupportActionBar().setTitle("추천 문제 정보");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        mAuth = FirebaseAuth.getInstance(); // FirebaseAuth 인스턴스 초기화
+
         Intent intent = getIntent();
 
         type = intent.getStringExtra("type");
         problemNum = intent.getIntExtra("problemNum", 0);
-        userIdToken = intent.getStringExtra("userIdToken"); // 유저 토큰 받아오기
+        userIdToken = mAuth.getCurrentUser().getUid(); // 현재 사용자의 UID를 가져옴
 
         tvProblemNum = findViewById(R.id.problemNum);
         tvProblemTitle = findViewById(R.id.problemTitle);
@@ -135,17 +143,86 @@ public class RProblemInfo extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RProblemInfo.this, RProblemReg.class);
-                intent.putExtra("userIdToken", userIdToken); // 유저 토큰 전달
-                intent.putExtra("type", type); // 문제 정보 전달
-                intent.putExtra("problemNum", problemNum);
-                intent.putExtra("problemType", problemType);
-                intent.putExtra("problemTitle", problemTitle);
-                intent.putExtra("difficulty", difficulty);
-                // 문제 정보 전달
-                startActivity(intent);
+                // 사용자가 이미 푼 문제인지 확인 후 등록 진행
+                checkIfProblemAlreadyRegistered();
             }
         });
+    }
+
+    // checkIfProblemAlreadyRegistered() 메서드에 수정 내용 추가
+    private void checkIfProblemAlreadyRegistered() {
+        DatabaseReference userSolvedRef = FirebaseDatabase.getInstance()
+                .getReference("Problems").child(userIdToken);
+
+        userSolvedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean alreadyRegistered = false;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    int solvedProblemNum = Integer.parseInt(snapshot.getKey());
+                    if (solvedProblemNum == problemNum) {
+                        alreadyRegistered = true;
+                        break;
+                    }
+                }
+                if (alreadyRegistered) {
+                    // 이미 등록된 문제인 경우 다이얼로그 띄우기
+                    showEditDialog();
+                } else {
+                    // 등록되지 않은 문제인 경우
+                    registerProblem();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("RProblemInfo", "Failed to check if problem already registered: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    // 다이얼로그 띄우기 메서드
+    private void showEditDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("이미 등록된 문제입니다.")
+                .setMessage("수정하시겠습니까?")
+                .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // "예"를 선택하면 EditProblemInfo 액티비티로 이동
+                        Intent intent = new Intent(RProblemInfo.this, EditProblemInfo.class);
+                        // 필요한 데이터를 인텐트에 추가
+                        intent.putExtra("userIdToken", userIdToken);
+                        intent.putExtra("type", type);
+                        intent.putExtra("problemNum", problemNum);
+                        intent.putExtra("problemType", problemType);
+                        intent.putExtra("problemTitle", problemTitle);
+                        intent.putExtra("difficulty", difficulty);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // "아니오"를 선택하면 다이얼로그 닫기
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    // registerProblem() 메서드에는 변경 사항 없음
+    private void registerProblem() {
+        Intent intent = new Intent(RProblemInfo.this, RProblemReg.class);
+        intent.putExtra("userIdToken", userIdToken); // 유저 토큰 전달
+        intent.putExtra("type", type); // 문제 정보 전달
+        intent.putExtra("problemNum", problemNum);
+        intent.putExtra("problemType", problemType);
+        intent.putExtra("problemTitle", problemTitle);
+        intent.putExtra("difficulty", difficulty);
+        // 문제 정보 전달
+        startActivity(intent);
     }
 
     private class FetchProblemContentTask extends AsyncTask<String, Void, String[]> {

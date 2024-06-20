@@ -22,10 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecommendListFragment extends Fragment {
-
     private static final String ARG_TYPE = "type";
     private String type;
     private RecommendListAdapter adapter;
+    private DatabaseReference mDatabase;
+    private List<RProblem> problemList = new ArrayList<>();
+    private boolean isVisibleToUser = false;
 
     public static RecommendListFragment newInstance(String type) {
         RecommendListFragment fragment = new RecommendListFragment();
@@ -49,22 +51,34 @@ public class RecommendListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recommend_list, container, false);
         ListView listView = view.findViewById(R.id.recommend_list_view);
 
-        List<RProblem> problemList = new ArrayList<>();
         adapter = new RecommendListAdapter(getActivity(), problemList, type);
         listView.setAdapter(adapter);
 
-        DatabaseReference mDatabase;
-        if (type.equals("bronze") || type.equals("silver") || type.equals("gold") || type.equals("platinum")) {
-            mDatabase = FirebaseDatabase.getInstance().getReference().child("Rproblem").child("difficulty").child(type);
-        } else if (type.equals("samsung") || type.equals("kakao") || type.equals("naver") || type.equals("lg")) {
-            mDatabase = FirebaseDatabase.getInstance().getReference().child("Rproblem").child("company").child(type);
-        } else if (type.equals("BFS") || type.equals("DFS") || type.equals("DP") || type.equals("Greedy")) {
-            mDatabase = FirebaseDatabase.getInstance().getReference().child("Rproblem").child("Algorithm").child(type);
-        } else {
-            mDatabase = FirebaseDatabase.getInstance().getReference().child("Rproblem").child("Custom").child(type);
-        }
+        setupDatabaseReference();
+        loadProblemData();
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        return view;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        this.isVisibleToUser = isVisibleToUser;
+        if (isVisibleToUser && isResumed()) {
+            adapter.notifyDataSetChanged(); // Adapter 갱신
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isVisibleToUser) {
+            adapter.notifyDataSetChanged(); // Adapter 갱신
+        }
+    }
+
+    private void loadProblemData() {
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 problemList.clear();
@@ -82,7 +96,17 @@ public class RecommendListFragment extends Fragment {
                 Log.e("RecommendListFragment", "Database error: " + databaseError.getMessage());
             }
         });
+    }
 
-        return view;
+    private void setupDatabaseReference() {
+        if (type.equals("bronze") || type.equals("silver") || type.equals("gold") || type.equals("platinum")) {
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("Rproblem").child("difficulty").child(type);
+        } else if (type.equals("samsung") || type.equals("kakao") || type.equals("naver") || type.equals("lg")) {
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("Rproblem").child("company").child(type);
+        } else if (type.equals("BFS") || type.equals("DFS") || type.equals("DP") || type.equals("Greedy")) {
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("Rproblem").child("Algorithm").child(type);
+        } else {
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("Rproblem").child("Custom").child(type);
+        }
     }
 }

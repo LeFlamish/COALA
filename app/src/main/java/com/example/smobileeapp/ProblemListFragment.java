@@ -94,7 +94,7 @@ public class ProblemListFragment extends Fragment {
         fabProblemReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),"문제 등록", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),"문제 등록", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getContext(), ProblemReg.class);
 
@@ -110,7 +110,7 @@ public class ProblemListFragment extends Fragment {
         fabProblemSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "문제 검색", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "문제 검색", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), ProblemSearch.class);
 
                 // Add the userIdToken to the intent

@@ -45,7 +45,7 @@ public class RecommendListAdapter extends ArrayAdapter<RProblem> {
         String userToken = mAuth.getCurrentUser().getUid();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Problems").child(userToken);
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userProblemNums.clear(); // 기존 데이터를 지우고 새로운 데이터로 채움
@@ -71,7 +71,6 @@ public class RecommendListAdapter extends ArrayAdapter<RProblem> {
             }
         });
     }
-
 
     @NonNull
     @Override

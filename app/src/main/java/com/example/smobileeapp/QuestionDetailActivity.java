@@ -2,6 +2,7 @@ package com.example.smobileeapp;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -473,14 +474,88 @@ public class QuestionDetailActivity extends AppCompatActivity {
             onBackPressed();
             return true;
         } else if (id == R.id.action_settings13) {
-            editQuestion();
+            DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId);
+            questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Question existingQuestion = dataSnapshot.getValue(Question.class);
+                        if (existingQuestion != null && existingQuestion.getUserIdToken().equals(userIdToken)) {
+                            showEditConfirmationDialog();
+                        } else {
+                            Toast.makeText(QuestionDetailActivity.this, "작성자만 질문을 수정할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(QuestionDetailActivity.this, "질문을 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(QuestionDetailActivity.this, "Failed to load question data: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
             return true;
         } else if (id == R.id.action_settings14) {
-            deleteQuestion();
+            DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId);
+            questionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Question existingQuestion = dataSnapshot.getValue(Question.class);
+                        if (existingQuestion != null && existingQuestion.getUserIdToken().equals(userIdToken)) {
+                            showDeleteConfirmationDialog();
+                        } else {
+                            Toast.makeText(QuestionDetailActivity.this, "작성자만 질문을 삭제할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(QuestionDetailActivity.this, "질문을 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(QuestionDetailActivity.this, "Failed to load question data: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("질문 삭제");
+        builder.setMessage("정말로 이 질문을 삭제하시겠습니까?");
+        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                deleteQuestion(); // Call deleteAnswer method if user clicks Yes
+            }
+        });
+        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing if user clicks No
+            }
+        });
+        builder.show();
+    }
+
+    private void showEditConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("질문 수정");
+        builder.setMessage("정말로 이 질문을 수정하시겠습니까?");
+        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                editQuestion();
+            }
+        });
+        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing if user clicks No
+            }
+        });
+        builder.show();
     }
 
     private void editQuestion() {
@@ -504,11 +579,6 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(questionUserIdToken)) {
             Toast.makeText(this, "질문 작성자 정보를 가져오는 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (!currentUserIdToken.equals(questionUserIdToken)) {
-            Toast.makeText(this, "이 질문을 수정할 권한이 없습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -542,25 +612,12 @@ public class QuestionDetailActivity extends AppCompatActivity {
             return;
         }
 
-        if (!currentUserIdToken.equals(questionUserIdToken)) {
-            Toast.makeText(this, "이 질문을 삭제할 권한이 없습니다.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("이 질문을 삭제하시겠습니까?")
-                .setCancelable(false)
-                .setPositiveButton("네", (dialog, which) -> {
-                    DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId);
-                    questionRef.removeValue()
-                            .addOnSuccessListener(aVoid -> {
-                                Toast.makeText(QuestionDetailActivity.this, "질문이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                                finish();
-                            })
-                            .addOnFailureListener(e -> Toast.makeText(QuestionDetailActivity.this, "질문 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show());
+        DatabaseReference questionRef = mDatabase.child("QuestionBulletin").child(String.valueOf(problemNum)).child(questionId);
+        questionRef.removeValue()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(QuestionDetailActivity.this, "질문이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                    finish();
                 })
-                .setNegativeButton("아니오", (dialog, which) -> dialog.cancel());
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+                .addOnFailureListener(e -> Toast.makeText(QuestionDetailActivity.this, "질문 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show());
     }
 }
