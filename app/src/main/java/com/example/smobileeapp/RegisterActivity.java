@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -61,19 +62,23 @@ public class RegisterActivity extends AppCompatActivity {
                 String strPwd = mEtPwd.getText().toString();
 
                 if (strEmail.length() == 0) {
-                    Toast.makeText(RegisterActivity.this, "아이디 입력 필요", Toast.LENGTH_SHORT).show();
+                    mEtEmail.setError("아이디 입력 필요");
+                    //Toast.makeText(RegisterActivity.this, "아이디 입력 필요", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()) {
-                    Toast.makeText(RegisterActivity.this, "이메일 양식 필수", Toast.LENGTH_SHORT).show();
+                    mEtEmail.setError("이메일 양식 필수");
+                    //Toast.makeText(RegisterActivity.this, "이메일 양식 필수", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (strPwd.length() == 0) {
-                    Toast.makeText(RegisterActivity.this, "비밀번호 입력 필요", Toast.LENGTH_SHORT).show();
+                    mEtEmail.setError("비밀번호 입력 필요");
+                    //Toast.makeText(RegisterActivity.this, "비밀번호 입력 필요", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if (strPwd.length() < 6) {
-                    Toast.makeText(RegisterActivity.this, "비밀번호는 6자리 이상", Toast.LENGTH_SHORT).show();
+                    mEtEmail.setError("비밀번호는 6자리 이상");
+                    //Toast.makeText(RegisterActivity.this, "비밀번호는 6자리 이상", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -97,7 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> databaseTask) {
                                                 if (databaseTask.isSuccessful()) {
-                                                    Toast.makeText(RegisterActivity.this, "회원가입 및 데이터베이스 추가 완료", Toast.LENGTH_SHORT).show();
+                                                    //Toast.makeText(RegisterActivity.this, "회원가입 및 데이터베이스 추가 완료", Toast.LENGTH_SHORT).show();
                                                 } else {
                                                     Toast.makeText(RegisterActivity.this, "회원가입은 성공했지만 데이터베이스 추가에 실패했습니다.", Toast.LENGTH_SHORT).show();
                                                 }
@@ -137,7 +142,11 @@ public class RegisterActivity extends AppCompatActivity {
         mBtnQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(RegisterActivity.this, "아이디는 반드시 이메일 양식을 준수하며, 비밀번호는 반드시 6자리 이상 입력", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content),
+                        "아이디는 반드시 이메일 양식을 준수하며, 비밀번호는 반드시 6자리 이상 입력",
+                        Snackbar.LENGTH_LONG).show();
+
+                // Toast.makeText(RegisterActivity.this, "아이디는 반드시 이메일 양식을 준수하며, 비밀번호는 반드시 6자리 이상 입력", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -148,11 +157,13 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(RegisterActivity.this,
+                            Snackbar.make(findViewById(android.R.id.content),
                                     "이메일 인증을 위한 링크가 " + user.getEmail() + " 으로 전송됨.",
-                                    Toast.LENGTH_SHORT).show();
+                                    Snackbar.LENGTH_LONG).show();
+
 
                             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+
                             startActivity(intent);
                             finish();
                         } else {
