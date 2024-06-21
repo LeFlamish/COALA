@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -150,7 +149,7 @@ public class RadarChartFragment extends Fragment {
         }
 
         // 데이터 설정
-        RadarDataSet dataSet = new RadarDataSet(radarEntries, "Algorithm Distribution");
+        RadarDataSet dataSet = new RadarDataSet(radarEntries, "알고리즘 유형 목록");
         dataSet.setColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
         dataSet.setFillColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark));
         dataSet.setValueTextSize(12f);
@@ -163,6 +162,8 @@ public class RadarChartFragment extends Fragment {
 
         // 그래프 갱신
         radarChart.invalidate();
+
+        radarChart.getDescription().setText("알고리즘 별 문제 푼 수");
     }
 
     private static final Map<String, Integer> TEXT_VIEW_IDS = new HashMap<>();

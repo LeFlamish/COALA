@@ -77,6 +77,9 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
                 } else if (difficulty.contains("플래티넘")) {
                     backgroundColor = ContextCompat.getColor(mContext, R.color.platinum);
                 }
+                else if (difficulty.contains("다이아몬드") || difficulty.contains("diamond")) {
+                    backgroundColor = ContextCompat.getColor(mContext, R.color.diamond);
+                }
                 background.setColor(backgroundColor);
             }
 

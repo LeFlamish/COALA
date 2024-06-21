@@ -1,153 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="4dp"
+    card_view:cardBackgroundColor="#FFFFFF">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="100dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="75sp"
-                android:layout_height="wrap_content"
-                android:text="문제 번호"
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/problemNum"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="75sp"
+                    android:layout_height="wrap_content"
+                    android:text="문제 번호"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/problemNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"/>
-        </LinearLayout>
+                android:paddingTop="5dp">
+                <TextView
+                    android:layout_width="75sp"
+                    android:layout_height="wrap_content"
+                    android:text="제목"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/problemTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="5dp">
-            <TextView
-                android:layout_width="75sp"
-                android:layout_height="wrap_content"
-                android:text="제목"
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/problemTitle"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"/>
-        </LinearLayout>
+                android:paddingTop="5dp">
+                <TextView
+                    android:layout_width="75sp"
+                    android:layout_height="wrap_content"
+                    android:text="난이도"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/problemDifficulty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="5dp">
-            <TextView
-                android:layout_width="75sp"
-                android:layout_height="wrap_content"
-                android:text="난이도"
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/problemDifficulty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="5dp">
-            <TextView
-                android:layout_width="75sp"
-                android:layout_height="wrap_content"
-                android:text="문제 유형"
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/problemType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="5dp">
-            <TextView
-                android:layout_width="75sp"
-                android:layout_height="wrap_content"
-                android:text="URL"
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/problemURL"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#00B0F0"
-                android:clickable="true"
-                android:onClick="openURL"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="5dp">
-            <TextView
-                android:layout_width="75sp"
-                android:layout_height="wrap_content"
-                android:text="등록 시간"
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/problemDate"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"/>
-        </LinearLayout>
+                android:paddingTop="5dp">
+                <TextView
+                    android:layout_width="75sp"
+                    android:layout_height="wrap_content"
+                    android:text="문제 유형"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/problemType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="5dp">
-            <TextView
-                android:layout_width="75sp"
-                android:layout_height="wrap_content"
-                android:text="혼자 해결?"
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/problemOnmyown"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"/>
-        </LinearLayout>
+                android:paddingTop="5dp">
+                <TextView
+                    android:layout_width="75sp"
+                    android:layout_height="wrap_content"
+                    android:text="URL"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/problemURL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#00B0F0"
+                    android:clickable="true"
+                    android:onClick="openURL"/>
+            </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:paddingBottom="50dp">
-            <TextView
-                android:layout_width="75sp"
-                android:layout_height="wrap_content"
-                android:text="메모장"
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/problemMemo"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"/>
-        </LinearLayout>
+                android:paddingTop="5dp">
+                <TextView
+                    android:layout_width="75sp"
+                    android:layout_height="wrap_content"
+                    android:text="등록 시간"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/problemDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
 
-    </LinearLayout>
-</ScrollView>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp">
+                <TextView
+                    android:layout_width="75sp"
+                    android:layout_height="wrap_content"
+                    android:text="혼자 해결?"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/problemOnmyown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="50dp">
+                <TextView
+                    android:layout_width="75sp"
+                    android:layout_height="wrap_content"
+                    android:text="메모장"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/problemMemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.cardview.widget.CardView>

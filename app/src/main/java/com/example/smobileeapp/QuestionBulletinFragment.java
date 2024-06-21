@@ -69,8 +69,10 @@ public class QuestionBulletinFragment extends Fragment {
     private void toggleFabMenu() {
         if (isFabOpen) {
             closeFabMenu();
+            fab.setImageResource(R.drawable.floating);
         } else {
             openFabMenu();
+            fab.setImageResource(R.drawable.down_floating);
         }
     }
 

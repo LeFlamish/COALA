@@ -62,6 +62,11 @@
     </string-array>
 
     <string-array name="difficulty_array">
+        <item>다이아몬드Ⅰ</item>
+        <item>다이아몬드Ⅱ</item>
+        <item>다이아몬드Ⅲ</item>
+        <item>다이아몬드Ⅳ</item>
+        <item>다이아몬드Ⅴ</item>
         <item>플래티넘Ⅰ</item>
         <item>플래티넘Ⅱ</item>
         <item>플래티넘Ⅲ</item>

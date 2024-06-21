@@ -86,13 +86,13 @@ public class RProblemInfo extends AppCompatActivity {
 
         // Firebase 데이터베이스에서 해당 문제 정보 가져오기
         DatabaseReference databaseRef;
-        if (type.equals("bronze") || type.equals("silver") || type.equals("gold") || type.equals("platinum")) {
+        if (type.equals("bronze") || type.equals("silver") || type.equals("gold") || type.equals("platinum")|| type.equals("diamond")) {
             databaseRef = FirebaseDatabase.getInstance()
                     .getReference().child("Rproblem").child("difficulty").child(type).child(String.valueOf(problemNum));
         } else if (type.equals("samsung") || type.equals("kakao") || type.equals("naver") || type.equals("lg")) {
             databaseRef = FirebaseDatabase.getInstance()
                     .getReference().child("Rproblem").child("company").child(type).child(String.valueOf(problemNum));
-        } else if (type.equals("BFS") || type.equals("DFS") || type.equals("DP") || type.equals("Greedy") || type.equals("Back") || type.equals("Data")) {
+        } else if (type.equals("BFS") || type.equals("DFS") || type.equals("DP") || type.equals("Greedy") || type.equals("Back") || type.equals("구현")) {
             databaseRef = FirebaseDatabase.getInstance()
                     .getReference().child("Rproblem").child("Algorithm").child(type).child(String.valueOf(problemNum));
         } else {

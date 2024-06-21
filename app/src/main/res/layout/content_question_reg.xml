@@ -77,7 +77,7 @@
                 android:textColor="@android:color/black"/>
             <Spinner
                 android:id="@+id/difficultySpinner"
-                android:layout_width="150dp"
+                android:layout_width="160dp"
                 android:layout_height="50dp"
                 android:textColor="@android:color/black"
                 android:entries="@array/difficulty_array"

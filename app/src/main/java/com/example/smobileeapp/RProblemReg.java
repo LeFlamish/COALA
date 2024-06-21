@@ -47,7 +47,7 @@ public class RProblemReg extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("문제 정보 수정");
+            getSupportActionBar().setTitle("추천 문제 등록");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼 표시
         }
 

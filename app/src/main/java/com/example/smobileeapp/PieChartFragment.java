@@ -35,6 +35,7 @@ public class PieChartFragment extends Fragment {
     private DatabaseReference databaseReference;
     private String userIdToken;
     private Context context;
+    private TextView tvRecommendation;  // Recommendation TextView
 
     private View view; // 프래그먼트 뷰 변수 추가
 
@@ -82,6 +83,8 @@ public class PieChartFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_pie_chart, container, false); // view 객체 초기화
 
         pieChart = view.findViewById(R.id.pieChart); // Ensure this ID matches your layout
+        tvRecommendation = view.findViewById(R.id.tv_recommendation); // Initialize recommendation TextView
+
         Intent intent = getActivity().getIntent();
         userIdToken = intent.getStringExtra("userIdToken");
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Problems").child(userIdToken);
@@ -117,6 +120,7 @@ public class PieChartFragment extends Fragment {
                     Log.d(TAG, "Difficulty Count: " + difficultyCount.toString()); // 로그 추가
                     updatePieChart(difficultyCount); // 데이터를 받은 후 차트 업데이트
                     updateTable(difficultyCount); // 데이터를 받은 후 표 업데이트
+                    updateRecommendation(difficultyCount); // 데이터를 받은 후 추천 업데이트
                 } else {
                     Log.w(TAG, "No data found for user: " + userIdToken);
                 }
@@ -247,6 +251,32 @@ public class PieChartFragment extends Fragment {
                 TextView textView = view.findViewById(textViewId);
                 textView.setText(String.valueOf(count));
             }
+        }
+    }
+
+    private void updateRecommendation(Map<String, Integer> difficultyCount) {
+        String recommendation = getRecommendation(difficultyCount);
+        tvRecommendation.setText(recommendation);
+    }
+
+    private String getRecommendation(Map<String, Integer> difficultyCount) {
+        int bronzeCount = difficultyCount.get("BⅠ") + difficultyCount.get("BⅡ") + difficultyCount.get("BⅢ") +
+                difficultyCount.get("BⅣ") + difficultyCount.get("BⅤ");
+        int silverCount = difficultyCount.get("SⅠ") + difficultyCount.get("SⅡ") + difficultyCount.get("SⅢ") +
+                difficultyCount.get("SⅣ") + difficultyCount.get("SⅤ");
+        int goldCount = difficultyCount.get("GⅠ") + difficultyCount.get("GⅡ") + difficultyCount.get("GⅢ") +
+                difficultyCount.get("GⅣ") + difficultyCount.get("GⅤ");
+        int platinumCount = difficultyCount.get("PⅠ") + difficultyCount.get("PⅡ") + difficultyCount.get("PⅢ") +
+                difficultyCount.get("PⅣ") + difficultyCount.get("PⅤ");
+
+        if (bronzeCount < 20) {
+            return "브론즈 문제를 풀어보세요!";
+        } else if (silverCount < 20) {
+            return "실버 문제를 풀어보세요!";
+        } else if (goldCount < 20) {
+            return "골드 문제를 풀어보세요!";
+        } else {
+            return "플래티넘 문제를 풀어보세요!";
         }
     }
 }

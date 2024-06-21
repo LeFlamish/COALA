@@ -4,6 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="32dp" />
+
     <com.github.mikephil.charting.charts.RadarChart
         android:id="@+id/radarChart"
         android:layout_width="match_parent"

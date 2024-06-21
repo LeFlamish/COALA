@@ -3,22 +3,22 @@
 
     <item
         android:id="@+id/navigation_problem_list"
-        android:icon="@drawable/clipboard"
+        android:icon="@drawable/problem_list"
         android:title="내가 푼 문제" />
 
     <item
         android:id="@+id/navigation_question_bulletin"
-        android:icon="@drawable/questionandanswer"
+        android:icon="@drawable/question_bulletin"
         android:title="질문 게시판" />
 
     <item
         android:id="@+id/navigation_recommend"
-        android:icon="@drawable/goodquality"
+        android:icon="@drawable/recommend"
         android:title="추천 문제" />
 
     <item
         android:id="@+id/navigation_my_info"
-        android:icon="@drawable/info"
+        android:icon="@drawable/my_info"
         android:title="내 정보" />
 
 </menu>

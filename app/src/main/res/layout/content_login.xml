@@ -28,31 +28,80 @@
             android:alpha="0.3"
             android:layout_marginBottom="30dp"/>
 
-        <EditText
-            android:id="@+id/et_email"
-            android:layout_width="300sp"
+        <!-- ID Input Field -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="330sp"
             android:layout_height="50sp"
             android:layout_marginTop="0dp"
-            android:background="@drawable/id_box"
-            android:ems="10"
-            android:hint="@string/hint_ID"
-            android:inputType="textEmailAddress"
-            android:paddingLeft="60sp"
-            android:textColorHint="#969696"
-            android:textColor="@color/black" />
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/gray"
+            app:cardElevation="4dp">
 
-        <EditText
-            android:id="@+id/et_pwd"
-            android:layout_width="300sp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:src="@drawable/id_icon"
+                    android:layout_marginRight="5dp"
+                    android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_ID"
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="16dp"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Password Input Field -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="330sp"
             android:layout_height="50sp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/pwd_box"
-            android:ems="10"
-            android:hint="@string/hint_PWD"
-            android:inputType="textPassword"
-            android:paddingLeft="60sp"
-            android:textColorHint="#969696"
-            android:textColor="@color/black" />
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/gray"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:src="@drawable/password_icon2"
+                    android:layout_marginRight="5dp"
+                    android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/et_pwd"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_PWD"
+                    android:inputType="textPassword"
+                    android:paddingLeft="16dp"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
 
         <Button
             android:id="@+id/btn_login"
@@ -62,7 +111,14 @@
             android:background="@drawable/rounded_background"
             android:text="로그인"
             android:textSize="20sp"
-            android:backgroundTint="#2A2898" />
+            android:backgroundTint="@color/gray"
+            android:drawableStart="@drawable/login_icon"
+            android:drawablePadding="55dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:gravity="center_vertical"/>
+
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -73,11 +129,17 @@
 
             <Button
                 android:id="@+id/btn_register"
-                android:layout_width="wrap_content"
+                android:layout_width="170sp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_background"
-                android:text="회원가입"
-                android:backgroundTint="#2A2898" />
+                android:text="   회원가입"
+                android:backgroundTint="@color/gray"
+                android:drawableStart="@drawable/register_icon"
+                android:drawablePadding="10dp"
+                android:paddingStart="10dp"
+
+                android:gravity="center_vertical"/>
+
 
             <Space
                 android:layout_width="20dp"
@@ -85,11 +147,16 @@
 
             <Button
                 android:id="@+id/btn_find"
-                android:layout_width="wrap_content"
+                android:layout_width="170sp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_background"
-                android:backgroundTint="#2A2898"
-                android:text="@string/forget_PWD" />
+                android:text="@string/forget_PWD"
+                android:backgroundTint="@color/gray"
+                android:drawableStart="@drawable/find_icon"
+                android:drawablePadding="10dp"
+                android:paddingStart="10dp"
+
+                android:gravity="center_vertical"/>
 
         </LinearLayout>
 

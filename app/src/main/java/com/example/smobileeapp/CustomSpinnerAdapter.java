@@ -54,7 +54,11 @@ public class CustomSpinnerAdapter extends ArrayAdapter<String> {
             textView.setTextColor(mContext.getResources().getColor(R.color.silver));
         } else if (item.contains("브론즈")) {
             textView.setTextColor(mContext.getResources().getColor(R.color.bronze));
-        } else {
+        }
+        else if (item.contains("다이아몬드")) {
+            textView.setTextColor(mContext.getResources().getColor(R.color.diamond));
+        }
+        else {
             textView.setTextColor(mContext.getResources().getColor(android.R.color.black)); // 기본 색상
         }
 

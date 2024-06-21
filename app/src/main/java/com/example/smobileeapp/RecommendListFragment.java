@@ -99,11 +99,11 @@ public class RecommendListFragment extends Fragment {
     }
 
     private void setupDatabaseReference() {
-        if (type.equals("bronze") || type.equals("silver") || type.equals("gold") || type.equals("platinum")) {
+        if (type.equals("bronze") || type.equals("silver") || type.equals("gold") || type.equals("platinum")|| type.equals("diamond")) {
             mDatabase = FirebaseDatabase.getInstance().getReference().child("Rproblem").child("difficulty").child(type);
         } else if (type.equals("samsung") || type.equals("kakao") || type.equals("naver") || type.equals("lg")) {
             mDatabase = FirebaseDatabase.getInstance().getReference().child("Rproblem").child("company").child(type);
-        } else if (type.equals("BFS") || type.equals("DFS") || type.equals("DP") || type.equals("Greedy")) {
+        } else if (type.equals("BFS") || type.equals("DFS") || type.equals("DP") || type.equals("Greedy")|| type.equals("Back")|| type.equals("구현")) {
             mDatabase = FirebaseDatabase.getInstance().getReference().child("Rproblem").child("Algorithm").child(type);
         } else {
             mDatabase = FirebaseDatabase.getInstance().getReference().child("Rproblem").child("Custom").child(type);

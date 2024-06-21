@@ -23,7 +23,7 @@ public class AlgorithmFragment extends Fragment {
         Button btnDP = view.findViewById(R.id.btnDP);
         Button btnGreedy = view.findViewById(R.id.btnGreedy);
         Button btnBack = view.findViewById(R.id.btnBack);
-        Button btnData = view.findViewById(R.id.btnData);
+        Button btnsimulation = view.findViewById(R.id.btnsimulation);
 
 
         btnBFS.setOnClickListener(new View.OnClickListener() {
@@ -59,10 +59,10 @@ public class AlgorithmFragment extends Fragment {
                 openRecommendListFragment("Back");
             }
         });
-        btnData.setOnClickListener(new View.OnClickListener() {
+        btnsimulation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openRecommendListFragment("Data");
+                openRecommendListFragment("구현");
             }
         });
 

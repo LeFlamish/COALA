@@ -205,7 +205,10 @@ public class ProblemListPlaceholderFragment extends Fragment {
             return ContextCompat.getColor(getActivity(), R.color.bronze);
         } else if (difficulty.contains("플래티넘")) {
             return ContextCompat.getColor(getActivity(), R.color.platinum);
-        } else {
+        }
+        else if (difficulty.contains("다이아몬드") || difficulty.contains("diamond")) {
+            return ContextCompat.getColor(getActivity(), R.color.diamond);
+        }else {
             return ContextCompat.getColor(getActivity(), R.color.default_color);
         }
     }

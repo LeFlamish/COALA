@@ -4,17 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
-import android.graphics.drawable.Drawable;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,16 +32,15 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
-import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.DateTimeParseException;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,6 +54,7 @@ public class CalendarFragment extends Fragment {
     private MaterialCalendarView calendarView;
     private DatabaseReference databaseReference;
     private TextView tvProblemCount;
+    private TextView TVtoday;
     private static final Map<String, Integer> dateProblemCount = new HashMap<>();
     private CalendarDay lastSelectedDate;
     private DayViewDecorator selectedDateDecorator;
@@ -77,6 +75,7 @@ public class CalendarFragment extends Fragment {
         }
 
         calendarView = view.findViewById(R.id.calendarview);
+        TVtoday = view.findViewById(R.id.today);
         tvProblemCount = view.findViewById(R.id.tv_problem_count);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Problems");
@@ -205,6 +204,10 @@ public class CalendarFragment extends Fragment {
 
 
     private void fetchCalendarData() {
+        // 오늘 날짜 가져오기
+        Calendar today = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String todayFormatted = dateFormat.format(today.getTime());
         databaseReference.child(userIdToken).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -221,6 +224,14 @@ public class CalendarFragment extends Fragment {
                         int currentCount = newDateProblemCount.getOrDefault(formattedDate, 0) + 1;
                         newDateProblemCount.put(formattedDate, currentCount);
                     }
+                }
+
+                int todayCount = dateProblemCount.getOrDefault(todayFormatted, 0);
+                if (todayCount == 0) {
+                    TVtoday.setText("오늘은 문제를 안 푸셨네요");
+                    TVtoday.setVisibility(View.VISIBLE);
+                } else {
+                    TVtoday.setVisibility(View.GONE);
                 }
 
                 // 새로운 데이터로 갱신
@@ -314,6 +325,12 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        fetchCalendarData();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
         fetchCalendarData();
     }
 }

@@ -128,6 +128,9 @@ public class RecommendListAdapter extends ArrayAdapter<RProblem> {
             return ContextCompat.getColor(getContext(), R.color.bronze);
         } else if (difficulty.contains("플래티넘") || difficulty.contains("platinum")) {
             return ContextCompat.getColor(getContext(), R.color.platinum);
+        }
+        else if (difficulty.contains("다이아몬드") || difficulty.contains("diamond")) {
+            return ContextCompat.getColor(getContext(), R.color.diamond);
         } else {
             return ContextCompat.getColor(getContext(), R.color.default_color);
         }

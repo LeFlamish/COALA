@@ -76,11 +76,11 @@
             android:textColor="@android:color/black"/>
 
         <Button
-            android:id="@+id/btnData"
+            android:id="@+id/btnsimulation"
             android:layout_width="250dp"
             android:layout_height="100dp"
             android:background="@drawable/rounded_background"
-            android:text="Data"
+            android:text="구현"
             android:textSize="16dp"
             android:layout_marginTop="16dp"
             android:paddingStart="20dp"
