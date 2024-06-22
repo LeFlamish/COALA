@@ -11,6 +11,16 @@
         android:layout_gravity="center"/>
 
     <TextView
+        android:id="@+id/tv_average_difficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Recommendation"
+        android:layout_gravity="center"
+        android:textSize="18sp"
+        android:textColor="@color/black" />
+
+    <TextView
         android:id="@+id/tv_recommendation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
