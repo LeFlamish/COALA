@@ -36,6 +36,7 @@ public class PieChartFragment extends Fragment {
     private String userIdToken;
     private Context context;
     private TextView tvRecommendation;  // Recommendation TextView
+    private TextView tvAverageDifficulty; // Average difficulty TextView
 
     private View view; // 프래그먼트 뷰 변수 추가
 
@@ -77,6 +78,39 @@ public class PieChartFragment extends Fragment {
         DIFFICULTY_MAPPING.put("브론즈Ⅴ", "BⅤ");
     }
 
+    private static final Map<String, Integer> DIFFICULTY_SCORES = new HashMap<>();
+
+    static {
+        DIFFICULTY_SCORES.put("PⅠ", 20);
+        DIFFICULTY_SCORES.put("PⅡ", 19);
+        DIFFICULTY_SCORES.put("PⅢ", 18);
+        DIFFICULTY_SCORES.put("PⅣ", 17);
+        DIFFICULTY_SCORES.put("PⅤ", 16);
+        DIFFICULTY_SCORES.put("GⅠ", 15);
+        DIFFICULTY_SCORES.put("GⅡ", 14);
+        DIFFICULTY_SCORES.put("GⅢ", 13);
+        DIFFICULTY_SCORES.put("GⅣ", 12);
+        DIFFICULTY_SCORES.put("GⅤ", 11);
+        DIFFICULTY_SCORES.put("SⅠ", 10);
+        DIFFICULTY_SCORES.put("SⅡ", 9);
+        DIFFICULTY_SCORES.put("SⅢ", 8);
+        DIFFICULTY_SCORES.put("SⅣ", 7);
+        DIFFICULTY_SCORES.put("SⅤ", 6);
+        DIFFICULTY_SCORES.put("BⅠ", 5);
+        DIFFICULTY_SCORES.put("BⅡ", 4);
+        DIFFICULTY_SCORES.put("BⅢ", 3);
+        DIFFICULTY_SCORES.put("BⅣ", 2);
+        DIFFICULTY_SCORES.put("BⅤ", 1);
+    }
+
+    private static final Map<Integer, String> SCORE_TO_DIFFICULTY = new HashMap<>();
+
+    static {
+        for (Map.Entry<String, Integer> entry : DIFFICULTY_SCORES.entrySet()) {
+            SCORE_TO_DIFFICULTY.put(entry.getValue(), entry.getKey());
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -84,6 +118,7 @@ public class PieChartFragment extends Fragment {
 
         pieChart = view.findViewById(R.id.pieChart); // Ensure this ID matches your layout
         tvRecommendation = view.findViewById(R.id.tv_recommendation); // Initialize recommendation TextView
+        tvAverageDifficulty = view.findViewById(R.id.tv_average_difficulty); // Initialize average difficulty TextView
 
         Intent intent = getActivity().getIntent();
         userIdToken = intent.getStringExtra("userIdToken");
@@ -110,19 +145,100 @@ public class PieChartFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     Map<String, Integer> difficultyCount = initializeDifficultyCount();
+                    int totalScore = 0;
+                    int problemCount = 0;
+
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String difficulty = snapshot.child("difficulty").getValue(String.class);
                         if (difficulty != null) {
                             String shortenedDifficulty = DIFFICULTY_MAPPING.getOrDefault(difficulty, "기타");
                             difficultyCount.put(shortenedDifficulty, difficultyCount.get(shortenedDifficulty) + 1);
+
+                            // 난이도 점수를 합산
+                            Integer score = DIFFICULTY_SCORES.get(shortenedDifficulty);
+                            if (score != null) {
+                                totalScore += score;
+                                problemCount++;
+                            }
                         }
                     }
                     Log.d(TAG, "Difficulty Count: " + difficultyCount.toString()); // 로그 추가
                     updatePieChart(difficultyCount); // 데이터를 받은 후 차트 업데이트
                     updateTable(difficultyCount); // 데이터를 받은 후 표 업데이트
-                    updateRecommendation(difficultyCount); // 데이터를 받은 후 추천 업데이트
-                } else {
-                    Log.w(TAG, "No data found for user: " + userIdToken);
+                    updateRecommendation(difficultyCount, totalScore, problemCount); // 데이터를 받은 후 추천 업데이트
+
+                    // 평균 난이도 계산 및 업데이트
+                    if (problemCount > 0) {
+                        double averageDifficulty = (double) totalScore / problemCount;
+                        int roundedDifficulty = (int) Math.round(averageDifficulty);
+                        String difficultyString = SCORE_TO_DIFFICULTY.get(roundedDifficulty);
+
+                        if (difficultyString != null) {
+                            switch (difficultyString) {
+                                case "PⅠ":
+                                    difficultyString = "플래티넘Ⅰ";
+                                    break;
+                                case "PⅡ":
+                                    difficultyString = "플래티넘Ⅱ";
+                                    break;
+                                case "PⅢ":
+                                    difficultyString = "플래티넘Ⅲ";
+                                    break;
+                                case "PⅣ":
+                                    difficultyString = "플래티넘Ⅳ";
+                                    break;
+                                case "PⅤ":
+                                    difficultyString = "플래티넘Ⅴ";
+                                    break;
+                                case "GⅠ":
+                                    difficultyString = "골드Ⅰ";
+                                    break;
+                                case "GⅡ":
+                                    difficultyString = "골드Ⅱ";
+                                    break;
+                                case "GⅢ":
+                                    difficultyString = "골드Ⅲ";
+                                    break;
+                                case "GⅣ":
+                                    difficultyString = "골드Ⅳ";
+                                    break;
+                                case "GⅤ":
+                                    difficultyString = "골드Ⅴ";
+                                    break;
+                                case "SⅠ":
+                                    difficultyString = "실버Ⅰ";
+                                    break;
+                                case "SⅡ":
+                                    difficultyString = "실버Ⅱ";
+                                    break;
+                                case "SⅢ":
+                                    difficultyString = "실버Ⅲ";
+                                    break;
+                                case "SⅣ":
+                                    difficultyString = "실버Ⅳ";
+                                    break;
+                                case "SⅤ":
+                                    difficultyString = "실버Ⅴ";
+                                    break;
+                                case "BⅠ":
+                                    difficultyString = "브론즈Ⅰ";
+                                    break;
+                                case "BⅡ":
+                                    difficultyString = "브론즈Ⅱ";
+                                    break;
+                                case "BⅢ":
+                                    difficultyString = "브론즈Ⅲ";
+                                    break;
+                                case "BⅣ":
+                                    difficultyString = "브론즈Ⅳ";
+                                    break;
+                                case "BⅤ":
+                                    difficultyString = "브론즈Ⅴ";
+                                    break;
+                            }
+                            tvAverageDifficulty.setText("평균 난이도 : " + difficultyString);
+                        }
+                    }
                 }
             }
 
@@ -138,7 +254,6 @@ public class PieChartFragment extends Fragment {
         for (String level : DIFFICULTY_LEVELS) {
             difficultyCount.put(level, 0);
         }
-        difficultyCount.put("기타", 0);
         return difficultyCount;
     }
 
@@ -254,29 +369,61 @@ public class PieChartFragment extends Fragment {
         }
     }
 
-    private void updateRecommendation(Map<String, Integer> difficultyCount) {
-        String recommendation = getRecommendation(difficultyCount);
+    private void updateRecommendation(Map<String, Integer> difficultyCount, int totalScore, int problemCount) {
+        String recommendation = getRecommendation(difficultyCount, totalScore, problemCount);
         tvRecommendation.setText(recommendation);
     }
 
-    private String getRecommendation(Map<String, Integer> difficultyCount) {
-        int bronzeCount = difficultyCount.get("BⅠ") + difficultyCount.get("BⅡ") + difficultyCount.get("BⅢ") +
-                difficultyCount.get("BⅣ") + difficultyCount.get("BⅤ");
-        int silverCount = difficultyCount.get("SⅠ") + difficultyCount.get("SⅡ") + difficultyCount.get("SⅢ") +
-                difficultyCount.get("SⅣ") + difficultyCount.get("SⅤ");
-        int goldCount = difficultyCount.get("GⅠ") + difficultyCount.get("GⅡ") + difficultyCount.get("GⅢ") +
-                difficultyCount.get("GⅣ") + difficultyCount.get("GⅤ");
-        int platinumCount = difficultyCount.get("PⅠ") + difficultyCount.get("PⅡ") + difficultyCount.get("PⅢ") +
-                difficultyCount.get("PⅣ") + difficultyCount.get("PⅤ");
-
-        if (bronzeCount < 20) {
-            return "브론즈 문제를 풀어보세요!";
-        } else if (silverCount < 20) {
-            return "실버 문제를 풀어보세요!";
-        } else if (goldCount < 20) {
-            return "골드 문제를 풀어보세요!";
-        } else {
-            return "플래티넘 문제를 풀어보세요!";
+    private String getRecommendation(Map<String, Integer> difficultyCount, int totalScore, int problemCount) {
+        if (problemCount == 0) {
+            return "추천 문제 난이도 : 없음 (풀이된 문제가 없습니다)";
         }
+
+        double averageScore = (double) totalScore / problemCount;
+        String recommendationDifficulty;
+
+        if (averageScore >= 19) {
+            recommendationDifficulty = "플래티넘Ⅰ";
+        } else if (averageScore >= 18) {
+            recommendationDifficulty = "플래티넘Ⅱ";
+        } else if (averageScore >= 17) {
+            recommendationDifficulty = "플래티넘Ⅲ";
+        } else if (averageScore >= 16) {
+            recommendationDifficulty = "플래티넘Ⅳ";
+        } else if (averageScore >= 15) {
+            recommendationDifficulty = "플래티넘Ⅴ";
+        } else if (averageScore >= 14) {
+            recommendationDifficulty = "골드Ⅰ";
+        } else if (averageScore >= 13) {
+            recommendationDifficulty = "골드Ⅱ";
+        } else if (averageScore >= 12) {
+            recommendationDifficulty = "골드Ⅲ";
+        } else if (averageScore >= 11) {
+            recommendationDifficulty = "골드Ⅳ";
+        } else if (averageScore >= 10) {
+            recommendationDifficulty = "골드Ⅴ";
+        } else if (averageScore >= 9) {
+            recommendationDifficulty = "실버Ⅰ";
+        } else if (averageScore >= 8) {
+            recommendationDifficulty = "실버Ⅱ";
+        } else if (averageScore >= 7) {
+            recommendationDifficulty = "실버Ⅲ";
+        } else if (averageScore >= 6) {
+            recommendationDifficulty = "실버Ⅳ";
+        } else if (averageScore >= 5) {
+            recommendationDifficulty = "실버Ⅴ";
+        } else if (averageScore >= 4) {
+            recommendationDifficulty = "브론즈Ⅰ";
+        } else if (averageScore >= 3) {
+            recommendationDifficulty = "브론즈Ⅱ";
+        } else if (averageScore >= 2) {
+            recommendationDifficulty = "브론즈Ⅲ";
+        } else if (averageScore >= 1) {
+            recommendationDifficulty = "브론즈Ⅳ";
+        } else {
+            recommendationDifficulty = "브론즈Ⅴ";
+        }
+
+        return "추천 문제 난이도 : " + recommendationDifficulty;
     }
 }
