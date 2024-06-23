@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,8 +31,8 @@ public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef; // 실시간 데이터 베이스
 
     private EditText mEtEmail, mEtPwd;
-    private Button mBtnRegister, mBtnQuestion, mBtnLogin;
-
+    private Button mBtnRegister, mBtnQuestion;
+    private CardView mCardLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEtPwd = findViewById(R.id.et_pwd);
         mBtnRegister = findViewById(R.id.btn_register);
         mBtnQuestion = findViewById(R.id.btn_question);
-        mBtnLogin = findViewById(R.id.btn_login);
+        mCardLogin = findViewById(R.id.card_login);
 
         mBtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,14 +131,15 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        mBtnLogin.setOnClickListener(new View.OnClickListener() {
+        mCardLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 로그인 버튼 클릭 시 실행할 코드
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
+
 
         mBtnQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
