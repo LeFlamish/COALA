@@ -3,6 +3,7 @@
     <color name="light_gray">#EDEDED</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="diamond">#BAD2FA</color>
     <color name="platinum">#7FDDA8</color>
     <color name="platinum1">#87FAC1</color>
     <color name="platinum2">#6DDFA8</color>
@@ -33,6 +34,5 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="gray">#AAAAAA</color>
     <color name="red">#FF0000</color>
-    <color name="nmj">#40639C</color>
-    <color name="diamond">#BAD2FA</color>
+    <color name="nmj">#C6D0E1</color>
 </resources>
